@@ -1,0 +1,6 @@
+# Java class files
+*.class
+
+.idea/
+target/
+src/main/resources/webAppLogs.log
