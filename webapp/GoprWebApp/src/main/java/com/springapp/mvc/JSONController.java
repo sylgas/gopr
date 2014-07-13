@@ -26,15 +26,12 @@ import java.net.URL;
 public class JSONController {
     private static final Logger logger = Logger.getLogger(JSONController.class);
 
-    static final String pythonPath = "C:\\Python27\\ArcGIS10.2\\python";
-    static final String filePath = "C:\\Users\\Ucash\\Documents\\gopr\\webapp\\GoprWebApp\\layer\\arc.py";
-
     @RequestMapping(value = "layer", method = RequestMethod.GET)
     public @ResponseBody Object getLayer() {
         //doesn't work yet - should be in DefaultController
         /*Process process = null;
         try {
-            process = Runtime.getRuntime().exec(pythonPath + " " + filePath);
+            process = Runtime.getRuntime().exec("python O:\\layer\\arc.py");
             process.waitFor();
             process.destroy();
         } catch (IOException e) {
@@ -42,7 +39,6 @@ public class JSONController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }*/
-
         String name = "AreasFormated.json";
         File jsonFile = new File("C:\\Users\\Ucash\\Documents\\gopr\\webapp\\GoprWebApp\\layer\\AreasFormated.json");
         URI uri = jsonFile.toURI();

@@ -16,7 +16,6 @@ import java.io.*;
 @RequestMapping("/")
 public class DefaultController {
     private static final Logger logger = Logger.getLogger(DefaultController.class);
-    private static final String filePath = "C:\\Users\\Ucash\\Documents\\gopr\\webapp\\GoprWebApp\\layer\\Areas.lyr";
 
     @Autowired
     FileValidator fileValidator;
@@ -53,7 +52,7 @@ public class DefaultController {
         try {
             inputStream = file.getInputStream();
 
-            File newFile = new File(filePath);
+            File newFile = new File("C:\\Users\\Ucash\\Documents\\gopr\\webapp\\GoprWebApp\\layer\\" + fileName);
             if (!newFile.exists()) {
                 newFile.createNewFile();
             }
