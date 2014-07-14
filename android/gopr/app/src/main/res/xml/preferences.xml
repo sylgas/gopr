@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/map_settings">
+        <CheckBoxPreference
+            android:key="showLayer"
+            android:title="@string/show_layer"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/server_settings">
+        <EditTextPreference
+            android:key="server_address"
+            android:title="@string/server_address"/>
+        <EditTextPreference
+            android:key="map_site"
+            android:defaultValue="@string/default_map_site"
+            android:title="@string/server_address"/>
+        <EditTextPreference
+            android:key="login"
+            android:title="@string/login"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
