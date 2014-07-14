@@ -11,11 +11,11 @@
     <PreferenceCategory
         android:title="@string/server_settings">
         <EditTextPreference
-            android:key="server_address"
+            android:key="serverAddress"
             android:title="@string/server_address"/>
         <EditTextPreference
-            android:key="map_site"
             android:defaultValue="@string/default_map_site"
+            android:key="mapSite"
             android:title="@string/server_address"/>
         <EditTextPreference
             android:key="login"

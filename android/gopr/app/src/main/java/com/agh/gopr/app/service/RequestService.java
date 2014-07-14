@@ -11,11 +11,7 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParser;
 import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -46,13 +42,13 @@ public class RequestService {
     }
 
     @Background
-    public void sendUpdateRequest() {
+    public void sendUpdateRequest(String nameMethod, String methodType) {
         if (!connectivityService.enableConnection()) {
             return;
         }
 
         try {
-            connect();
+            connect(nameMethod, methodType);
             readJson();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -79,13 +75,15 @@ public class RequestService {
         return sb.toString();
     }
 
-    private void connect() throws IOException {
+    private void connect(String nameMethod, String methodType) throws IOException {
+        //TODO: jakos poprawic
         String address = PreferenceHelper.getServerAddress(preferences);
+        address += nameMethod;
         Log.d(TAG, String.format("Getting layer from address: %s", address));
 
         URL url = new URL(address);
         httpURLConnection = (HttpURLConnection) url.openConnection();
-        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestMethod(methodType);
         httpURLConnection.setDoInput(true);
 
         httpURLConnection.connect();
@@ -95,14 +93,14 @@ public class RequestService {
         }
     }
 
+    public interface JSONHandler {
+        void handle(String json);
+    }
+
     private class ConnectionException extends GOPRException {
         public ConnectionException(String detailMessage) {
             super(detailMessage);
         }
-    }
-
-    public interface JSONHandler {
-        void handle(String json);
     }
 
 }
