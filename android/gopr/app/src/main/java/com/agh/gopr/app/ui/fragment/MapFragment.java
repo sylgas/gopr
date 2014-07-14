@@ -3,6 +3,7 @@ package com.agh.gopr.app.ui.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -32,6 +33,7 @@ import com.esri.core.symbol.PictureMarkerSymbol;
 import com.esri.core.symbol.SimpleMarkerSymbol;
 import com.esri.core.symbol.Symbol;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.OnActivityResult;
@@ -49,15 +51,14 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 @EFragment(R.layout.map_fragment)
 @OptionsMenu(R.menu.map_menu)
 public class MapFragment extends RoboFragment {
@@ -98,6 +99,8 @@ public class MapFragment extends RoboFragment {
     private MarkerListener markerListener = new MarkerListener();
     private LayerJSONHandler handler = new LayerJSONHandler();
     private Map<String, Integer> markers = new HashMap<String, Integer>();
+    private boolean initialized = false;
+    private List<Point> positions = new ArrayList<Point>();
 
     @AfterViews
     protected void init() {
@@ -111,6 +114,7 @@ public class MapFragment extends RoboFragment {
         sendRequestForTerritoriesLayer();
         loadMarkersLayer();
         loadBaseLayer();
+
        /* try {
             db = new MapGeoDatabase(map);
         } catch (FileNotFoundException e) {
@@ -122,12 +126,23 @@ public class MapFragment extends RoboFragment {
 /*
         );*//*
 
-        //map.centerAndZoom(50.03, 19.56, 5);
 /*        demoDataFile = Environment.getExternalStorageDirectory();
         offlineDataSDCardDirName = GOPRMobile.getAppDirectory().getName();
         String basemap = demoDataFile + File.separator + offlineDataSDCardDirName + File.separator + FILENAME;
 */
 
+    }
+
+    public Point getCurrentPoint() {
+        return map.getLocationDisplayManager().getPoint();
+    }
+
+    public String getName() {
+        return preferences.login().get();
+    }
+
+    public boolean isInitialized() {
+        return initialized;
     }
 
     public void onPause() {
@@ -193,12 +208,14 @@ public class MapFragment extends RoboFragment {
                                 e.printStackTrace();
                             }
                             ls.start();
-                            gpsLocationService.start(context, preferences.login().get(), ls);
+                            gpsLocationService.start(context);
+                            initialized = true;
+                            map.centerAt(new Point(2214749.0606268025, 6460923.093105682), true);
+                            map.zoomin();
                         }
                     }
                 }
         );
-
     }
 
     private void sendRequestForTerritoriesLayer() {

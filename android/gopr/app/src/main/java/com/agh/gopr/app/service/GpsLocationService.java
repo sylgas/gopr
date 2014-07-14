@@ -5,28 +5,24 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
-import android.os.PowerManager;
 import android.util.Log;
 
 import com.agh.gopr.app.common.SettingsAlertDialog;
-import com.esri.android.map.LocationDisplayManager;
+import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.esri.core.geometry.Point;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import roboguice.receiver.RoboBroadcastReceiver;
 
-@Singleton
 public class GpsLocationService extends RoboBroadcastReceiver {
 
     private static final String TAG = "GpsLocationService";
-
     private static final long TIME_BW_UPDATES = 1000 * 5;
-
-    private JSONArray array = new JSONArray();
+    public static final String ACTION_SENT = "com.agh.gopr.app.service.ACTION_SENT";
 
     @Inject
     private LocationManager locationManager;
@@ -35,61 +31,57 @@ public class GpsLocationService extends RoboBroadcastReceiver {
     private AlarmManager alarmManager;
 
     @Inject
-    private PowerManager powerManager;
+    private MapFragment mapFragment;
 
-    private LocationDisplayManager manager;
-    private String name;
+    private JSONObject positions = new JSONObject();
 
     @Override
     protected void handleReceive(Context context, Intent intent) {
-        PowerManager.WakeLock wl = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
-        wl.acquire();
-
         handle();
-
-        wl.release();
     }
 
-    public void start(Context context, String name, LocationDisplayManager manager) {
-        this.manager = manager;
-        this.name = name;
-
-        SettingsAlertDialog alertDialog = new SettingsAlertDialog(context);
+    public void start(Context context){
         if (gpsEnabled()) {
-            stop(context);
             alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     TIME_BW_UPDATES,
                     TIME_BW_UPDATES, pendingIntent(context));
         } else {
-            //locationManager.requestSingleUpdate();
+            //locationManager.requestSingleUpdat
+            SettingsAlertDialog alertDialog = new SettingsAlertDialog(context);
             alertDialog.showSettingsAlert(SettingsAlertDialog.Setting.GPS);
             //TODO: addLocationListener, Location Listener ??
         }
     }
 
     private void handle() {
-        if (manager == null) {
-            return;
+        if (!mapFragment.isInitialized()) {
+           return;
         }
-        Log.d(TAG, "dupa " + (System.currentTimeMillis() / 1000));
-        Log.d(TAG, "dupa " + manager.getPoint().toString());
-        Log.d(TAG, "dupa " + name);
-  //      positions.add(manager.getPoint());
-
     }
 
     public void stop(Context context) {
         alarmManager.cancel(pendingIntent(context));
     }
 
-/*    private JSONObject createJSONPosition() {
+    private JSONObject createJSONPosition(String name, Point point) throws JSONException {
         JSONObject position = new JSONObject();
-        position
+        position.put("id", name);
+        JSONArray positions = new JSONArray();
+        positions.put(toJson(point));
+        position.put("positions", positions);
+        return position;
+    }
 
-    }*/
+    private JSONObject toJson(Point point) throws JSONException {
+        JSONObject object = new JSONObject();
+        object.put("x", point.getX());
+        object.put("y", point.getY());
+        return object;
+    }
 
     private PendingIntent pendingIntent(Context context) {
         Intent intent = new Intent(context, GpsLocationService.class);
+        intent.setAction(ACTION_SENT);
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 

@@ -30,6 +30,9 @@ public class MainActivity extends AbstractActivity {
 
     private final SectionsPagerAdapter adapter;
 
+    @Inject
+    private MapFragment mapFragment;
+
     @ViewById
     protected CustomViewPager pager;
 
@@ -88,7 +91,7 @@ public class MainActivity extends AbstractActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return MapFragment_.builder().build();
+                return mapFragment;
             }
             return MessengerFragment_.builder().build();
         }
