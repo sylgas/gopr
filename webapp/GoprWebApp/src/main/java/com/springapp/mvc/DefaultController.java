@@ -17,57 +17,8 @@ import java.io.*;
 public class DefaultController {
     private static final Logger logger = Logger.getLogger(DefaultController.class);
 
-    @Autowired
-    FileValidator fileValidator;
-
     @RequestMapping(method = RequestMethod.GET)
     public String start() {
         return "default";
-    }
-
-    @RequestMapping("/fileUploadForm")
-    public ModelAndView getUploadForm(
-            @ModelAttribute("uploadedFile") FileUpload uploadedFile,
-            BindingResult result) {
-        return new ModelAndView("default");
-    }
-
-    @RequestMapping("/fileUpload")
-    public ModelAndView fileUploaded(
-            @ModelAttribute("uploadedFile") FileUpload uploadedFile,
-            BindingResult result) {
-
-        InputStream inputStream = null;
-        OutputStream outputStream = null;
-
-        MultipartFile file = uploadedFile.getFile();
-        fileValidator.validate(uploadedFile, result);
-
-        String fileName = file.getOriginalFilename();
-
-        if (result.hasErrors()) {
-            return new ModelAndView("default");
-        }
-
-        try {
-            inputStream = file.getInputStream();
-
-            File newFile = new File("C:\\Users\\Ucash\\Documents\\gopr\\webapp\\GoprWebApp\\layer\\" + fileName);
-            if (!newFile.exists()) {
-                newFile.createNewFile();
-            }
-            outputStream = new FileOutputStream(newFile);
-            int read = 0;
-            byte[] bytes = new byte[1024];
-
-            while ((read = inputStream.read(bytes)) != -1) {
-                outputStream.write(bytes, 0, read);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return new ModelAndView
-                ("action", "layerName", fileName);
     }
 }
