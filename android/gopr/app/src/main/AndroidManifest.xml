@@ -32,7 +32,13 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/settings"
             android:name=".ui.activity.PreferencesActivity"/>
-        <receiver android:name=".service.GpsLocationService"/>
+
+        <receiver
+            android:name=".service.GpsLocationService">
+            <intent-filter>
+                <action android:name="com.agh.gopr.app.service.ACTION_SENT"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
