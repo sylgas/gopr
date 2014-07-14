@@ -3,7 +3,6 @@ package com.agh.gopr.app.ui.fragment;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -12,41 +11,35 @@ import android.util.Log;
 
 import com.agh.gopr.app.GOPRMobile;
 import com.agh.gopr.app.R;
-
 import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MapFileException;
 import com.agh.gopr.app.service.GpsLocationService;
 import com.agh.gopr.app.service.RequestService;
 import com.esri.android.map.GraphicsLayer;
-import com.esri.android.map.Layer;
 import com.esri.android.map.LocationDisplayManager;
-import com.esri.android.map.ags.ArcGISFeatureLayer;
+import com.esri.android.map.MapView;
 import com.esri.android.map.ags.ArcGISTiledMapServiceLayer;
 import com.esri.android.map.event.OnStatusChangedListener;
+import com.esri.core.geometry.GeometryEngine;
+import com.esri.core.geometry.MapGeometry;
 import com.esri.core.geometry.Point;
-import com.esri.core.geometry.Transformation2D;
-import com.esri.core.map.FeatureSet;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.MarkerSymbol;
 import com.esri.core.symbol.PictureMarkerSymbol;
-import com.esri.core.symbol.SimpleMarkerSymbol;
-import com.esri.core.symbol.Symbol;
+import com.esri.core.symbol.SimpleFillSymbol;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.OnActivityResult;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.ViewById;
-
-import com.esri.android.map.MapView;
 import com.googlecode.androidannotations.annotations.res.StringRes;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
@@ -83,17 +76,13 @@ public class MapFragment extends RoboFragment {
 
     @Inject
     protected Context context;
-
-    @Inject
-    private GpsLocationService gpsLocationService;
-
-    @Inject
-    private RequestService requestService;
-
     @Pref
     protected Preferences_ preferences;
-
-    private Layer territoriesLayer;
+    @Inject
+    private GpsLocationService gpsLocationService;
+    @Inject
+    private RequestService requestService;
+    private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
     private File mapFile;
     private MarkerListener markerListener = new MarkerListener();
@@ -104,13 +93,13 @@ public class MapFragment extends RoboFragment {
 
     @AfterViews
     protected void init() {
-        try {
+        /*try {
             ensureExternalMemoryIsMounted();
             ensureMapExists();
         } catch (MapFileException e) {
             display(e.getMessage());
             return;
-        }
+        }*/
         sendRequestForTerritoriesLayer();
         loadMarkersLayer();
         loadBaseLayer();
@@ -220,7 +209,7 @@ public class MapFragment extends RoboFragment {
 
     private void sendRequestForTerritoriesLayer() {
         requestService.init(context, handler);
-        requestService.sendUpdateRequest();
+        requestService.sendUpdateRequest("/rest/layer/get?actionId=1", "GET");
     }
 
     private void loadMarkersLayer() {
@@ -228,16 +217,14 @@ public class MapFragment extends RoboFragment {
         map.addLayer(markersLayer);
     }
 
-    private void loadTerritoriesLayer(JsonParser parser, String layerDefinition) throws Exception {
+    //TUTAJ ŁUKASZ
+    private void loadTerritoriesLayer(List<Graphic> areas) throws Exception {
         Log.d(TAG, "Loading territories layer...");
-        ArcGISFeatureLayer.Options layerOptions = new ArcGISFeatureLayer.Options();
-        String[] table = {"*"};
-        layerOptions.outFields = table;
-        layerOptions.mode = ArcGISFeatureLayer.MODE.SNAPSHOT;
 
-        FeatureSet featureSet = FeatureSet.fromJson(parser);
-
-        territoriesLayer = new ArcGISFeatureLayer(layerDefinition, featureSet, layerOptions);
+        territoriesLayer = new GraphicsLayer();
+        for (Graphic g : areas) {
+            territoriesLayer.addGraphic(g);
+        }
         map.addLayer(territoriesLayer);
     }
 
@@ -272,15 +259,33 @@ public class MapFragment extends RoboFragment {
     }
 
     private void readLayerFromJson(String json) throws Exception {
+        List<Graphic> areas = new ArrayList<Graphic>();
+
         JSONTokener tokener = new JSONTokener(json);
         JSONObject root = new JSONObject(tokener);
-        JSONObject jsonFS = root.getJSONObject("jsonFS");
-        String jsonLD = root.getJSONObject("jsonLD").toString();
+
+        JSONArray graphicArray = root.getJSONArray("geometries");
 
         JsonFactory factory = new JsonFactory();
-        JsonParser parser = factory.createJsonParser(jsonFS.toString());
-        parser.nextToken();
-        loadTerritoriesLayer(parser, jsonLD);
+
+        for (int i = 0; i < graphicArray.length(); i++) {
+            String cos = graphicArray.getJSONObject(i).getString("area");
+            JsonParser parser = factory.createJsonParser(graphicArray.getJSONObject(i).getString("area"));
+            MapGeometry mapGeometry = GeometryEngine.jsonToGeometry(parser);
+
+            Graphic newArea = new Graphic(mapGeometry.getGeometry(), new SimpleFillSymbol(makeColor(), SimpleFillSymbol.STYLE.SOLID));
+            areas.add(newArea);
+        }
+
+        loadTerritoriesLayer(areas);
+    }
+
+    private int makeColor() {
+        //Grey with high transparency
+        return Color.argb(30, 58, 58, 58);
+    }
+
+    public static class StartMessengerEvent {
     }
 
     private class MarkerListener implements GpsLocationService.PositionsListener {
@@ -312,8 +317,5 @@ public class MapFragment extends RoboFragment {
                 e.printStackTrace();
             }
         }
-    }
-
-    public static class StartMessengerEvent {
     }
 }
