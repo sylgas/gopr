@@ -1,166 +1,237 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <!--The viewport meta tag is used to improve the presentation and behavior of the samples 
-      on iOS devices-->
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <title>Tworzenie akcji poszukiwawczej</title>
+<!--The viewport meta tag is used to improve the presentation and behavior of the samples
+  on iOS devices-->
+<meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+<title>Tworzenie akcji poszukiwawczej</title>
 
-    <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
+<link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
+<link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
 
-    <style>
-        #menuDiv {
-            height: 100%;
-            width: 18%;
-            margin-right: 1%;
-            margin-left: 1%;
-            float: right;
-        }
+<style>
+    #menuDiv {
+        height: 100%;
+        width: 18%;
+        margin-right: 1%;
+        margin-left: 1%;
+        float: right;
+    }
 
-        #areaDrawDiv {
-            color: #444;
-            height: auto;
-            width: auto;
-            out: 100%;
-            border: solid 2px #666;
-            border-radius: 4px;
-            background-color: #fff;
-            margin: 2%;
-            padding: 2%;
-        }
+    #areaDrawDiv {
+        color: #444;
+        height: auto;
+        width: auto;
+        out: 100%;
+        border: solid 2px #666;
+        border-radius: 4px;
+        background-color: #fff;
+        margin: 2%;
+        padding: 2%;
+    }
 
-        html {
-            height: 100%
-        }
+    html {
+        height: 100%
+    }
 
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        #mapDiv {
-            height: 100%;
-            width: 80%;
-            float: left;
-        }
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
 
-        button {
-            display: block;
-            width: 100%;
-        }
-    </style>
+    #mapDiv {
+        height: 100%;
+        width: 80%;
+        float: left;
+    }
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
-    <script src="http://js.arcgis.com/3.10/"></script>
-    <script>
-        var map, tb;
+    button {
+        display: block;
+        width: 100%;
+    }
+</style>
 
-        require([
-            "esri/map", "esri/toolbars/draw",
-            "esri/symbols/SimpleLineSymbol",
-            "esri/graphic", "esri/symbols/SimpleFillSymbol",
-            "esri/Color", "dojo/dom", "dojo/on", "dojo/domReady!"
-        ], function(
-                Map, Draw,
-                SimpleLineSymbol,
-                Graphic, SimpleFillSymbol,
-                Color, dom, on
-                ) {
-            map = new Map("mapDiv", {
-                basemap: "streets",
-                center: [-25.312, 34.307],
-                zoom: 3
-            });
-            map.on("load", initToolbar);
+<script src="http://js.arcgis.com/3.10/"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
-            // fill symbol used for extent, polygon and freehand polygon, use a picture fill symbol
-            // the images folder contains additional fill images, other options: sand.png, swamp.png or stiple.png
-            var fillSymbol = new SimpleFillSymbol(
-                    SimpleLineSymbol.STYLE_SOLID,
-                    new SimpleLineSymbol(
-                            SimpleLineSymbol.STYLE_SOLID,
-                            new Color('#000'),
-                            2
-                    ),
-                    new Color([58,58,58,0.1])
-            );
 
-            function initToolbar() {
-                tb = new Draw(map);
-                tb.on("draw-end", addGraphic);
+<script>
+    var map, tb, editToolbar, ctxMenuForGraphics;
+    var selected;
 
-                // event delegation so a click handler is not
-                // needed for each individual button
-                on(dom.byId("areaDrawDiv"), "click", function(evt) {
-                    if ( evt.target.id === "areaDrawDiv" ) {
-                        return;
-                    }
-                    var tool = evt.target.id.toLowerCase();
-                    map.disableMapNavigation();
-                    tb.activate(tool);
-                });
-            }
+    require([
+        "esri/map", "esri/toolbars/draw", "esri/toolbars/edit",
+        "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol",
+        "esri/graphic", "esri/Color", "dojo/dom", "dojo/on",
+        "dijit/Menu", "dijit/MenuItem", "dijit/MenuSeparator",
 
-            function addGraphic(evt) {
-                //deactivate the toolbar and clear existing graphics
-                tb.deactivate();
-                map.enableMapNavigation();
+        "dijit/form/Button", "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+        "dojo/domReady!"
+    ], function (Map, Draw, Edit, SimpleLineSymbol, SimpleFillSymbol, Graphic, Color, dom, on, Menu, MenuItem, MenuSeparator) {
 
-                // figure out which symbol to use
-                var symbol = fillSymbol;
-
-                map.graphics.add(new Graphic(evt.geometry, symbol));
-            }
+        map = new Map("mapDiv", {
+            basemap: "satellite",
+            zoom: 5,
+            center: [19.91, 50.06]
         });
-    </script>
+        map.on("load", initToolbarAndContextMenu);
 
-    <script type="text/javascript">
-        function back() {
-            window.location.href = "http://localhost:8080";
+        function initToolbarAndContextMenu() {
+            createToolbarAndContextMenu();
+            initToolbar();
         }
 
-        function startAction() {
-            //alert(String(map.graphics.graphics.length));
-            //var posting = $.post( "http://localhost:8080/rest/layer/send", { graphics : map.graphics, actionId : 1 } );
-            var list = new Array();
-            list[0] = "cze";
-            list[1] = "yo";
+        function createToolbarAndContextMenu() {
+            editToolbar = new Edit(map);
 
+            map.on("click", function (evt) {
+                editToolbar.deactivate();
+            });
 
-            //var grap = map.graphics.graphics[1];
-
-            $.post( "http://localhost:8080/rest/layer/send", { graphics : list, actionId : 1 });
-
-            //window.location.href = "http://localhost:8080/action";
+            createGraphicsMenu();
         }
-    </script>
+
+        function createGraphicsMenu() {
+            ctxMenuForGraphics = new Menu({});
+            ctxMenuForGraphics.addChild(new MenuItem({
+                label: "Edit",
+                onClick: function () {
+                    if (selected.geometry.type !== "point") {
+                        editToolbar.activate(Edit.EDIT_VERTICES, selected);
+                    } else {
+                        alert("Not implemented");
+                    }
+                }
+            }));
+
+            ctxMenuForGraphics.addChild(new MenuItem({
+                label: "Move",
+                onClick: function () {
+                    editToolbar.activate(Edit.MOVE, selected);
+                }
+            }));
+
+            ctxMenuForGraphics.addChild(new MenuItem({
+                label: "Rotate/Scale",
+                onClick: function () {
+                    if (selected.geometry.type !== "point") {
+                        editToolbar.activate(Edit.ROTATE | Edit.SCALE, selected);
+                    } else {
+                        alert("Not implemented");
+                    }
+                }
+            }));
+
+            ctxMenuForGraphics.addChild(new MenuSeparator());
+            ctxMenuForGraphics.addChild(new MenuItem({
+                label: "Delete",
+                onClick: function () {
+                    map.graphics.remove(selected);
+                }
+            }));
+
+            ctxMenuForGraphics.startup();
+
+            map.graphics.on("mouse-over", function (evt) {
+                selected = evt.graphic;
+
+                ctxMenuForGraphics.bindDomNode(evt.graphic.getDojoShape().getNode());
+            });
+
+            map.graphics.on("mouse-out", function (evt) {
+                ctxMenuForGraphics.unBindDomNode(evt.graphic.getDojoShape().getNode());
+            });
+        }
+
+        var fillSymbol = new SimpleFillSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                new SimpleLineSymbol(
+                        SimpleLineSymbol.STYLE_SOLID,
+                        new Color('#000'),
+                        2
+                ),
+                new Color([58, 58, 58, 0.1])
+        );
+
+        function initToolbar() {
+            tb = new Draw(map);
+            tb.on("draw-end", addGraphic);
+
+            on(dom.byId("areaDrawDiv"), "click", function (evt) {
+                if (evt.target.id === "areaDrawDiv") {
+                    return;
+                }
+                var tool = evt.target.id.toLowerCase();
+                map.disableMapNavigation();
+                tb.activate(tool);
+            });
+        }
+
+        function addGraphic(evt) {
+            tb.deactivate();
+            map.enableMapNavigation();
+
+            var newGraphic = new Graphic(evt.geometry, fillSymbol);
+            map.graphics.add(newGraphic);
+        }
+
+    });
+</script>
+
+<script type="text/javascript">
+    function back() {
+        window.location.href = "http://localhost:8080";
+    }
+
+    function startAction() {
+        geometryList = Array();
+        for (i = 1; i < map.graphics.graphics.length; ++i) {
+            geometryList[i - 1] = {areaId: i, area: map.graphics.graphics[i].geometry.toJson()};
+        }
+
+        console.log(geometryList);
+        var geometries = JSON.stringify({ geometries: geometryList });
+        console.log(geometries);
+
+        $.post("http://localhost:8080/rest/layer/send", { actionId: 1, geometries: geometries })
+                .done(function (response) {
+                    if (response != true)
+                        alert("Wystąpił błąd z połączeniem z serwerem!");
+                    window.location.href = "http://localhost:8080/action";
+                })
+                .fail(function () {
+                    alert("Wystąpił błąd z połączeniem z serwerem!");
+                });
+    }
+</script>
 </head>
 
 <body>
 
 <div id="menuDiv">
 
-<div>Dodaj obszar:</div>
+    <div>Dodaj obszar:</div>
 
-<div id="areaDrawDiv">
-    <div>Dowolny wielokąt:</div>
-    <button id="Polygon">Wybierz punkty</button>
-    <button id="FreehandPolygon">Zaznacz obszar</button>
-    <div>Prosty kształt:</div>
-    <button id="Triangle">Trójkąt</button>
-    <button id="Extent">Prostokąt</button>
-    <button id="Circle">Okrąg</button>
-    <button id="Ellipse">Elipsa</button>
-</div>
+    <div id="areaDrawDiv">
+        <div>Dowolny wielokąt:</div>
+        <button id="Polygon">Wybierz punkty</button>
+        <button id="FreehandPolygon">Zaznacz obszar</button>
+        <div>Prosty kształt:</div>
+        <button id="Rectangle">Prostokąt</button>
+        <button id="Triangle">Trójkąt</button>
+        <button id="Circle">Okrąg</button>
+        <button id="Ellipse">Elipsa</button>
+    </div>
 
     <button onclick="startAction()">Rozpocznij akcję</button>
     <button onclick="back()">Wróć</button>
 
 </div>
 
-<div id="mapDiv"></div>
+<div id="mapDiv" data-dojo-type="dijit/layout/ContentPane"></div>
 
 </body>
 </html>
