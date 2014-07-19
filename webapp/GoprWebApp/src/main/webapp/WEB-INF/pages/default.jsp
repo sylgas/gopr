@@ -8,6 +8,9 @@
         button {
             display: block;
             width: 100%;
+            height: 15%;
+            font-weight: bold;
+            font-size: 30px;
         }
 
     </style>
@@ -26,7 +29,7 @@
 
 <body>
 
-<h1>System wspomagający akcję poszukiwawcze GOPR</h1>
+<h1>System wspomagający akcje poszukiwawcze GOPR</h1>
 
 <button onclick="createAction()">Stwórz akcję</button>
 <button onclick="loadActions()">Wczytaj akcję</button>

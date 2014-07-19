@@ -75,7 +75,7 @@
         map = new Map("mapDiv", {
             basemap: "satellite",
             zoom: 5,
-            center: [19.91, 50.06]
+            center: [19.91, 50.06]  //Krk
         });
         map.on("load", initToolbarAndContextMenu);
 
@@ -97,37 +97,31 @@
         function createGraphicsMenu() {
             ctxMenuForGraphics = new Menu({});
             ctxMenuForGraphics.addChild(new MenuItem({
-                label: "Edit",
+                label: "Edytuj",
                 onClick: function () {
-                    if (selected.geometry.type !== "point") {
+                    if (selected.geometry.type !== "point")
                         editToolbar.activate(Edit.EDIT_VERTICES, selected);
-                    } else {
-                        alert("Not implemented");
-                    }
                 }
             }));
 
             ctxMenuForGraphics.addChild(new MenuItem({
-                label: "Move",
+                label: "Przesuń",
                 onClick: function () {
                     editToolbar.activate(Edit.MOVE, selected);
                 }
             }));
 
             ctxMenuForGraphics.addChild(new MenuItem({
-                label: "Rotate/Scale",
+                label: "Skaluj lub obróć",
                 onClick: function () {
-                    if (selected.geometry.type !== "point") {
+                    if (selected.geometry.type !== "point")
                         editToolbar.activate(Edit.ROTATE | Edit.SCALE, selected);
-                    } else {
-                        alert("Not implemented");
-                    }
                 }
             }));
 
             ctxMenuForGraphics.addChild(new MenuSeparator());
             ctxMenuForGraphics.addChild(new MenuItem({
-                label: "Delete",
+                label: "Usuń",
                 onClick: function () {
                     map.graphics.remove(selected);
                 }
