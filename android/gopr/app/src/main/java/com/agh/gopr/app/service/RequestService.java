@@ -34,21 +34,27 @@ public class RequestService {
     private ConnectivityService connectivityService;
 
     private JSONHandler handler;
+    private HttpHelper.RestMethod restMethod;
     private HttpURLConnection httpURLConnection;
+    private String methodType;
 
-    public void init(Context context, JSONHandler handler) {
+    public void init(Context context, JSONHandler handler, HttpHelper.RestMethod restMethod) {
         RoboGuice.injectMembers(context, this);
         this.handler = handler;
+        this.restMethod = restMethod;
+        this.methodType = HttpHelper.getMethodType(restMethod);
     }
 
     @Background
-    public void sendUpdateRequest(String nameMethod, String methodType) {
+    public void sendUpdateRequest(String... params) {
         if (!connectivityService.enableConnection()) {
             return;
         }
 
         try {
-            connect(nameMethod, methodType);
+            String url = HttpHelper.createUrl(restMethod,
+                    PreferenceHelper.getServerAddress(preferences), params);
+            connect(url);
             readJson();
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
@@ -60,7 +66,7 @@ public class RequestService {
     }
 
     private void readJson() throws IOException, JSONException {
-        handler.handle(readFrom(httpURLConnection.getInputStream()));
+        handler.handle(readFrom(httpURLConnection.getInputStream()), restMethod);
     }
 
     private String readFrom(InputStream in) throws IOException {
@@ -75,13 +81,10 @@ public class RequestService {
         return sb.toString();
     }
 
-    private void connect(String nameMethod, String methodType) throws IOException {
-        //TODO: jakos poprawic
-        String address = PreferenceHelper.getServerAddress(preferences);
-        address += nameMethod;
-        Log.d(TAG, String.format("Getting layer from address: %s", address));
+    private void connect(String methodUrl) throws IOException {
+        Log.d(TAG, String.format("Getting layer from address: %s", methodUrl));
 
-        URL url = new URL(address);
+        URL url = new URL(methodUrl);
         httpURLConnection = (HttpURLConnection) url.openConnection();
         httpURLConnection.setRequestMethod(methodType);
         httpURLConnection.setDoInput(true);
@@ -94,7 +97,7 @@ public class RequestService {
     }
 
     public interface JSONHandler {
-        void handle(String json);
+        void handle(String json, HttpHelper.RestMethod restMethod);
     }
 
     private class ConnectionException extends GOPRException {

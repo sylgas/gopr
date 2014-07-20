@@ -15,6 +15,7 @@ import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MapFileException;
 import com.agh.gopr.app.service.GpsLocationService;
+import com.agh.gopr.app.service.HttpHelper;
 import com.agh.gopr.app.service.RequestService;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
@@ -81,7 +82,12 @@ public class MapFragment extends RoboFragment {
     @Inject
     private GpsLocationService gpsLocationService;
     @Inject
-    private RequestService requestService;
+    private RequestService requestGetLayerService;
+    @Inject
+    private RequestService requestGetAllPointsService;
+    @Inject
+    private RequestService requestGetPointsService;
+
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
     private File mapFile;
@@ -208,8 +214,12 @@ public class MapFragment extends RoboFragment {
     }
 
     private void sendRequestForTerritoriesLayer() {
-        requestService.init(context, handler);
-        requestService.sendUpdateRequest("/rest/layer/get?actionId=1", "GET");
+        String[] params = {"1"};  //actionId, TODO:pozniej do zmiany
+        requestGetLayerService.init(context, handler, HttpHelper.RestMethod.GetLayer);
+        requestGetLayerService.sendUpdateRequest(params);
+
+        requestGetAllPointsService.init(context, handler, HttpHelper.RestMethod.GetAllPoints);
+        requestGetAllPointsService.sendUpdateRequest(params);
     }
 
     private void loadMarkersLayer() {
@@ -217,7 +227,6 @@ public class MapFragment extends RoboFragment {
         map.addLayer(markersLayer);
     }
 
-    //TUTAJ ŁUKASZ
     private void loadTerritoriesLayer(List<Graphic> areas) throws Exception {
         Log.d(TAG, "Loading territories layer...");
 
@@ -273,7 +282,8 @@ public class MapFragment extends RoboFragment {
             JsonParser parser = factory.createJsonParser(graphicArray.getJSONObject(i).getString("area"));
             MapGeometry mapGeometry = GeometryEngine.jsonToGeometry(parser);
 
-            Graphic newArea = new Graphic(mapGeometry.getGeometry(), new SimpleFillSymbol(makeColor(), SimpleFillSymbol.STYLE.SOLID));
+            Graphic newArea = new Graphic(mapGeometry.getGeometry(),
+                    new SimpleFillSymbol(makeColor(), SimpleFillSymbol.STYLE.SOLID));
             areas.add(newArea);
         }
 
@@ -310,9 +320,20 @@ public class MapFragment extends RoboFragment {
     private class LayerJSONHandler implements RequestService.JSONHandler {
 
         @Override
-        public void handle(String json) {
+        public void handle(String json, HttpHelper.RestMethod restMethod) {
             try {
-                readLayerFromJson(json);
+                switch (restMethod) {
+                    case GetLayer:
+                        readLayerFromJson(json);
+                        break;
+                    case GetPoints:
+                    case GetAllPoints:
+                        //TODO: (UCASH) trzeba te punkciki wyswwitlic, dla wszystkich i pojedynczych bedzie to samo.
+                        //TODO: moze da sie jakos analogicznie do tego co jest w web apce, albo tutaj dziala redraw
+                        //TODO: i nie trzeba dodawac i usuwac polyline.
+                        Log.i(TAG, json);
+                        break;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
