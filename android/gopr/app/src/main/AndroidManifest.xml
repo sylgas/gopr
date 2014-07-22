@@ -6,20 +6,22 @@
         android:minSdkVersion="16"
         android:targetSdkVersion="19" />
 
-    <uses-feature android:glEsVersion="0x00020000"
+    <uses-feature
+        android:glEsVersion="0x00020000"
         android:required="true" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:allowBackup="true"
-        android:label="@string/app_name"
         android:name=".GOPRMobile_"
-        android:icon="@drawable/ic_launcher">
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name">
         <activity
             android:name=".ui.activity.MainActivity_"
             android:label="@string/app_name">
@@ -29,14 +31,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.activity.PreferencesActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/settings"
-            android:name=".ui.activity.PreferencesActivity"/>
+            android:label="@string/settings" />
 
-        <receiver
-            android:name=".service.GpsLocationService">
+        <receiver android:name=".service.AlarmService">
             <intent-filter>
-                <action android:name="com.agh.gopr.app.service.ACTION_SENT"/>
+                <action android:name="com.agh.gopr.app.service.ACTION_ALARM" />
             </intent-filter>
         </receiver>
     </application>

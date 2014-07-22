@@ -32,12 +32,16 @@ public class ConnectivityService {
     }
 
     public boolean enableConnection() {
-        if (!wifiEnabled() && !transferEnabled()) {
+        if (!isConnected()) {
             Log.d(TAG, "No connection found");
             showDialog();
             return false;
         }
         return true;
+    }
+
+    public boolean isConnected() {
+        return wifiEnabled() || transferEnabled();
     }
 
     @UiThread
