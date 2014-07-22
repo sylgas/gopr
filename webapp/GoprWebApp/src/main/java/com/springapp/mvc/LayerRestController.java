@@ -1,12 +1,11 @@
 package com.springapp.mvc;
 
-import com.esri.core.geometry.Geometry;
-import com.esri.core.map.Graphic;
-import com.esri.map.GraphicsLayer;
-import com.esri.map.JMap;
+import com.springapp.mvc.entity.Layer;
+import com.springapp.mvc.repository.LayerRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +24,9 @@ public class LayerRestController {
     public static final String GET_POINTS = "/rest/point/get";
     public static final String SEND_POINTS = "/rest/point/send";
     public static final String GET_ALL_POINTS = "/rest/point/getAllPoints";
+
+    @Autowired
+    private LayerRepository layerRepository;
 
     /*
      * Returns searching areas connected with given action.
@@ -53,9 +55,13 @@ public class LayerRestController {
     public
     @ResponseBody
     boolean receiveGeometries(@RequestParam("actionId") long actionId, @RequestParam("geometries") JSONObject geometries) {
-        logger.info("SEND LEYER: action: " + actionId + ", pola:\n\t" + geometries);
+        logger.info("SEND LAYER: action: " + actionId + ", pola:\n\t" + geometries);
 
         //TODO: save jsonobject["geometries"] to db )
+        logger.info(layerRepository.getLayersAmount());
+        Layer layer = new Layer("first", geometries.toString());
+        layerRepository.saveLayer(layer);
+        logger.info(layerRepository.getLayersAmount());
 
         return true;
     }
