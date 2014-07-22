@@ -14,9 +14,11 @@ import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MapFileException;
-import com.agh.gopr.app.service.GpsLocationService;
-import com.agh.gopr.app.service.HttpHelper;
+import com.agh.gopr.app.map.GpsPosition;
+import com.agh.gopr.app.service.AlarmService;
 import com.agh.gopr.app.service.RequestService;
+import com.agh.gopr.app.service.rest.RestMethod;
+import com.agh.gopr.app.service.rest.exception.MethodException;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
@@ -80,25 +82,17 @@ public class MapFragment extends RoboFragment {
     @Pref
     protected Preferences_ preferences;
     @Inject
-    private GpsLocationService gpsLocationService;
-    @Inject
-    private RequestService requestGetLayerService;
-    @Inject
-    private RequestService requestGetAllPointsService;
-    @Inject
-    private RequestService requestGetPointsService;
-
+    private AlarmService alarmService;
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
     private File mapFile;
     private MarkerListener markerListener = new MarkerListener();
-    private LayerJSONHandler handler = new LayerJSONHandler();
+    private LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private Map<String, Integer> markers = new HashMap<String, Integer>();
-    private boolean initialized = false;
-    private List<Point> positions = new ArrayList<Point>();
 
     @AfterViews
     protected void init() {
+
         /*try {
             ensureExternalMemoryIsMounted();
             ensureMapExists();
@@ -128,16 +122,12 @@ public class MapFragment extends RoboFragment {
 
     }
 
-    public Point getCurrentPoint() {
-        return map.getLocationDisplayManager().getPoint();
+    public GpsPosition getCurrentPosition() {
+        return GpsPosition.fromPoint(map.getLocationDisplayManager().getPoint());
     }
 
     public String getName() {
         return preferences.login().get();
-    }
-
-    public boolean isInitialized() {
-        return initialized;
     }
 
     public void onPause() {
@@ -200,26 +190,32 @@ public class MapFragment extends RoboFragment {
                                 ls.setDefaultSymbol(symbol);
                                 ls.setCourseSymbol(symbol);
                             } catch (Exception e) {
-                                e.printStackTrace();
+                                Log.d(TAG, "Could not create icon");
                             }
                             ls.start();
-                            gpsLocationService.start(context);
-                            initialized = true;
-                            map.centerAt(new Point(2214749.0606268025, 6460923.093105682), true);
-                            map.zoomin();
+                            alarmService.start();
+                            center();
                         }
                     }
                 }
         );
     }
 
-    private void sendRequestForTerritoriesLayer() {
-        String[] params = {"1"};  //actionId, TODO:pozniej do zmiany
-        requestGetLayerService.init(context, handler, HttpHelper.RestMethod.GetLayer);
-        requestGetLayerService.sendUpdateRequest(params);
+    private void center() {
+        map.centerAt(new Point(2214749.0606268025, 6460923.093105682), true);
+        map.zoomin();
+    }
 
-        requestGetAllPointsService.init(context, handler, HttpHelper.RestMethod.GetAllPoints);
-        requestGetAllPointsService.sendUpdateRequest(params);
+    private void sendRequestForTerritoriesLayer() {
+        //TODO: change it
+        String actionId = "1";
+
+        try {
+            RestMethod.GET_LAYER.run(context, layerJSONHandler, actionId);
+        } catch (MethodException e) {
+            Log.e(TAG, e.getMessage());
+        }
+        //RestMethod.GET_ALL_POINTS.run(baseUrl, actionId);
     }
 
     private void loadMarkersLayer() {
@@ -298,9 +294,8 @@ public class MapFragment extends RoboFragment {
     public static class StartMessengerEvent {
     }
 
-    private class MarkerListener implements GpsLocationService.PositionsListener {
+    private class MarkerListener {
 
-        @Override
         public void handle(String id, Point point) {
             if (!markers.containsKey(id)) {
                 Graphic marker = buildMarker(point);
@@ -317,26 +312,21 @@ public class MapFragment extends RoboFragment {
         }
     }
 
-    private class LayerJSONHandler implements RequestService.JSONHandler {
+    private class LayerJSONHandler implements RequestService.HttpCallback {
 
         @Override
-        public void handle(String json, HttpHelper.RestMethod restMethod) {
+        public void handle(String json) {
             try {
-                switch (restMethod) {
-                    case GetLayer:
-                        readLayerFromJson(json);
-                        break;
-                    case GetPoints:
-                    case GetAllPoints:
-                        //TODO: (UCASH) trzeba te punkciki wyswwitlic, dla wszystkich i pojedynczych bedzie to samo.
-                        //TODO: moze da sie jakos analogicznie do tego co jest w web apce, albo tutaj dziala redraw
-                        //TODO: i nie trzeba dodawac i usuwac polyline.
-                        Log.i(TAG, json);
-                        break;
-                }
+                readLayerFromJson(json);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+
+        @Override
+        public void onError(Throwable error) {
+            Log.e(TAG, "ConnectionError could not receive JSON");
+        }
     }
+
 }

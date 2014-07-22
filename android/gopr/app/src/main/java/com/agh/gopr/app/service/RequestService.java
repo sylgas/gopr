@@ -11,8 +11,6 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EBean;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
-import org.json.JSONException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,31 +31,23 @@ public class RequestService {
     @Inject
     private ConnectivityService connectivityService;
 
-    private JSONHandler handler;
-    private HttpHelper.RestMethod restMethod;
     private HttpURLConnection httpURLConnection;
-    private String methodType;
 
-    public void init(Context context, JSONHandler handler, HttpHelper.RestMethod restMethod) {
+    public void init(Context context) {
         RoboGuice.injectMembers(context, this);
-        this.handler = handler;
-        this.restMethod = restMethod;
-        this.methodType = HttpHelper.getMethodType(restMethod);
     }
 
     @Background
-    public void sendUpdateRequest(String... params) {
+    public void get(String methodName, HttpCallback handler) {
         if (!connectivityService.enableConnection()) {
             return;
         }
-
         try {
-            String url = HttpHelper.createUrl(restMethod,
-                    PreferenceHelper.getServerAddress(preferences), params);
-            connect(url);
-            readJson();
+            connect(buildUrl(methodName), "GET");
+            String json = readFrom(httpURLConnection.getInputStream());
+            handler.handle(json);
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            handler.onError(e);
         } finally {
             if (httpURLConnection != null) {
                 httpURLConnection.disconnect();
@@ -65,8 +55,22 @@ public class RequestService {
         }
     }
 
-    private void readJson() throws IOException, JSONException {
-        handler.handle(readFrom(httpURLConnection.getInputStream()), restMethod);
+    @Background
+    public void post(String methodName, HttpCallback handler) {
+        if (!connectivityService.enableConnection()) {
+            return;
+        }
+        try {
+            String url = buildUrl(methodName);
+            connect(url, "POST");
+            handler.handle(null);
+        } catch (Exception e) {
+            handler.onError(e);
+        } finally {
+            if (httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
+        }
     }
 
     private String readFrom(InputStream in) throws IOException {
@@ -81,8 +85,16 @@ public class RequestService {
         return sb.toString();
     }
 
-    private void connect(String methodUrl) throws IOException {
-        Log.d(TAG, String.format("Getting layer from address: %s", methodUrl));
+    private String buildUrl(String methodName) {
+        return String.format("%s%s", getBaseUrl(), methodName);
+    }
+
+    private String getBaseUrl() {
+        return PreferenceHelper.getServerAddress(preferences);
+    }
+
+    private void connect(String methodUrl, String methodType) throws IOException, ConnectionException {
+        Log.d(TAG, String.format("Connecting to %s", methodUrl));
 
         URL url = new URL(methodUrl);
         httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -96,11 +108,13 @@ public class RequestService {
         }
     }
 
-    public interface JSONHandler {
-        void handle(String json, HttpHelper.RestMethod restMethod);
+    public interface HttpCallback {
+        void handle(String json);
+
+        void onError(Throwable error);
     }
 
-    private class ConnectionException extends GOPRException {
+    public class ConnectionException extends GOPRException {
         public ConnectionException(String detailMessage) {
             super(detailMessage);
         }

@@ -23,6 +23,7 @@ public class SettingsAlertDialog {
 
     /**
      * Must be executed in UiThread
+     *
      * @param setting
      */
     public void showSettingsAlert(final Setting setting) {
@@ -38,6 +39,7 @@ public class SettingsAlertDialog {
 
     private AlertDialog.Builder buildDialog() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setCancelable(false);
         alertDialog.setMessage(context.getString(R.string.ask_for_settings));
         alertDialog.setNegativeButton(context.getString(R.string.no), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
