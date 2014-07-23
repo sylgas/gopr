@@ -2,30 +2,6 @@
 <pre-dex-items>
 
     <item
-        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jcifs-1.3.17-15857e341734ea6cb887afad4edb4f0f4db1a3ee.jar"
-        jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\jcifs-1.3.17.jar" jumboMode="false"
-        revision="19.1.0" sha1="1a2f0e28cc9497fb4927ea2422605fb8023969b6" />
-    <item
-        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-core-lgpl-1.9.5-7fe5fa51926b73293334c2f67aa11c2035832bea.jar"
-        jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\jackson-core-lgpl-1.9.5.jar"
-        jumboMode="false" revision="19.1.0" sha1="75ac72d19377a95225217cb4fdfa1290f3c81145" />
-    <item
-        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-api-e03083beecc80e85fcd4d90c091792cd1e9155c4.jar"
-        jar="D:\Projekty\gopr\android\gopr\app\libs\arcgis-android-api.jar" jumboMode="false"
-        revision="19.1.0" sha1="6eb8b263ff94c660bc05ec011589e4053d65957b" />
-    <item
-        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\asm-3.1-f588a04ecaec50d7d3f5d6e22939d78e0f0a9ea2.jar"
-        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\asm\asm\3.1\c157def142714c544bdea2e6144645702adf7097\asm-3.1.jar"
-        jumboMode="false" revision="19.1.0" sha1="c157def142714c544bdea2e6144645702adf7097" />
-    <item
-        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\aopalliance-1.0-7f56251c1bd392cea2e56cf344571914452d4f67.jar"
-        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\aopalliance\aopalliance\1.0\235ba8b489512805ac13a8f9ea77a1ca5ebe3e8\aopalliance-1.0.jar"
-        jumboMode="false" revision="19.1.0" sha1="0235ba8b489512805ac13a8f9ea77a1ca5ebe3e8" />
-    <item
-        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-94ca99a1b6945e63eccce19612a915c7e0d5b4bc.jar"
-        jar="D:\Projekty\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar" jumboMode="false"
-        revision="19.1.0" sha1="ffbb48e87fa5e9107c17aaa0616f724d785a4d71" />
-    <item
         dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\cglib-2.2.1-v20090111-3206e2c5c6d09898550bf888fab197c19091f4d5.jar"
         jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\org.sonatype.sisu.inject\cglib\2.2.1-v20090111\7ce5e983fd0e6c78346f4c9cbfa39d83049dda2\cglib-2.2.1-v20090111.jar"
         jumboMode="false" revision="19.1.0" sha1="07ce5e983fd0e6c78346f4c9cbfa39d83049dda2" />
@@ -34,13 +10,13 @@
         jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.google.inject\guice\3.0\28586dc97c525501329d9a242fc3402041e3572d\guice-3.0-no_aop.jar"
         jumboMode="false" revision="19.1.0" sha1="28586dc97c525501329d9a242fc3402041e3572d" />
     <item
-        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\androidannotations-api-2.7.1-ddc959bdbbc74cb3468130a1c66837167a156db3.jar"
-        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.googlecode.androidannotations\androidannotations-api\2.7.1\64169e7aacaaa76f5a0ca5eea66e2fc02737a17\androidannotations-api-2.7.1.jar"
-        jumboMode="false" revision="19.1.0" sha1="064169e7aacaaa76f5a0ca5eea66e2fc02737a17" />
-    <item
         dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\javax.inject-1-c52ebc4e328ed88e8ae89df031d0508175ac1628.jar"
         jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
         jumboMode="false" revision="19.1.0" sha1="6975da39a7040257bd51d21a231b76c915872d38" />
+    <item
+        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\androidannotations-api-2.7.1-ddc959bdbbc74cb3468130a1c66837167a156db3.jar"
+        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.googlecode.androidannotations\androidannotations-api\2.7.1\64169e7aacaaa76f5a0ca5eea66e2fc02737a17\androidannotations-api-2.7.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="064169e7aacaaa76f5a0ca5eea66e2fc02737a17" />
     <item
         dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-app-toolkit-9f55556687d32cc496f177e1844a8f98f8d2f310.jar"
         jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\arcgis-android-app-toolkit.jar"
@@ -50,6 +26,14 @@
         jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-core\4.48\e579bd2905d0399af5029aaaf9817d5fa0ca88a5\ormlite-core-4.48.jar"
         jumboMode="false" revision="19.1.0" sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5" />
     <item
+        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jcifs-1.3.17-15857e341734ea6cb887afad4edb4f0f4db1a3ee.jar"
+        jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\jcifs-1.3.17.jar" jumboMode="false"
+        revision="19.1.0" sha1="1a2f0e28cc9497fb4927ea2422605fb8023969b6" />
+    <item
+        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-core-lgpl-1.9.5-7fe5fa51926b73293334c2f67aa11c2035832bea.jar"
+        jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\jackson-core-lgpl-1.9.5.jar"
+        jumboMode="false" revision="19.1.0" sha1="75ac72d19377a95225217cb4fdfa1290f3c81145" />
+    <item
         dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\support-v4-19.0.0-b3c8f7bb7b1fb2e874d8b4cbb1d6323f7a1b520d.jar"
         jar="C:\Users\Sylwia\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v4\19.0.0\support-v4-19.0.0.jar"
         jumboMode="false" revision="19.1.0" sha1="afee690af14bd2c32d400cdf78e746fd45c386fa" />
@@ -58,9 +42,25 @@
         jar="D:\Projekty\gopr\android\gopr\app\libs\arcgis-android-app-toolkit.jar"
         jumboMode="false" revision="19.1.0" sha1="ba8d428ad04e30febd942365c6119bb62d7199bb" />
     <item
+        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-api-e03083beecc80e85fcd4d90c091792cd1e9155c4.jar"
+        jar="D:\Projekty\gopr\android\gopr\app\libs\arcgis-android-api.jar" jumboMode="false"
+        revision="19.1.0" sha1="6eb8b263ff94c660bc05ec011589e4053d65957b" />
+    <item
+        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\asm-3.1-f588a04ecaec50d7d3f5d6e22939d78e0f0a9ea2.jar"
+        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\asm\asm\3.1\c157def142714c544bdea2e6144645702adf7097\asm-3.1.jar"
+        jumboMode="false" revision="19.1.0" sha1="c157def142714c544bdea2e6144645702adf7097" />
+    <item
         dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-core-lgpl-1.9.5-b88414f2eb3117f809fa21f8013f784ef0d343bf.jar"
         jar="D:\Projekty\gopr\android\gopr\app\libs\jackson-core-lgpl-1.9.5.jar" jumboMode="false"
         revision="19.1.0" sha1="75ac72d19377a95225217cb4fdfa1290f3c81145" />
+    <item
+        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\aopalliance-1.0-7f56251c1bd392cea2e56cf344571914452d4f67.jar"
+        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\aopalliance\aopalliance\1.0\235ba8b489512805ac13a8f9ea77a1ca5ebe3e8\aopalliance-1.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="0235ba8b489512805ac13a8f9ea77a1ca5ebe3e8" />
+    <item
+        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\guice-3.0-5b1d75cecb90ed269a203de2e07c8bc569dc7d03.jar"
+        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.google.inject\guice\3.0\9d84f15fe35e2c716a02979fb62f50a29f38aefa\guice-3.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="9d84f15fe35e2c716a02979fb62f50a29f38aefa" />
     <item
         dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-api-4d20a1152ef14532df92717ccf93244d32f165b2.jar"
         jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\arcgis-android-api.jar" jumboMode="false"
@@ -70,9 +70,17 @@
         jar="D:\Projekty\gopr\android\gopr\app\libs\jcifs-1.3.17.jar" jumboMode="false"
         revision="19.1.0" sha1="1a2f0e28cc9497fb4927ea2422605fb8023969b6" />
     <item
+        dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-94ca99a1b6945e63eccce19612a915c7e0d5b4bc.jar"
+        jar="D:\Projekty\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar" jumboMode="false"
+        revision="19.1.0" sha1="ffbb48e87fa5e9107c17aaa0616f724d785a4d71" />
+    <item
         dex="D:\Projekty\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\ormlite-android-4.48-7ecede83d8f1876a0f4b2731c42f6691bde7bde8.jar"
         jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-android\4.48\afa06f539a4026c10b247386312aa67404b80a16\ormlite-android-4.48.jar"
         jumboMode="false" revision="19.1.0" sha1="afa06f539a4026c10b247386312aa67404b80a16" />
+    <item
+        dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\guice-multibindings-3.0-a024844d528ff21f8795407d34f58cc62dccf5e9.jar"
+        jar="C:\Users\Sylwia\.gradle\caches\modules-2\files-2.1\com.google.inject.extensions\guice-multibindings\3.0\5e670615a927571234df68a8b1fe1a16272be555\guice-multibindings-3.0.jar"
+        jumboMode="false" revision="19.1.0" sha1="5e670615a927571234df68a8b1fe1a16272be555" />
     <item
         dex="D:\Projekty\tmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-d8fec652c807596716add4aa7881921e38149ee5.jar"
         jar="D:\Projekty\tmp\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar"

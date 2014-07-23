@@ -14,11 +14,11 @@ import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MapFileException;
+import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.map.GpsPosition;
+import com.agh.gopr.app.method.RestMethod;
 import com.agh.gopr.app.service.AlarmService;
 import com.agh.gopr.app.service.RequestService;
-import com.agh.gopr.app.service.rest.RestMethod;
-import com.agh.gopr.app.service.rest.exception.MethodException;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
@@ -79,14 +79,16 @@ public class MapFragment extends RoboFragment {
 
     @Inject
     protected Context context;
+
     @Pref
     protected Preferences_ preferences;
+
     @Inject
     private AlarmService alarmService;
+
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
     private File mapFile;
-    private MarkerListener markerListener = new MarkerListener();
     private LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private Map<String, Integer> markers = new HashMap<String, Integer>();
 
@@ -192,6 +194,7 @@ public class MapFragment extends RoboFragment {
                             } catch (Exception e) {
                                 Log.d(TAG, "Could not create icon");
                             }
+                            //ls.setLocationListener(postPositionsService.getListener());
                             ls.start();
                             alarmService.start();
                             center();
@@ -259,8 +262,8 @@ public class MapFragment extends RoboFragment {
         return symbol;
     }
 
-    private Graphic buildMarker(Point point) {
-        return new Graphic(point, buildSymbol(R.drawable.map_marker_azure));
+    private Graphic buildMarker(GpsPosition position) {
+        return new Graphic(position.toPoint(), buildSymbol(R.drawable.map_marker_azure));
     }
 
     private void readLayerFromJson(String json) throws Exception {
@@ -291,25 +294,22 @@ public class MapFragment extends RoboFragment {
         return Color.argb(30, 58, 58, 58);
     }
 
-    public static class StartMessengerEvent {
+    public void handle(String id, GpsPosition position) {
+        if (!markers.containsKey(id)) {
+            Graphic marker = buildMarker(position);
+            markers.put(id, marker.getUid());
+            markersLayer = new GraphicsLayer();
+            markersLayer.addGraphic(marker);
+            map.addLayer(markersLayer);
+        } else {
+            Graphic marker = markersLayer.getGraphic(markers.get(id));
+            Point p = (Point) marker.getGeometry();
+            p.setXY(position.getX(), position.getY());
+        }
+
     }
 
-    private class MarkerListener {
-
-        public void handle(String id, Point point) {
-            if (!markers.containsKey(id)) {
-                Graphic marker = buildMarker(point);
-                markers.put(id, marker.getUid());
-                //markersLayer = new GraphicsLayer();
-                markersLayer.addGraphic(marker);
-                //map.addLayer(markersLayer);
-            } else {
-                Graphic marker = markersLayer.getGraphic(markers.get(id));
-                Point p = (Point) marker.getGeometry();
-                p.setXY(point.getX(), point.getY());
-            }
-
-        }
+    public static class StartMessengerEvent {
     }
 
     private class LayerJSONHandler implements RequestService.HttpCallback {
