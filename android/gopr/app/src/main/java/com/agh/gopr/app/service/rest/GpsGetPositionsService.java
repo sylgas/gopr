@@ -57,7 +57,6 @@ public class GpsGetPositionsService implements IMethodService {
 
         @Override
         public void handle(String json) {
-            Log.d(TAG, json);
             try {
                 JSONTokener tokener = new JSONTokener(json);
                 JSONArray root = new JSONArray(tokener);
