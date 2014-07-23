@@ -6,8 +6,7 @@ import javax.persistence.*;
  * Created by Paulina on 2014-07-16.
  */
 @Entity
-@Table(name = "t_layer", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "name" })})
+@Table(name = "t_layer")
 public class Layer {
 
     private static final long serialVersionUID = 1L;
