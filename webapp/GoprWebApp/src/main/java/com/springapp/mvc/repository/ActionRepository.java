@@ -23,4 +23,6 @@ public class ActionRepository {
 
     public Collection<Action> getActions() { return actionDao.findAll(); }
 
+    public Action getActionById(Long id) { return actionDao.findOne(id); }
+
 }

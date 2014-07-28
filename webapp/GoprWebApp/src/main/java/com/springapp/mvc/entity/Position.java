@@ -14,14 +14,6 @@ public class Position {
     @Column(name = "id", nullable = false, insertable = true, updatable = true)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "action_id")
-    private Action action;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @Basic
     @Column(name = "latitude", nullable = false, insertable = true, updatable = true, precision = 5)
     private Double latitude;
@@ -34,6 +26,24 @@ public class Position {
     @Column(name = "date_time", nullable = false, insertable = true, updatable = true)
     private Timestamp dateTime;
 
+    @ManyToOne
+    @JoinColumn(name = "action_id")
+    private Action action;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Position() {}
+
+    public Position(Double latitude, Double longitude, Timestamp dateTime, Action action, User user) {
+        this();
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.dateTime = dateTime;
+        this.action = action;
+        this.user = user;
+    }
     public Long getId() {
         return id;
     }

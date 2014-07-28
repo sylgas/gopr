@@ -1,5 +1,6 @@
 package com.springapp.mvc.repository;
 
+import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Layer;
 import com.springapp.mvc.repository.dao.LayerDao;
 import org.apache.log4j.Logger;
@@ -28,6 +29,8 @@ public class LayerRepository {
     }
 
     public Collection<Layer> getLayerByName(String name) { return layerDao.findOneByName(name); }
+
+    public Collection<Layer> getLayerByAction(Action action) { return layerDao.findOneByAction(action); }
 
     public int getLayersAmount() {
         return layerDao.findAll().size();

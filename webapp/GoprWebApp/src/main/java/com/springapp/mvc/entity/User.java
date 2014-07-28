@@ -19,15 +19,15 @@ public class User implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "firstname", nullable = false, insertable = true, updatable = true, length = 25)
+    @Column(name = "firstname", nullable = false, length = 25)
     private String firstname;
 
     @Basic
-    @Column(name = "lastname", nullable = false, insertable = true, updatable = true, length = 25)
+    @Column(name = "lastname", nullable = false, length = 25)
     private String lastname;
 
     @Basic
-    @Column(name = "phone", nullable = false, insertable = true, updatable = true, length = 12)
+    @Column(name = "phone", nullable = false, length = 12)
     private String phone;
 
     @ManyToOne
@@ -42,6 +42,15 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "user")
     private Collection<Note> notes;
+
+    public User() {}
+
+    public User(String firstname, String lastname, String phone) {
+        this();
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;

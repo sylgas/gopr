@@ -1,7 +1,13 @@
 package com.springapp.mvc;
 
+import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Layer;
+import com.springapp.mvc.entity.Position;
+import com.springapp.mvc.entity.User;
+import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.LayerRepository;
+import com.springapp.mvc.repository.PositionRepository;
+import com.springapp.mvc.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -9,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +35,14 @@ public class LayerRestController {
     @Autowired
     private LayerRepository layerRepository;
 
+    @Autowired
+    private ActionRepository actionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PositionRepository positionRepository;
     /*
      * Returns searching areas connected with given action.
      */
@@ -39,7 +54,12 @@ public class LayerRestController {
 
         //TODO: read from db and pass geometries
 
+        Layer layer = (Layer) layerRepository.getLayerByAction(actionRepository.getActionById(new Long(actionId))).toArray()[0];
+/*
         return "{\"geometries\":[{\"area\":{\"rings\":[[[1626888.6995589186,7158670.943098946],[2492767.355973165,7158670.943098946],[2492767.355973165,6918964.422396697],[1626888.6995589186,6918964.422396697],[1626888.6995589186,7158670.943098946]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":1},{\"area\":{\"rings\":[[[2013354.3145686672,7306039.634557807],[2098613.6437922814,7158366.144523265],[1928094.9853450526,7158366.144523265],[2013354.3145686672,7306039.634557807]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":2}]}";
+*/
+        logger.info(layer.getLayerData());
+        return layer.getLayerData();
     }
 
     /*
@@ -55,11 +75,16 @@ public class LayerRestController {
     public
     @ResponseBody
     boolean receiveGeometries(@RequestParam("actionId") long actionId, @RequestParam("geometries") JSONObject geometries) {
-        logger.info("SEND LAYER: action: " + actionId + ", pola:\n\t" + geometries);
+        logger.info("SEND LAYER: action: " + actionId + ", pola:\n\t" + geometries.toString());
 
         //TODO: save jsonobject["geometries"] to db )
+        Action action = new Action();
+        action.setName("someName");
+        action.setStartDate(new Timestamp(new Date().getTime()));
+        action.setId(new Long(actionId));
+        actionRepository.saveAction(action);
         logger.info(layerRepository.getLayersAmount());
-        Layer layer = new Layer("first", geometries.toString());
+        Layer layer = new Layer("first", geometries.toString(), action);
         layerRepository.saveLayer(layer);
         logger.info(layerRepository.getLayersAmount());
 
@@ -76,7 +101,37 @@ public class LayerRestController {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         logger.info(df.format(date));
 
-        JSONObject json1 = new JSONObject();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        User user = new User("Jan", "Kowalski", "1234");
+        userRepository.saveUser(user);
+
+        User user1 = new User("Anna", "Nowak", "32424");
+        userRepository.saveUser(user1);
+
+        Action action = actionRepository.getActionById(new Long(actionId));
+
+        Position position = new Position(-8864114.480484284,
+                4362469.970217699,
+                timestamp,
+                action,
+                user);
+        positionRepository.savePosition(position);
+
+        position = new Position(-9584114.480484284,
+                3962469.970217699,
+                timestamp,
+                action,
+                user1);
+        positionRepository.savePosition(position);
+
+        position = new Position(-2214749.0606268025,
+                6200923.093105682,
+                timestamp,
+                action,
+                user1);
+        positionRepository.savePosition(position);
+
+        /*JSONObject json1 = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         JSONObject coordinate1 = new JSONObject();
         coordinate1.put("x", -8864114.480484284);
@@ -106,11 +161,18 @@ public class LayerRestController {
         JSONArray result = new JSONArray();
         result.put(json1);
         result.put(json2);
-        result.put(json3);
+        result.put(json3);*/
 
-        logger.info(result.toString());
+       // logger.info(result.toString());
 
-        return result.toString();
+        Layer layer = (Layer) layerRepository.getLayerByAction(actionRepository.getActionById(new Long(actionId))).toArray()[0];
+/*
+        return "{\"geometries\":[{\"area\":{\"rings\":[[[1626888.6995589186,7158670.943098946],[2492767.355973165,7158670.943098946],[2492767.355973165,6918964.422396697],[1626888.6995589186,6918964.422396697],[1626888.6995589186,7158670.943098946]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":1},{\"area\":{\"rings\":[[[2013354.3145686672,7306039.634557807],[2098613.6437922814,7158366.144523265],[1928094.9853450526,7158366.144523265],[2013354.3145686672,7306039.634557807]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":2}]}";
+*/
+        logger.info(layer.getLayerData());
+        return layer.getLayerData();
+
+        //return result.toString();
     }
 
     @RequestMapping(value = SEND_POINTS, method = RequestMethod.POST)
@@ -120,6 +182,10 @@ public class LayerRestController {
         logger.info("SEND LEYER: action: " + actionId + ", pola:\n\t" + positions.toString());
 
         //TODO: save jsonobject["geometries"] to db )
+        logger.info(layerRepository.getLayersAmount());
+        Layer layer = new Layer("first", positions.toString());
+        layerRepository.saveLayer(layer);
+        logger.info(layerRepository.getLayersAmount());
 
         return true;
     }
@@ -130,7 +196,37 @@ public class LayerRestController {
     String passAllPoints(@RequestParam("actionId") int actionId) {
         logger.info("GET LAYER: " + actionId);
 
-        JSONObject json1 = new JSONObject();
+        User user = new User("Jan", "Kowalski", "1234");
+        userRepository.saveUser(user);
+
+        User user1 = new User("Anna", "Nowak", "32424");
+        userRepository.saveUser(user1);
+
+        Action action = actionRepository.getActionById(new Long(actionId));
+
+        Position position = new Position(-8864114.480484284,
+                4362469.970217699,
+                new Timestamp(new Date().getTime()),
+                action,
+                user);
+        positionRepository.savePosition(position);
+
+        position = new Position(-9584114.480484284,
+                3962469.970217699,
+                new Timestamp(new Date().getTime()),
+                action,
+                user1);
+        positionRepository.savePosition(position);
+
+        position = new Position(-2214749.0606268025,
+                6200923.093105682,
+                new Timestamp(new Date().getTime()),
+                action,
+                user1);
+        positionRepository.savePosition(position);
+
+
+/*        JSONObject json1 = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         JSONObject coordinate1 = new JSONObject();
         coordinate1.put("x", -8864114.480484284);
@@ -160,10 +256,16 @@ public class LayerRestController {
         JSONArray result = new JSONArray();
         result.put(json1);
         result.put(json2);
-        result.put(json3);
+        result.put(json3);*/
 
-        logger.info(result.toString());
 
-        return result.toString();
+        Layer layer = (Layer) layerRepository.getLayerByAction(actionRepository.getActionById(new Long(actionId))).toArray()[0];
+/*
+        return "{\"geometries\":[{\"area\":{\"rings\":[[[1626888.6995589186,7158670.943098946],[2492767.355973165,7158670.943098946],[2492767.355973165,6918964.422396697],[1626888.6995589186,6918964.422396697],[1626888.6995589186,7158670.943098946]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":1},{\"area\":{\"rings\":[[[2013354.3145686672,7306039.634557807],[2098613.6437922814,7158366.144523265],[1928094.9853450526,7158366.144523265],[2013354.3145686672,7306039.634557807]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":2}]}";
+*/
+        logger.info(layer.getLayerData());
+        return layer.getLayerData();
+
+        //return result.toString();
     }
 }

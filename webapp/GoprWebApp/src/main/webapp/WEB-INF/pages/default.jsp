@@ -3,26 +3,10 @@
 <head>
     <meta charset="UTF-8"/>
     <title>GOPR</title>
+    <link href="/styles/default.css" rel="stylesheet" type="text/css" media="screen" />
 
-    <style>
-        button {
-            display: block;
-            width: 100%;
-            height: 15%;
-            font-weight: bold;
-            font-size: 30px;
-        }
+    <script type="text/javascript" src="/scripts/default.js">
 
-    </style>
-
-    <script type="text/javascript">
-        function createAction() {
-            window.location.href = "http://localhost:8080/createAction";
-        }
-
-        function loadActions() {
-            //TODO: wyswietlanie listy otwartych akcji
-        }
     </script>
 
 </head>

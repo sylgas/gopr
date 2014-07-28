@@ -28,8 +28,7 @@ public class Layer {
     @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
     private Action action;
 
-    public Layer() {
-    }
+    public Layer() {}
 
     public Layer(String name, String layerData) {
         this();
@@ -37,9 +36,9 @@ public class Layer {
         this.layerData = layerData;
     }
 
-    public Layer(Long id, String name, String layerData) {
+    public Layer(String name, String layerData, Action action) {
         this(name, layerData);
-        this.id = id;
+        this.action = action;
     }
 
     public Long getId() {
