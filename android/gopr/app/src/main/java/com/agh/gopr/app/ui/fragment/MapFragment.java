@@ -14,11 +14,12 @@ import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MapFileException;
+import com.agh.gopr.app.exception.MethodException;
+import com.agh.gopr.app.map.GpsPolyline;
 import com.agh.gopr.app.map.GpsPosition;
+import com.agh.gopr.app.method.RestMethod;
 import com.agh.gopr.app.service.AlarmService;
 import com.agh.gopr.app.service.RequestService;
-import com.agh.gopr.app.service.rest.RestMethod;
-import com.agh.gopr.app.service.rest.exception.MethodException;
 import com.esri.android.map.GraphicsLayer;
 import com.esri.android.map.LocationDisplayManager;
 import com.esri.android.map.MapView;
@@ -27,6 +28,7 @@ import com.esri.android.map.event.OnStatusChangedListener;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.MapGeometry;
 import com.esri.core.geometry.Point;
+import com.esri.core.geometry.Polyline;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.MarkerSymbol;
 import com.esri.core.symbol.PictureMarkerSymbol;
@@ -61,6 +63,10 @@ public class MapFragment extends RoboFragment {
 
     private static final String TAG = "MapFragment";
     private static final String URL = "https://www.google.com";
+    private static final int BASE_LAYER_ID = 1;
+    private static final int TERRITORIES_LAYER_ID = 2;
+    private static final int POLYLINES_LAYER_ID = 3;
+    private static final int MARKERS_LAYER_ID = 3;
 
     @StringRes
     protected String mapFileName;
@@ -79,16 +85,20 @@ public class MapFragment extends RoboFragment {
 
     @Inject
     protected Context context;
+
     @Pref
     protected Preferences_ preferences;
+
     @Inject
     private AlarmService alarmService;
+
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
+    private GraphicsLayer polylinesLayer;
     private File mapFile;
-    private MarkerListener markerListener = new MarkerListener();
     private LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private Map<String, Integer> markers = new HashMap<String, Integer>();
+    private Map<String, GpsPolyline> polylines = new HashMap<String, GpsPolyline>();
 
     @AfterViews
     protected void init() {
@@ -101,8 +111,9 @@ public class MapFragment extends RoboFragment {
             return;
         }*/
         sendRequestForTerritoriesLayer();
-        loadMarkersLayer();
         loadBaseLayer();
+        loadPolylinesLayer();
+        loadMarkersLayer();
 
        /* try {
             db = new MapGeoDatabase(map);
@@ -138,6 +149,10 @@ public class MapFragment extends RoboFragment {
     public void onResume() {
         super.onResume();
         map.unpause();
+        addTerritoriesLayerIfNeeded();
+    }
+
+    private void addTerritoriesLayerIfNeeded() {
         if (preferences.showLayer().get()) {
             addTerritoriesLayer();
         } else {
@@ -168,7 +183,8 @@ public class MapFragment extends RoboFragment {
 
     private void addTerritoriesLayer() {
         if (territoriesLayer != null) {
-            map.addLayer(territoriesLayer);
+            int id = map.addLayer(territoriesLayer);
+            Log.d(TAG, "Territories layer id " + id);
         }
     }
 
@@ -179,7 +195,8 @@ public class MapFragment extends RoboFragment {
 
     private void loadBaseLayer() {
         Log.d(TAG, String.format("Loading basemap from [%s]", PreferenceHelper.getMapSite(preferences)));
-        map.addLayer(new ArcGISTiledMapServiceLayer(PreferenceHelper.getMapSite(preferences)));
+        int id = map.addLayer(new ArcGISTiledMapServiceLayer(PreferenceHelper.getMapSite(preferences)));
+        Log.d(TAG, "Base layer id " + id);
         map.setOnStatusChangedListener(
                 new OnStatusChangedListener() {
                     public void onStatusChanged(Object source, STATUS status) {
@@ -192,6 +209,7 @@ public class MapFragment extends RoboFragment {
                             } catch (Exception e) {
                                 Log.d(TAG, "Could not create icon");
                             }
+                            //ls.setLocationListener(postPositionsService.getListener());
                             ls.start();
                             alarmService.start();
                             center();
@@ -215,12 +233,18 @@ public class MapFragment extends RoboFragment {
         } catch (MethodException e) {
             Log.e(TAG, e.getMessage());
         }
-        //RestMethod.GET_ALL_POINTS.run(baseUrl, actionId);
     }
 
     private void loadMarkersLayer() {
         markersLayer = new GraphicsLayer();
-        map.addLayer(markersLayer);
+        int id = map.addLayer(markersLayer);
+        Log.d(TAG, "Marker layer id " + id);
+    }
+
+    private void loadPolylinesLayer() {
+        polylinesLayer = new GraphicsLayer();
+        int id = map.addLayer(polylinesLayer);
+        Log.d(TAG, "Polyline layer id " + id);
     }
 
     private void loadTerritoriesLayer(List<Graphic> areas) throws Exception {
@@ -230,7 +254,7 @@ public class MapFragment extends RoboFragment {
         for (Graphic g : areas) {
             territoriesLayer.addGraphic(g);
         }
-        map.addLayer(territoriesLayer);
+        addTerritoriesLayerIfNeeded();
     }
 
     private void ensureMapExists() throws MapFileException {
@@ -259,8 +283,8 @@ public class MapFragment extends RoboFragment {
         return symbol;
     }
 
-    private Graphic buildMarker(Point point) {
-        return new Graphic(point, buildSymbol(R.drawable.map_marker_azure));
+    private Graphic buildMarker(GpsPosition position) {
+        return new Graphic(position.toPoint(), buildSymbol(R.drawable.map_marker_azure));
     }
 
     private void readLayerFromJson(String json) throws Exception {
@@ -274,7 +298,6 @@ public class MapFragment extends RoboFragment {
         JsonFactory factory = new JsonFactory();
 
         for (int i = 0; i < graphicArray.length(); i++) {
-            String cos = graphicArray.getJSONObject(i).getString("area");
             JsonParser parser = factory.createJsonParser(graphicArray.getJSONObject(i).getString("area"));
             MapGeometry mapGeometry = GeometryEngine.jsonToGeometry(parser);
 
@@ -291,25 +314,45 @@ public class MapFragment extends RoboFragment {
         return Color.argb(30, 58, 58, 58);
     }
 
-    public static class StartMessengerEvent {
+    public void handle(String id, GpsPosition position) {
+        Log.d(TAG, String.format("Marker: [%s]", id));
+        if (!markers.containsKey(id)) {
+            initiateMarker(id, position);
+            initiatePolyline(id, position);
+        } else {
+            updateMarker(id, position);
+            updatePolyline(id, position);
+        }
     }
 
-    private class MarkerListener {
+    private void updateMarker(String id, GpsPosition position) {
+        int markerId = markers.get(id);
+        Graphic marker = buildMarker(position);
+        markersLayer.updateGraphic(markerId, marker);
+    }
 
-        public void handle(String id, Point point) {
-            if (!markers.containsKey(id)) {
-                Graphic marker = buildMarker(point);
-                markers.put(id, marker.getUid());
-                //markersLayer = new GraphicsLayer();
-                markersLayer.addGraphic(marker);
-                //map.addLayer(markersLayer);
-            } else {
-                Graphic marker = markersLayer.getGraphic(markers.get(id));
-                Point p = (Point) marker.getGeometry();
-                p.setXY(point.getX(), point.getY());
-            }
+    private void updatePolyline(String id, GpsPosition position) {
+        Log.d(TAG, "READ Polyline: " + id);
+        GpsPolyline gpsPolyline = polylines.get(id);
+        Polyline polyline = gpsPolyline.lineTo(position);
+        polylinesLayer.updateGraphic(gpsPolyline.getId(), polyline);
+    }
 
-        }
+    private void initiatePolyline(String id, GpsPosition position) {
+        Log.d(TAG, "INIT Polyline: " + id);
+        Polyline polyline = GpsPolyline.buildPolyline(position);
+        int polylineID = polylinesLayer.addGraphic(GpsPolyline.buildGraphicPolyline(polyline));
+        Log.d(TAG, "INIT PolylineID: " + polylineID);
+        polylines.put(id, new GpsPolyline(polyline, polylineID));
+    }
+
+    private void initiateMarker(String id, GpsPosition position) {
+        Graphic marker = buildMarker(position);
+        int markerId = markersLayer.addGraphic(marker);
+        markers.put(id, markerId);
+    }
+
+    public static class StartMessengerEvent {
     }
 
     private class LayerJSONHandler implements RequestService.HttpCallback {

@@ -1,6 +1,4 @@
-package com.agh.gopr.app.service.rest.exception;
-
-import com.agh.gopr.app.exception.GOPRException;
+package com.agh.gopr.app.exception;
 
 public class MethodException extends GOPRException {
     public MethodException(String detailMessage) {

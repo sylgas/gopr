@@ -1,13 +1,18 @@
-package com.agh.gopr.app.service;
+package com.agh.gopr.app.service.rest;
 
 import android.content.Context;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.agh.gopr.app.common.SettingsAlertDialog;
+import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.map.GpsPosition;
-import com.agh.gopr.app.service.rest.RestMethod;
-import com.agh.gopr.app.service.rest.exception.MethodException;
+import com.agh.gopr.app.method.RestMethod;
+import com.agh.gopr.app.service.ConnectivityService;
+import com.agh.gopr.app.service.RequestService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -21,22 +26,30 @@ import java.util.List;
 import roboguice.RoboGuice;
 
 @Singleton
-public class GpsPostPositionsService {
+public class GpsPostPositionsService implements IMethodService {
     private static final String TAG = "GpsPostLocationService";
+
     private final List<GpsPosition> positions = new ArrayList<GpsPosition>();
     private final RequestService.HttpCallback callback = new PostCallback();
+
     @Inject
     private LocationManager locationManager;
+
     @Inject
     private MapFragment mapFragment;
+
     @Inject
     private ConnectivityService connectivityService;
+
     @Inject
     private SettingsAlertDialog settingsAlertDialog;
+
     private Context context;
     private boolean pending = true;
+    private LocationListener listener = new OnEnableGpsListener();
 
-    public void startService(Context context) {
+    @Override
+    public void start(Context context) {
         RoboGuice.injectMembers(context, this);
         this.context = context;
         if (!gpsEnabled()) {
@@ -50,7 +63,8 @@ public class GpsPostPositionsService {
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-    public void sendPositions() {
+    @Override
+    public void handle() {
         if (pending) {
             Log.d(TAG, "Position request is pending...");
             return;
@@ -91,6 +105,10 @@ public class GpsPostPositionsService {
         }
     }
 
+    public LocationListener getListener() {
+        return listener;
+    }
+
     private class PostCallback implements RequestService.HttpCallback {
 
         @Override
@@ -103,6 +121,27 @@ public class GpsPostPositionsService {
         public void onError(Throwable error) {
             Log.e(TAG, "Could not send positions " + error.getMessage());
             pending = false;
+        }
+    }
+
+    private class OnEnableGpsListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+        }
+
+        @Override
+        public void onStatusChanged(String s, int i, Bundle bundle) {
+        }
+
+        @Override
+        public void onProviderEnabled(String s) {
+            pending = false;
+        }
+
+        @Override
+        public void onProviderDisabled(String s) {
+            pending = true;
         }
     }
 }

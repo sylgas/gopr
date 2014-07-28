@@ -1,9 +1,9 @@
-package com.agh.gopr.app.service.rest;
+package com.agh.gopr.app.method;
 
 import android.content.Context;
 
+import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.service.RequestService;
-import com.agh.gopr.app.service.rest.exception.MethodException;
 
 public enum RestMethod {
     GET_LAYER(GetLayerMethod.class),
