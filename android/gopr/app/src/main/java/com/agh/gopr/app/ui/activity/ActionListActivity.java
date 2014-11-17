@@ -31,18 +31,13 @@ public class ActionListActivity extends Activity {
     protected Preferences_ preferences;
 
     @Extra
-    public String response;
-    private List<LoginResponseListItem> responseList;
+    public List<LoginResponseListItem> responseList;
 
     @ViewById(R.id.actionListView)
     protected ListView actionListView;
 
     @AfterViews
     protected void init(){
-        Gson gson = new Gson();
-        LoginResponse loginResponse = gson.fromJson(response, LoginResponse.class);
-
-        responseList = loginResponse.getLoginResponseListItems();
         ActionListAdapter listAdapter = new ActionListAdapter(this, responseList);
         actionListView.setAdapter(listAdapter);
 
@@ -57,7 +52,6 @@ public class ActionListActivity extends Activity {
             }
         });
     }
-
 
     private class ActionListAdapter extends ArrayAdapter<LoginResponseListItem> {
 

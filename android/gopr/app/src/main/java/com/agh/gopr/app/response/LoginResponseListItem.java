@@ -1,6 +1,8 @@
 package com.agh.gopr.app.response;
 
-public class LoginResponseListItem {
+import java.io.Serializable;
+
+public class LoginResponseListItem implements Serializable{
     private String actionId;
     private String userInActionId;
     private String actionName;

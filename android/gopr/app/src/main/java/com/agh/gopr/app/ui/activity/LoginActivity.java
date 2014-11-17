@@ -107,6 +107,14 @@ public class LoginActivity extends AbstractActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
     private class LoginCallback implements RequestService.HttpCallback {
 
         @Override
@@ -119,13 +127,12 @@ public class LoginActivity extends AbstractActivity {
                 if (items.size() == 0) {
                     displayErrorToast(getString(R.string.not_assign_to_action_message));
                 } else {
-                    ActionListActivity_.intent(LoginActivity.this).response(json).start();
+                    ActionListActivity_.intent(LoginActivity.this).responseList(loginResponse.getLoginResponseListItems()).start();
                     LoginActivity.this.finish();
                 }
             } else {
                 displayErrorToast(getString(R.string.error_invalid_login_or_password));
             }
-            progressDialog.dismiss();
         }
 
         @Override
