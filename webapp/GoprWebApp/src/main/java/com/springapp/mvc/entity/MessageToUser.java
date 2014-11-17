@@ -2,9 +2,6 @@ package com.springapp.mvc.entity;
 
 import javax.persistence.*;
 
-/**
- * Created by Paulina on 2014-07-21.
- */
 @Entity
 @Table(name = "t_message_to_user", schema = "public", catalog = "gopr")
 @IdClass(MessageToUserId.class)
@@ -15,7 +12,7 @@ public class MessageToUser {
     private Long toUserId;
 
     @Id
-    @Column(name = "message_details_id")
+    @Column(name = "message_id")
     private Long messageDetailsId;
 
     @ManyToOne
@@ -23,8 +20,8 @@ public class MessageToUser {
     private User toUser;
 
     @ManyToOne
-    @JoinColumn(name = "message_details_id", updatable = false, insertable = false, referencedColumnName = "id")
-    private MessageDetails messageDetails;
+    @JoinColumn(name = "message_id", updatable = false, insertable = false, referencedColumnName = "id")
+    private Message message;
 
     private User getToUser() {
         return toUser;
@@ -34,12 +31,12 @@ public class MessageToUser {
         this.toUser = toUser;
     }
 
-    private MessageDetails getMessageDetails() {
-        return messageDetails;
+    private Message getMessage() {
+        return message;
     }
 
-    private void setMessageDetails(MessageDetails messageDetails) {
-        this.messageDetails = messageDetails;
+    private void setMessage(Message message) {
+        this.message = message;
     }
 
     @Override
@@ -49,7 +46,7 @@ public class MessageToUser {
 
         MessageToUser that = (MessageToUser) o;
 
-        if (messageDetails != null ? !messageDetails.equals(that.messageDetails) : that.messageDetails != null)
+        if (message != null ? !message.equals(that.message) : that.message != null)
             return false;
         if (toUserId != null ? !toUserId.equals(that.toUserId) : that.toUserId != null) return false;
 
@@ -59,7 +56,7 @@ public class MessageToUser {
     @Override
     public int hashCode() {
         int result = toUserId != null ? toUserId.hashCode() : 0;
-        result = 31 * result + (messageDetails != null ? messageDetails.hashCode() : 0);
+        result = 31 * result + (message != null ? message.hashCode() : 0);
         return result;
     }
 }

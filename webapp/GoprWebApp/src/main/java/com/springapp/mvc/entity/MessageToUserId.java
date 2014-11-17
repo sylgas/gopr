@@ -1,9 +1,5 @@
 package com.springapp.mvc.entity;
 
-/**
- * Created by Paulina on 2014-07-21.
- */
-
 import java.io.Serializable;
 
 //import com.google.common.base.Objects;

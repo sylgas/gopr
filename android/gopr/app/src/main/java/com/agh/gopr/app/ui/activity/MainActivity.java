@@ -1,24 +1,21 @@
 package com.agh.gopr.app.ui.activity;
 
 import android.content.Intent;
-import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.widget.Toast;
 
-import com.agh.gopr.app.ui.fragment.MapFragment;
-import com.agh.gopr.app.ui.fragment.MapFragment_;
-import com.agh.gopr.app.ui.fragment.MessengerFragment_;
 import com.agh.gopr.app.R;
+import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
+import com.agh.gopr.app.ui.fragment.MapFragment;
+import com.agh.gopr.app.ui.fragment.MessengerFragment_;
 import com.agh.gopr.app.ui.view.CustomViewPager;
 
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.OptionsItem;
-import com.googlecode.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
 
@@ -26,12 +23,16 @@ import roboguice.event.Observes;
 
 @EActivity(R.layout.main_activity)
 public class MainActivity extends AbstractActivity {
-    private static final String TAG = "MainActivity";
 
     private final SectionsPagerAdapter adapter;
 
+    private GpsPostPositionsService gpsPostPositions;
+
     @Inject
     private MapFragment mapFragment;
+
+    @Inject
+    private GpsPostPositionsService getGpsPostPositions;
 
     @ViewById
     protected CustomViewPager pager;
@@ -43,26 +44,7 @@ public class MainActivity extends AbstractActivity {
     @AfterViews
     protected void init() {
         pager.setAdapter(adapter);
-        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (position == 0) {
-                    pager.setPagingEnabled(false);
-                } else {
-                    pager.setPagingEnabled(true);
-                }
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        pager.setOnPageChangeListener(new ScrollPageListener());
     }
 
     @OptionsItem(R.id.settings)
@@ -70,16 +52,32 @@ public class MainActivity extends AbstractActivity {
         startActivity(new Intent(this, PreferencesActivity.class));
     }
 
-    private void toast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    protected void disablePager( @Observes MapFragment.StartMessengerEvent startMessengerEvent) {
-        Log.d(TAG, "Start messenger event");
+    protected void disablePager(@Observes MapFragment.StartMessengerEvent startMessengerEvent) {
         pager.setCurrentItem(1);
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    private class ScrollPageListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (position == 0) {
+                pager.setPagingEnabled(false);
+            } else {
+                pager.setPagingEnabled(true);
+            }
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    }
+
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

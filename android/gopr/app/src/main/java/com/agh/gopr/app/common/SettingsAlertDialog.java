@@ -23,8 +23,6 @@ public class SettingsAlertDialog {
 
     /**
      * Must be executed in UiThread
-     *
-     * @param setting
      */
     public void showSettingsAlert(final Setting setting) {
         dialog.setTitle(String.format(settingNotEnabled, setting.getName()));

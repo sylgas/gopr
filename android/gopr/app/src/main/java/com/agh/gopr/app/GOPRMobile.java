@@ -4,14 +4,16 @@ import android.app.Application;
 import android.os.Environment;
 
 import com.agh.gopr.app.ioc.GOPRMobileModule;
-import com.googlecode.androidannotations.annotations.EApplication;
+
+import org.androidannotations.annotations.EApplication;
 
 import java.io.File;
 
 import roboguice.RoboGuice;
 
 @EApplication
-public class GOPRMobile extends Application {
+public class
+        GOPRMobile extends Application {
     private static final String APP_FOLDER_NAME = "GOPRMobile";
     private static final File APP_DIRECTORY = initializeApplicationDirectory();
 
@@ -27,8 +29,9 @@ public class GOPRMobile extends Application {
 
     private static File initializeApplicationDirectory() {
         File appDirectory = new File(Environment.getExternalStorageDirectory(), APP_FOLDER_NAME);
-        if (!appDirectory.exists())
+        if (!appDirectory.exists()) {
             appDirectory.mkdir();
+        }
         return appDirectory;
     }
 }

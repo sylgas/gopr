@@ -2,7 +2,7 @@ package com.agh.gopr.app.ioc.provider;
 
 import android.content.Context;
 
-import com.agh.gopr.app.service.RequestService_;
+import com.agh.gopr.app.service.rest.RequestService_;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

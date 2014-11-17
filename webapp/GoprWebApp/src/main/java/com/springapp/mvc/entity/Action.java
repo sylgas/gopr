@@ -1,15 +1,18 @@
 package com.springapp.mvc.entity;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Set;
 
-/**
- * Created by Paulina on 2014-07-16.
- */
 @Entity
-@Table(name = "t_action", schema = "public", catalog = "gopr")
-public class Action {
+@Table(name = "t_action")
+public class Action implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,18 +31,30 @@ public class Action {
     @Column(name = "end_date", nullable = true, insertable = true, updatable = true)
     private Timestamp endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @Basic
+    @Column(name = "description", nullable = true)
+    private String description;
 
-    @OneToMany(mappedBy = "action")
-    private Collection<Note> notes;
+    @Basic
+    @Column(name = "comments", nullable = true)
+    private String comments;
 
-    @OneToMany(mappedBy = "action")
-    private Collection<Position> positions;
+    @Basic
+    @Column(name = "static_database_id", nullable = true)
+    private String staticDatabaseId;
 
-    @OneToMany(mappedBy = "action")
-    private Collection<Layer> layers;
+    @Basic
+    @Column(name = "isrid_database_id", nullable = true)
+    private String isridDatabaseId;
+
+
+    @OneToMany(mappedBy = "action", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Set<Group> groups;
+
+    @OneToMany(mappedBy = "action", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Set<Area> areas;
 
     public Long getId() {
         return id;
@@ -73,51 +88,51 @@ public class Action {
         this.endDate = endDate;
     }
 
-    public Group getGroup() {
-        return group;
+    public String getDescription() {
+        return description;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public Collection<Note> getNotes() {
-        return notes;
+    public String getComments() {
+        return comments;
     }
 
-    public void settNotesById(Collection<Note> notes) {
-        this.notes = notes;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
-    public Collection<Position> getPositions() {
-        return positions;
+    public String getStaticDatabaseId() {
+        return staticDatabaseId;
     }
 
-    public void setPositions(Collection<Position> positions) {
-        this.positions = positions;
+    public void setStaticDatabaseId(String staticDatabaseId) {
+        this.staticDatabaseId = staticDatabaseId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Action that = (Action) o;
-
-        if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) return false;
-
-        return true;
+    public String getIsridDatabaseId() {
+        return isridDatabaseId;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        return result;
+    public void setIsridDatabaseId(String isridDatabaseId) {
+        this.isridDatabaseId = isridDatabaseId;
+    }
+
+   /* public Collection<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Collection<Group> groups) {
+        this.groups = groups;
+    }
+*/
+    public Set<Area> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(Set<Area> areas) {
+        this.areas = areas;
     }
 }

@@ -3,9 +3,6 @@ package com.springapp.mvc.entity;
 import javax.persistence.*;
 import java.util.Collection;
 
-/**
- * Created by Paulina on 2014-07-16.
- */
 @Entity
 @Table(name = "t_role", schema = "public", catalog = "gopr")
 public class Role {
@@ -18,6 +15,14 @@ public class Role {
     @Basic
     @Column(name = "name", nullable = true, insertable = true, updatable = true, length = 25)
     private String name;
+
+    @Basic
+    @Column(name = "color", nullable = true)
+    private String color;
+
+    @Basic
+    @Column(name = "pictogram", nullable = true)
+    private String pictogram;
 
     @OneToMany(mappedBy = "role")
     private Collection<User> users;
@@ -36,6 +41,30 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getPictogram() {
+        return pictogram;
+    }
+
+    public void setPictogram(String pictogram) {
+        this.pictogram = pictogram;
+    }
+
+    public Collection<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Collection<User> users) {
+        this.users = users;
     }
 
     @Override

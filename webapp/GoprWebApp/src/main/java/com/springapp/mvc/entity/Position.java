@@ -2,10 +2,8 @@ package com.springapp.mvc.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Collection;
 
-/**
- * Created by Paulina on 2014-07-21.
- */
 @Entity
 @Table(name = "t_position", schema = "public", catalog = "gopr")
 public class Position {
@@ -27,12 +25,11 @@ public class Position {
     private Timestamp dateTime;
 
     @ManyToOne
-    @JoinColumn(name = "action_id")
-    private Action action;
+    @JoinColumn(name = "user_in_action_id")
+    private UserInAction userInAction;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "position")
+    private Collection<Note> notes;
 
     public Position() {}
 
@@ -41,8 +38,6 @@ public class Position {
         this.latitude = latitude;
         this.longitude = longitude;
         this.dateTime = dateTime;
-        this.action = action;
-        this.user = user;
     }
     public Long getId() {
         return id;
@@ -50,22 +45,6 @@ public class Position {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Action getAction() {
-        return action;
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public Double getLatitude() {
@@ -90,6 +69,22 @@ public class Position {
 
     public void setDateTime(Timestamp dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public UserInAction getUserInAction() {
+        return userInAction;
+    }
+
+    public void setUserInAction(UserInAction userInAction) {
+        this.userInAction = userInAction;
+    }
+
+    public Collection<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Collection<Note> notes) {
+        this.notes = notes;
     }
 
     @Override

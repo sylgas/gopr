@@ -5,12 +5,12 @@ import android.widget.ListView;
 import com.agh.gopr.app.R;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.OptionsItem;
-import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.ViewById;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.ViewById;
 
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;

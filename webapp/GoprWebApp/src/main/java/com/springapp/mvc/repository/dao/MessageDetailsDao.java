@@ -1,10 +1,7 @@
 package com.springapp.mvc.repository.dao;
 
-import com.springapp.mvc.entity.Layer;
+import com.springapp.mvc.entity.Area;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/**
- * Created by Paulina on 2014-07-21.
- */
-public interface MessageDetailsDao extends JpaRepository<Layer, Long> {
+public interface MessageDetailsDao extends JpaRepository<Area, Long> {
 }

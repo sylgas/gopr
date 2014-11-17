@@ -1,12 +1,8 @@
 package com.springapp.mvc.entity;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Created by Paulina on 2014-07-21.
- */
 @Entity
 @Table(name = "t_resource", schema = "public", catalog = "gopr")
 public class Resource {
@@ -17,16 +13,18 @@ public class Resource {
     private Long id;
 
     @Basic
-    @Column(name = "resource_data", nullable = true, insertable = true, updatable = true)
-    private byte[] resourceData;
+    @Column(name = "data", nullable = true, insertable = true, updatable = true)
+    private byte[] data;
 
     @Basic
-    @Column(name = "note_type", nullable = true, insertable = true, updatable = true, length = 10)
-    private String noteType;
+    @Column(name = "type", nullable = true, insertable = true, updatable = true, length = 10)
+    private String type;
 
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "resource_id")
-    private Note note;
+    @OneToMany(mappedBy = "resource")
+    private Collection<Note> notes;
+
+    @OneToOne(mappedBy = "resource")
+    private Message message;
 
     public Long getId() {
         return id;
@@ -36,25 +34,37 @@ public class Resource {
         this.id = id;
     }
 
-    public byte[] getResourceData() {
-        return resourceData;
+    public byte[] getData() {
+        return data;
     }
 
-    public void setResourceData(byte[] resourceData) {
-        this.resourceData = resourceData;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
-    public String getNoteType() {
-        return noteType;
+    public String getType() {
+        return type;
     }
 
-    public void setNoteType(String noteType) {
-        this.noteType = noteType;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Note getNote() { return note; }
+    public Collection<Note> getNotes() {
+        return notes;
+    }
 
-    public void setNote(Note note) { this.note = note; }
+    public void setNotes(Collection<Note> notes) {
+        this.notes = notes;
+    }
+
+    public Message getMessage() {
+        return message;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,17 +74,12 @@ public class Resource {
         Resource resource = (Resource) o;
 
         if (id != null ? !id.equals(resource.id) : resource.id != null) return false;
-        if (noteType != null ? !noteType.equals(resource.noteType) : resource.noteType != null) return false;
-        if (!Arrays.equals(resourceData, resource.resourceData)) return false;
-
         return true;
     }
 
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (resourceData != null ? Arrays.hashCode(resourceData) : 0);
-        result = 31 * result + (noteType != null ? noteType.hashCode() : 0);
         return result;
     }
 }

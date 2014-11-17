@@ -1,7 +1,7 @@
 package com.agh.gopr.app.exception;
 
-public class GOPRException extends Exception {
-    public GOPRException(String detailMessage) {
+public class GoprException extends Exception {
+    public GoprException(String detailMessage) {
         super(detailMessage);
     }
 }

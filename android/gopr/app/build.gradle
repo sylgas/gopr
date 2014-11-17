@@ -1,9 +1,9 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '19.1.0'
+    compileSdkVersion 18
+    buildToolsVersion '20.0'
 
     packagingOptions {
         exclude 'META-INF/ASL2.0'
@@ -19,16 +19,68 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 19
+        targetSdkVersion 18
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    sourceSets {
+        instrumentTest.setRoot('src/test')
+        instrumentTest.jniLibs.srcDirs = []
+        instrumentTest.jniLibs.srcDir 'src/main/jniLibs'
+        main {
+            manifest.srcFile 'src/main/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java', 'build/generated/source/apt/${variant.dirName}']
+            resources.srcDirs = ['src/main/resources']
+            res.srcDirs = ['src/main/res']
+            assets.srcDirs = ['src/main/assets']
+            jniLibs.srcDirs = []
+            jniLibs.srcDir 'src/main/jniLibs'
+        }
+    }
+}
+
+apply plugin: 'android-unit-test'
+
+dependencies {
+    apt "org.androidannotations:androidannotations:3.1"
+    compile "org.androidannotations:androidannotations-api:3.1"
+
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
+    compile 'com.j256.ormlite:ormlite-core:4.48'
+    compile 'com.j256.ormlite:ormlite-jdbc:4.48'
+    compile 'com.google.code.gson:gson:2.3'
+
+    compile('com.google.inject:guice:3.0:no_aop') {
+        exclude module: 'asm'
+    }
+    compile('org.roboguice:roboguice:2.0') {
+        exclude module: 'asm'
+    }
+    compile('com.google.inject.extensions:guice-multibindings:3.0') {
+        exclude group: 'com.google.inject', module: 'guice'
+        exclude module: 'asm'
+    }
+    compile 'org.ow2.asm:asm:5.0.3'
+
+    instrumentTestCompile 'junit:junit:4.10'
+    instrumentTestCompile 'org.robolectric:robolectric:2.4'
+    instrumentTestCompile 'org.mockito:mockito-all:1.9.5'
+    instrumentTestCompile 'com.squareup:fest-android:1.0.+'
+
+    testCompile 'junit:junit:4.10'
+    testCompile 'org.robolectric:robolectric:2.4'
+    testCompile 'org.mockito:mockito-all:1.9.5'
+    testCompile 'com.squareup:fest-android:1.0.+'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 apt {
@@ -38,43 +90,6 @@ apt {
     }
 }
 
-sourceSets {
-    unitTest {
-        java.srcDir file('src/main/test/java')
-        resources.srcDir file('src/main/test/resources')
-    }
-}
-
 configurations {
     apt
-    unitTestCompile.extendsFrom runtime
-    unitTestRuntime.extendsFrom unitTestCompile
 }
-
-dependencies {
-    apt "com.googlecode.androidannotations:androidannotations:2.7.1"
-    compile "com.googlecode.androidannotations:androidannotations-api:2.7.1"
-
-    compile 'com.android.support:support-v4:19.0.0'
-    compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.google.inject:guice:3.0:no_aop'
-    compile 'org.roboguice:roboguice:2.0'
-    compile('com.google.inject.extensions:guice-multibindings:3.0') {
-        exclude group: 'com.google.inject', module: 'guice'
-    }
-
-    unitTestCompile files("$project.buildDir/classes/debug")
-    unitTestCompile 'junit:junit:4.11'
-    unitTestCompile 'org.robolectric:robolectric:2.1.1'
-    unitTestCompile 'com.google.android:android:4.0.1.2'
-
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-}
-
-task unitTest(type:Test, dependsOn: assemble) {
-    description = "run unit tests"
-    testClassesDir = project.sourceSets.unitTest.output.classesDir
-    classpath = project.sourceSets.unitTest.runtimeClasspath
-}
-
-build.dependsOn unitTest

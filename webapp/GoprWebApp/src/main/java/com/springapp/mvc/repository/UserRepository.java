@@ -5,11 +5,9 @@ import com.springapp.mvc.repository.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-/**
- * Created by Paulina on 2014-07-15.
- */
+import java.util.List;
 
 @Repository
 public class UserRepository {
@@ -25,6 +23,6 @@ public class UserRepository {
         return userDao.saveAndFlush(layer);
     }
 
-    public Collection<User> getUsers() { return userDao.findAll(); }
+    public List<User> getAll() { return new ArrayList<User>(userDao.findAll()); }
 
 }

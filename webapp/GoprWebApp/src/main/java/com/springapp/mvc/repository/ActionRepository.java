@@ -7,10 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
-/**
- * Created by Paulina on 2014-07-18.
- */
-
 @Repository
 public class ActionRepository {
 

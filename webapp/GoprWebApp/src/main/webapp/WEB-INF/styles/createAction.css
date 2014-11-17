@@ -1,9 +1,6 @@
 #menuDiv {
     height: 100%;
-    width: 18%;
-    margin-right: 1%;
-    margin-left: 1%;
-    float: right;
+    min-height: 100%;
 }
 
 #areaDrawDiv {
@@ -14,8 +11,6 @@
     border: solid 2px #666;
     border-radius: 4px;
     background-color: #fff;
-    margin: 2%;
-    padding: 2%;
 }
 
 html {
@@ -30,8 +25,7 @@ body {
 
 #mapDiv {
     height: 100%;
-    width: 80%;
-    float: left;
+    min-height: 100%;
 }
 
 button {

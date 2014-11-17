@@ -2,11 +2,7 @@ package com.springapp.mvc.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 
-/**
- * Created by Paulina on 2014-07-16.
- */
 @Entity
 @Table(name = "t_user", schema = "public", catalog = "gopr")
 public class User implements Serializable {
@@ -19,29 +15,32 @@ public class User implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "firstname", nullable = false, length = 25)
+    @Column(name = "name", nullable = false, length = 25)
     private String firstname;
 
     @Basic
-    @Column(name = "lastname", nullable = false, length = 25)
+    @Column(name = "surname", nullable = false, length = 25)
     private String lastname;
 
     @Basic
-    @Column(name = "phone", nullable = false, length = 12)
+    @Column(name = "login", nullable = true, length = 25)
+    private String login;
+
+    @Basic
+    @Column(name = "password", nullable = true, length = 25)
+    private String password;
+
+    @Basic
+    @Column(name = "phone", nullable = true, length = 12)
     private String phone;
+
+    @Basic
+    @Column(name = "nick", nullable = true, length = 25)
+    private String nick;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
-
-    @OneToMany(mappedBy = "user")
-    private Collection<Position> positions;
-
-    @OneToMany(mappedBy = "user")
-    private Collection<UserGroup> userGroups;
-
-    @OneToMany(mappedBy = "user")
-    private Collection<Note> notes;
 
     public User() {}
 
@@ -92,12 +91,28 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    public Collection<Position> getPositions() {
-        return positions;
+    public String getLogin() {
+        return login;
     }
 
-    public void setPositions(Collection<Position> positions) {
-        this.positions = positions;
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
     }
 
     @Override
@@ -122,7 +137,7 @@ public class User implements Serializable {
         result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
         result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
-       //result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
+        //result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
         return result;
     }
 }

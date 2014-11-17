@@ -1,7 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">GOPRMobile</string>
 
-    <!--Map-->
+    <!-- Map -->
     <string name="map_title">Map</string>
     <string name="map_file_name">ImageryTPK.tpk</string>
     <string name="json_file_name">myjsonfeatures1.json</string>
@@ -12,12 +14,12 @@
     <string name="refresh">Refresh</string>
     <string name="click_here"></string>
 
-    <!--Messenger-->
+    <!-- Messenger -->
     <string name="messenger_title">Messenger</string>
     <string name="add_contact">Add contact</string>
     <string name="create">New message</string>
 
-    <!--Settings-->
+    <!-- Settings -->
     <string name="server_settings">Server Settings</string>
     <string name="server_address">Server address</string>
     <string name="login">Login</string>
@@ -25,17 +27,17 @@
     <string name="show_layer">Show layer</string>
     <string name="settings">Settings</string>
 
-    <!--Enable Dialog-->
+    <!-- Enable Dialog -->
     <string name="not_enabled">%s not enabled</string>
     <string name="ask_for_settings">Do you want to go to settings menu?</string>
 
-    <!--GPS-->
+    <!-- GPS -->
     <string name="gps_disabled">GPS disabled. Enable for application to work properly.</string>
 
-    <!--Defaults-->
+    <!-- Defaults -->
     <string name="default_map_site">http://services.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer</string>
 
-    <!--Buttons-->
+    <!-- Buttons -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

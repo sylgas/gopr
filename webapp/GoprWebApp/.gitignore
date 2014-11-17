@@ -1,6 +1,7 @@
 # Java class files
 *.class
 
+*.iml
 .idea/
 target/
 src/main/resources/webAppLogs.log

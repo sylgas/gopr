@@ -1,6 +1,9 @@
 package com.agh.gopr.app.common;
 
-import com.googlecode.androidannotations.annotations.sharedpreferences.*;
+
+import org.androidannotations.annotations.sharedpreferences.DefaultLong;
+import org.androidannotations.annotations.sharedpreferences.DefaultString;
+import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 @SuppressWarnings("UnusedDeclaration")
 @SharedPref(value = SharedPref.Scope.APPLICATION_DEFAULT)
@@ -10,7 +13,14 @@ public interface Preferences {
 
     String mapSite();
 
+    @DefaultString("1")
+    String actionId();
+
     boolean showLayer();
 
-    String login();
+    @DefaultString("sylwusiusiunia")
+    String userId();
+
+    @DefaultLong(0L)
+    long lastPositionPostTime();
 }
