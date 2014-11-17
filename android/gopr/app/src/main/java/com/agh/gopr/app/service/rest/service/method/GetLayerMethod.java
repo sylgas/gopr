@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GetLayerMethod extends AbstractMethod {
 
-    private static final String URL = "/area/get?";
+    private static final String URL = "/api/area/get?";
 
     @Override
     public void run(RequestService.HttpCallback handler, String... params) throws MethodException {

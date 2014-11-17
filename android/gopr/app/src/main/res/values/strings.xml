@@ -9,6 +9,7 @@
     <string name="json_file_name">myjsonfeatures1.json</string>
     <string name="no_external_memory_error">No external memory</string>
     <string name="map_file_not_found_error">No map file finded</string>
+    <string name="notes">Notes</string>
     <string name="download">Download from ArcgisPage</string>
     <string name="find">Find</string>
     <string name="refresh">Refresh</string>
@@ -26,6 +27,10 @@
     <string name="map_settings">Map Settings</string>
     <string name="show_layer">Show layer</string>
     <string name="settings">Settings</string>
+
+    <!-- Notes -->
+    <string name="take_photo">Take photo</string>
+    <string name="save_note">Save note</string>
 
     <!-- Enable Dialog -->
     <string name="not_enabled">%s not enabled</string>

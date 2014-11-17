@@ -10,6 +10,15 @@
     </item>
 
     <item
+        android:id="@+id/notes"
+        android:title="@string/notes"
+        android:icon="@android:drawable/ic_menu_agenda"
+        android:showAsAction="ifRoom">
+        <menu />
+    </item>
+
+
+    <item
         android:id="@+id/download"
         android:title="@string/download"
         android:icon="@android:drawable/stat_sys_download"

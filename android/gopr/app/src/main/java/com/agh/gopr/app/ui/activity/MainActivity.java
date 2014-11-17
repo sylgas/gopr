@@ -52,6 +52,11 @@ public class MainActivity extends AbstractActivity {
         startActivity(new Intent(this, PreferencesActivity.class));
     }
 
+    @OptionsItem(R.id.notes)
+    protected void notes() {
+
+    }
+
     protected void disablePager(@Observes MapFragment.StartMessengerEvent startMessengerEvent) {
         pager.setCurrentItem(1);
     }

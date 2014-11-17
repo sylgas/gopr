@@ -9,7 +9,7 @@ import java.util.List;
 
 public class GetAllPointsMethod extends AbstractMethod {
 
-    private static final String URL = "/rest/point/getAllPoints?";
+    private static final String URL = "/api/point/get/all?";
 
     @Override
     public void run(RequestService.HttpCallback callback, String... params)

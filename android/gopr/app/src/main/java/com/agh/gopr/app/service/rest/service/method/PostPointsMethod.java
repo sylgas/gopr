@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PostPointsMethod extends AbstractMethod {
 
-    private static final String URL = "/rest/point/send?";
+    private static final String URL = "/api/point/post?";
 
     @Override
     public void run(RequestService.HttpCallback handler, String... params) throws MethodException {

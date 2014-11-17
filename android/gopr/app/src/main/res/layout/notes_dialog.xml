@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/take_photo"
+        android:id="@+id/takePhotoButton" />
+
+    <EditText
+        android:inputType="textMultiLine"
+        android:lines="6"
+        android:minLines="6"
+        android:maxLines="6"
+        android:gravity="top|left"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:scrollbars="vertical"
+        android:id="@+id/noteEditText"
+    />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_note"
+        android:id="@+id/saveNoteButton" />
+</LinearLayout>
