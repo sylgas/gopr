@@ -34,7 +34,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -103,7 +102,7 @@ public class MapFragment extends RoboFragment {
                 networkEnabledListener = new NetworkEnabledListener();
                 connectionService.showDialog();
             }
-            connectionService.registerNetworkEnabledListener(networkEnabledListener);
+            registerNetworkEnabledListenerIfNeeded();
         }
         map.unpause();
         addTerritoriesLayerIfNeeded();
@@ -112,12 +111,7 @@ public class MapFragment extends RoboFragment {
     @Override
     public void onStop() {
         super.onStop();
-        unregisterNetworkEnabledListener();
-    }
-
-    private void unregisterNetworkEnabledListener() {
-        connectionService.unregisterNetworkEnabledListener(networkEnabledListener);
-        networkEnabledListener = null;
+        unregisterNetworkEnabledListenerIfNeeded();
     }
 
     @OptionsItem(R.id.messenger)
@@ -125,9 +119,24 @@ public class MapFragment extends RoboFragment {
         eventManager.fire(new StartMessengerEvent());
     }
 
+/*
     @OptionsItem(R.id.download)
     protected void download() {
         loadSite();
+    }*/
+
+    private void registerNetworkEnabledListenerIfNeeded() {
+        if (!networkEnabledListener.isRegistered()) {
+            connectionService.registerNetworkEnabledListener(networkEnabledListener);
+            networkEnabledListener.setRegistered(true);
+        }
+    }
+
+    private void unregisterNetworkEnabledListenerIfNeeded() {
+        if (networkEnabledListener != null && networkEnabledListener.isRegistered()) {
+            connectionService.unregisterNetworkEnabledListener(networkEnabledListener);
+            networkEnabledListener.setRegistered(false);
+        }
     }
 
     private void sendRequestForTerritoriesLayer() {
@@ -206,8 +215,10 @@ public class MapFragment extends RoboFragment {
     }
 
     protected void updateView(@Observes IntervalSynchronizationService.ViewDataChangedEvent event) {
-        updateUserPositions();
-        updateReceivedPositions();
+        if (map.getLayers().length > 0) {
+            updateUserPositions();
+            updateReceivedPositions();
+        }
     }
 
     private void updateReceivedPositions() {
@@ -279,10 +290,20 @@ public class MapFragment extends RoboFragment {
 
     private class NetworkEnabledListener implements NetworkEnabledReceiver.INetworkEnabledListener {
 
+        private boolean isRegistered;
+
+        public boolean isRegistered() {
+            return isRegistered;
+        }
+
+        public void setRegistered(boolean isRegistered) {
+            this.isRegistered = isRegistered;
+        }
+
         @Override
         public void onEnable() {
             init();
-            unregisterNetworkEnabledListener();
+            unregisterNetworkEnabledListenerIfNeeded();
         }
     }
 

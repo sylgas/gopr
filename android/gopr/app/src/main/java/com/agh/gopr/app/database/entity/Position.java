@@ -96,9 +96,9 @@ public class Position {
     }
 
     public static Position fromJson(JSONObject object) throws JSONException {
-        double x = (Double) object.get("x");
-        double y = (Double) object.get("y");
-        return new Position(x, y);
+        double latitude = (Double) object.get(Columns.LATITUDE);
+        double longitude = (Double) object.get(Columns.LONGITUDE);
+        return new Position(longitude, latitude);
     }
 
     /*
@@ -115,8 +115,8 @@ public class Position {
 
     public JSONObject toJSON() throws JSONException {
         JSONObject object = new JSONObject();
-        object.put("x", longitude);
-        object.put("y", latitude);
+        object.put(Columns.LONGITUDE, longitude);
+        object.put(Columns.LATITUDE, latitude);
         return object;
     }
 

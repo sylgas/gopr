@@ -11,13 +11,13 @@ import com.google.inject.Inject;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -113,10 +113,15 @@ public class RequestService {
 
         httpURLConnection.connect();
         if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            Toast.makeText(context, httpURLConnection.getResponseMessage(), Toast.LENGTH_SHORT).show();
+            toast(String.format("%d %s", httpURLConnection.getResponseCode(), httpURLConnection.getResponseMessage()));
             throw new ConnectionException(String.format("Could not connect to server\nrequest code[%d]\nrequest message[%s]",
                     httpURLConnection.getResponseCode(), httpURLConnection.getResponseMessage()));
         }
+    }
+
+    @UiThread
+    protected void toast(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     public interface HttpCallback {
