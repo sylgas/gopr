@@ -1,5 +1,5 @@
 <resources>
-    <!-- Strings related to login_menu -->
+    <!-- Strings related to menu -->
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Login</string>

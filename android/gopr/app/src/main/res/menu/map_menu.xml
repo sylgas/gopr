@@ -35,10 +35,4 @@
         </item>
     -->
 
-    <item
-        android:id="@+id/settings"
-        android:title="@string/settings">
-        <menu />
-    </item>
-
 </menu>

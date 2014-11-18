@@ -22,7 +22,7 @@ public class LoginMethod extends AbstractMethod {
     protected void checkArguments(String... params) throws MethodException.WrongNumberOfParametersException {
         if (params.length != 2)
             throw new MethodException.WrongNumberOfParametersException
-                    ("User login_menu takes exactly two arguments");
+                    ("User menu takes exactly two arguments");
     }
 
     @Override

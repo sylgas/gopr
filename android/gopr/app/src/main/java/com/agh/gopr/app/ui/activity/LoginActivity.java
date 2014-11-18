@@ -1,7 +1,6 @@
 package com.agh.gopr.app.ui.activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,9 +11,9 @@ import android.widget.Toast;
 
 import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.Preferences_;
+import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.response.LoginResponse;
 import com.agh.gopr.app.response.LoginResponseListItem;
-import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.service.rest.RequestService;
 import com.agh.gopr.app.service.rest.service.method.RestMethod;
 import com.google.gson.Gson;
@@ -22,8 +21,6 @@ import com.google.gson.Gson;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.OptionsItem;
-import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -32,7 +29,6 @@ import java.util.List;
 import roboguice.util.Ln;
 
 @EActivity(R.layout.login_activity)
-@OptionsMenu(R.menu.login_menu)
 public class LoginActivity extends AbstractActivity {
 
     @ViewById(R.id.login)
@@ -64,11 +60,6 @@ public class LoginActivity extends AbstractActivity {
         });
     }
 
-    @OptionsItem(R.id.settings)
-    protected void settings() {
-        startActivity(new Intent(this, PreferencesActivity.class));
-    }
-
     @Click(R.id.sign_in_button)
     public void attemptLogin() {
         loginView.setError(null);
@@ -89,7 +80,7 @@ public class LoginActivity extends AbstractActivity {
         }
     }
 
-    private boolean isEditTextFilled(EditText editText, String data){
+    private boolean isEditTextFilled(EditText editText, String data) {
         if (TextUtils.isEmpty(data)) {
             editText.setError(getString(R.string.error_field_required));
             editText.requestFocus();
@@ -122,7 +113,7 @@ public class LoginActivity extends AbstractActivity {
             Gson gson = new Gson();
             LoginResponse loginResponse = gson.fromJson(json, LoginResponse.class);
 
-            if (loginResponse.getStatus()){
+            if (loginResponse.getStatus()) {
                 List<LoginResponseListItem> items = loginResponse.getLoginResponseListItems();
                 if (items.size() == 0) {
                     displayErrorToast(getString(R.string.not_assign_to_action_message));

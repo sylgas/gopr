@@ -47,4 +47,13 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
+    <!-- About -->
+    <string name="about_agh_description">University of Science and Technology</string>
+    <string name="about">About</string>
+    <string name="about_icons"><u><b><i>App icons by Timothy Miller</i></b></u></string>
+    <string name="about_icons_more">more</string>
+    <string name="author_ucash">Łukasz Cieśla</string>
+    <string name="author_pkarp">Paulina Karp</string>
+    <string name="author_sylgas">Sylwia Gąsior</string>
+
 </resources>
