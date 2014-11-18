@@ -27,6 +27,7 @@
     <string name="map_settings">Map Settings</string>
     <string name="show_layer">Show layer</string>
     <string name="settings">Settings</string>
+    <string name="map_site">Map site</string>
 
     <!-- Notes -->
     <string name="take_photo">Take photo</string>

@@ -6,20 +6,20 @@
         <CheckBoxPreference
             android:key="showLayer"
             android:title="@string/show_layer"/>
+
+        <EditTextPreference
+            android:defaultValue="@string/default_map_site"
+            android:key="mapSite"
+            android:title="@string/map_site" />
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/server_settings">
         <EditTextPreference
             android:key="serverAddress"
-            android:title="@string/server_address"/>
-        <EditTextPreference
-            android:defaultValue="@string/default_map_site"
-            android:key="mapSite"
-            android:title="@string/server_address"/>
-        <EditTextPreference
-            android:key="login"
-            android:title="@string/login"/>
+            android:title="@string/server_address"
+            android:defaultValue="@string/default_server_address" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

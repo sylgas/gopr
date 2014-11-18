@@ -33,7 +33,6 @@ public class GetAllPointsMethod extends AbstractMethod {
         return pairs;
     }
 
-    @Override
     protected String createUrl(String... params) throws MethodException {
         return MethodHelper.createUrlWithActionId(this, params);
     }

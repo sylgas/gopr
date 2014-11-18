@@ -3,7 +3,6 @@ package com.agh.gopr.app.service.rest;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.GoprException;
 import com.agh.gopr.app.service.connection.ConnectionService;
@@ -99,7 +98,7 @@ public class RequestService {
     }
 
     private String getBaseUrl() {
-        return PreferenceHelper.getServerAddress(preferences);
+        return preferences.serverAddress().get();
     }
 
     private void connect(String methodUrl, String methodType) throws IOException, ConnectionException {

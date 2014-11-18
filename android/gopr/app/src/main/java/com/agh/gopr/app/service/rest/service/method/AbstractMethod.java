@@ -35,8 +35,6 @@ public abstract class AbstractMethod {
 
     protected abstract List<NameValuePair> appendParameters(List<NameValuePair> pairs, String... params);
 
-    protected abstract String createUrl(String... params) throws MethodException;
-
     protected String buildParams(List<NameValuePair> pairs) {
         return URLEncodedUtils.format(pairs, "utf-8");
     }

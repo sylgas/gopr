@@ -6,7 +6,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.common.SettingsAlertDialog;
 import com.agh.gopr.app.database.entity.Position;
@@ -20,7 +19,6 @@ import com.google.inject.Inject;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ObjectInputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -93,7 +91,7 @@ public class GpsPostPositionsService {
                 Ln.d("Trying to post %d positions...", positions.size());
                 JSONObject jsonObject = JsonHelper.createJsonFromPositions(preferences.userId().get(), positions);
 
-                String actionId = PreferenceHelper.getCurrentActionId(preferences);
+                String actionId = preferences.actionId().get();
                 try {
                     RestMethod.POST_POINTS.run(context, callback, actionId, jsonObject.toString());
                 } catch (MethodException e) {
