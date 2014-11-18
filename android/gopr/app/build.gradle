@@ -74,12 +74,12 @@ dependencies {
     instrumentTestCompile 'junit:junit:4.10'
     instrumentTestCompile 'org.robolectric:robolectric:2.4'
     instrumentTestCompile 'org.mockito:mockito-all:1.9.5'
-    instrumentTestCompile 'com.squareup:fest-android:1.0.+'
+    instrumentTestCompile 'com.squareup:fest-android:1.0.8'
 
     testCompile 'junit:junit:4.10'
     testCompile 'org.robolectric:robolectric:2.4'
     testCompile 'org.mockito:mockito-all:1.9.5'
-    testCompile 'com.squareup:fest-android:1.0.+'
+    testCompile 'com.squareup:fest-android:1.0.8'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 

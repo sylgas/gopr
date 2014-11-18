@@ -49,20 +49,20 @@ public class GoprTestRunnerTest {
 
     @Test
     public void testMockBehaviour() throws Exception {
-        when(injectedMock.getLogin()).thenReturn("GOPR");
-        assertNotNull(injectedMock.getLogin());
-        assertEquals("GOPR", injectedMock.getLogin());
+        when(injectedMock.getUserId()).thenReturn("GOPR");
+        assertNotNull(injectedMock.getUserId());
+        assertEquals("GOPR", injectedMock.getUserId());
     }
 
     @Test(expected = WantedButNotInvoked.class)
     public void testMockVerificationError() {
-        verify(injectedMock).getCurrentPosition();
+        verify(injectedMock).onResume();
     }
 
     @Test
     public void testMockVerificationSuccess() {
-        injectedMock.getCurrentPosition();
-        verify(injectedMock).getCurrentPosition();
+        injectedMock.onResume();
+        verify(injectedMock).onResume();
     }
 
     public static class InnerTest {
