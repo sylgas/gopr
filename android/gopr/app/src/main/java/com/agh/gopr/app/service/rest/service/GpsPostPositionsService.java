@@ -93,7 +93,7 @@ public class GpsPostPositionsService {
                 Ln.d("Trying to post %d positions...", positions.size());
                 JSONObject jsonObject = JsonHelper.createJsonFromPositions(preferences.userId().get(), positions);
 
-                String actionId = PreferenceHelper.getCurrentActionId(preferences);
+                String actionId = preferences.actionId().get();
                 try {
                     RestMethod.POST_POINTS.run(context, callback, actionId, jsonObject.toString());
                 } catch (MethodException e) {

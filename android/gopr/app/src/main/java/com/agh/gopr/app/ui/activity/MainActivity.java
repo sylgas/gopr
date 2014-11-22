@@ -10,10 +10,12 @@ import com.agh.gopr.app.R;
 import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.agh.gopr.app.ui.fragment.MessengerFragment_;
+import com.agh.gopr.app.ui.fragment.NoteFragment;
 import com.agh.gopr.app.ui.view.CustomViewPager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.ViewById;
 
@@ -33,6 +35,10 @@ public class MainActivity extends AbstractActivity {
 
     @Inject
     private GpsPostPositionsService getGpsPostPositions;
+
+    @FragmentById
+    protected NoteFragment noteFragment;
+
 
     @ViewById
     protected CustomViewPager pager;
@@ -54,11 +60,20 @@ public class MainActivity extends AbstractActivity {
 
     @OptionsItem(R.id.notes)
     protected void notes() {
-
+        if (noteFragment.isVisible())
+            noteFragment.hide();
+        else
+            noteFragment.show();
     }
 
     protected void disablePager(@Observes MapFragment.StartMessengerEvent startMessengerEvent) {
         pager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (noteFragment.isVisible())
+            noteFragment.hide();
     }
 
     private class ScrollPageListener implements ViewPager.OnPageChangeListener {

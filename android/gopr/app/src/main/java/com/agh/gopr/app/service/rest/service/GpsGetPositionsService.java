@@ -38,7 +38,7 @@ public class GpsGetPositionsService implements IMethodService {
     @Override
     public void init() {
         try {
-            RestMethod.GET_ALL_POINTS.run(context, callback, PreferenceHelper.getCurrentActionId(preferences));
+            RestMethod.GET_ALL_POINTS.run(context, callback, preferences.actionId().get());
         } catch (MethodException e) {
             Ln.e("Could not get positions: %s", e.getMessage());
         }
@@ -48,7 +48,7 @@ public class GpsGetPositionsService implements IMethodService {
     public void handle() {
         try {
             RestMethod.GET_POINTS.run(context, callback,
-                    PreferenceHelper.getCurrentActionId(preferences), String.valueOf(System.currentTimeMillis()));
+                    preferences.actionId().get(), String.valueOf(System.currentTimeMillis()));
         } catch (MethodException e) {
             Ln.e("Could not get positions: %s", e.getMessage());
         }

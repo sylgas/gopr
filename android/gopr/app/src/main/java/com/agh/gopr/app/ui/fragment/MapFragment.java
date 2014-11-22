@@ -34,7 +34,6 @@ import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
-import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,7 +130,7 @@ public class MapFragment extends RoboFragment {
     }
 
     private void sendRequestForTerritoriesLayer() {
-        String actionId = PreferenceHelper.getCurrentActionId(preferences);
+        String actionId = preferences.actionId().get();
 
         try {
             RestMethod.GET_LAYER.run(context, layerJSONHandler, actionId);

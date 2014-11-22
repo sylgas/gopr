@@ -13,10 +13,10 @@ public class Note {
     @DatabaseField(columnName = Columns.TYPE, canBeNull = false)
     private Type type;
 
-    @DatabaseField(columnName = Columns.TEXT, canBeNull = false)
-    private Type text;
+    @DatabaseField(columnName = Columns.TEXT)
+    private String text;
 
-    @DatabaseField(columnName = Columns.RESOURCE_PATH, canBeNull = false)
+    @DatabaseField(columnName = Columns.RESOURCE_PATH)
     private String resourcePath;
 
     @DatabaseField(foreign = true, foreignAutoRefresh = true, columnName = Columns.POSITION_ID)
@@ -25,7 +25,7 @@ public class Note {
     public Note() {
     }
 
-    public Note(Type type, Type text, String resourcePath, Position position) {
+    public Note(Type type, String text, String resourcePath, Position position) {
         this.type = type;
         this.text = text;
         this.resourcePath = resourcePath;
@@ -60,11 +60,11 @@ public class Note {
         this.position = position;
     }
 
-    public Type getText() {
+    public String getText() {
         return text;
     }
 
-    public void setText(Type text) {
+    public void setText(String text) {
         this.text = text;
     }
 

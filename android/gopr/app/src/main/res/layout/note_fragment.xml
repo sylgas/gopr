@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/background_dark">
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/take_photo"
-        android:id="@+id/takePhotoButton" />
+        android:id="@+id/take_photo_button"/>
 
     <EditText
         android:inputType="textMultiLine"
@@ -20,12 +20,19 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:scrollbars="vertical"
-        android:id="@+id/noteEditText"
-    />
+        android:id="@+id/note_edit_text"
+        android:hint="@string/add_note_text" />
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/save_note"
-        android:id="@+id/saveNoteButton" />
+        android:id="@+id/save_note_button" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_note"
+        android:id="@+id/cancel_note_button" />
+
 </LinearLayout>
