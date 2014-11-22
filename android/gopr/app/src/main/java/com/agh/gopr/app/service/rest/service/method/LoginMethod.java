@@ -7,7 +7,6 @@ import com.agh.gopr.app.service.rest.RequestService;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoginMethod extends AbstractMethod {
@@ -23,7 +22,7 @@ public class LoginMethod extends AbstractMethod {
     protected void checkArguments(String... params) throws MethodException.WrongNumberOfParametersException {
         if (params.length != 2)
             throw new MethodException.WrongNumberOfParametersException
-                    ("User login_menu takes exactly two arguments");
+                    ("User menu takes exactly two arguments");
     }
 
     @Override
@@ -38,7 +37,6 @@ public class LoginMethod extends AbstractMethod {
         return pairs;
     }
 
-    @Override
     protected String createUrl(String... params) throws MethodException {
         return MethodHelper.createUrl(this, params);
     }

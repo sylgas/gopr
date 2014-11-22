@@ -3,12 +3,10 @@ package com.agh.gopr.app.ui.fragment;
 import android.widget.ListView;
 
 import com.agh.gopr.app.R;
-
 import com.google.inject.Inject;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
@@ -30,11 +28,6 @@ public class MessengerFragment extends RoboFragment {
 
     @AfterViews
     protected void init() {
-    }
-
-    @OptionsItem(R.id.create)
-    protected void createMessage() {
-
     }
 
 }

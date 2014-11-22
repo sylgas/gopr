@@ -2,7 +2,6 @@ package com.agh.gopr.app.service.rest.service;
 
 import android.content.Context;
 
-import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.database.entity.Position;
 import com.agh.gopr.app.exception.MethodException;

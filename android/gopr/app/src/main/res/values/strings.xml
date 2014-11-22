@@ -27,6 +27,7 @@
     <string name="map_settings">Map Settings</string>
     <string name="show_layer">Show layer</string>
     <string name="settings">Settings</string>
+    <string name="map_site">Map site</string>
 
     <!-- Notes -->
     <string name="take_photo">Take photo</string>
@@ -54,5 +55,14 @@
     <string name="title_activity_camera">CameraActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <!-- About -->
+    <string name="about_agh_description">University of Science and Technology</string>
+    <string name="about">About</string>
+    <string name="about_icons"><u><b><i>App icons by Timothy Miller</i></b></u></string>
+    <string name="about_icons_more">more</string>
+    <string name="author_ucash">Łukasz Cieśla</string>
+    <string name="author_pkarp">Paulina Karp</string>
+    <string name="author_sylgas">Sylwia Gąsior</string>
 
 </resources>

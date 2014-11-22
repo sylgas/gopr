@@ -33,7 +33,6 @@ public class GetLayerMethod extends AbstractMethod {
         return pairs;
     }
 
-    @Override
     protected String createUrl(String... params) throws MethodException {
         return MethodHelper.createUrlWithActionId(this, params);
     }

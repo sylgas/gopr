@@ -1,12 +1,9 @@
 package com.agh.gopr.app.ui.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 
 import com.agh.gopr.app.R;
-import com.agh.gopr.app.common.PreferenceHelper;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.database.entity.Position;
 import com.agh.gopr.app.exception.MethodException;
@@ -102,7 +99,7 @@ public class MapFragment extends RoboFragment {
                 networkEnabledListener = new NetworkEnabledListener();
                 connectionService.showDialog();
             }
-            connectionService.registerNetworkEnabledListener(networkEnabledListener);
+            registerNetworkEnabledListenerIfNeeded();
         }
         map.unpause();
         addTerritoriesLayerIfNeeded();
@@ -111,12 +108,7 @@ public class MapFragment extends RoboFragment {
     @Override
     public void onStop() {
         super.onStop();
-        unregisterNetworkEnabledListener();
-    }
-
-    private void unregisterNetworkEnabledListener() {
-        connectionService.unregisterNetworkEnabledListener(networkEnabledListener);
-        networkEnabledListener = null;
+        unregisterNetworkEnabledListenerIfNeeded();
     }
 
     @OptionsItem(R.id.messenger)
@@ -124,9 +116,24 @@ public class MapFragment extends RoboFragment {
         eventManager.fire(new StartMessengerEvent());
     }
 
+/*
     @OptionsItem(R.id.download)
     protected void download() {
         loadSite();
+    }*/
+
+    private void registerNetworkEnabledListenerIfNeeded() {
+        if (!networkEnabledListener.isRegistered()) {
+            connectionService.registerNetworkEnabledListener(networkEnabledListener);
+            networkEnabledListener.setRegistered(true);
+        }
+    }
+
+    private void unregisterNetworkEnabledListenerIfNeeded() {
+        if (networkEnabledListener != null && networkEnabledListener.isRegistered()) {
+            connectionService.unregisterNetworkEnabledListener(networkEnabledListener);
+            networkEnabledListener.setRegistered(false);
+        }
     }
 
     private void sendRequestForTerritoriesLayer() {
@@ -140,8 +147,8 @@ public class MapFragment extends RoboFragment {
     }
 
     private void loadBaseLayer() {
-        Ln.d("Loading basemap from [%s]", PreferenceHelper.getMapSite(preferences));
-        int id = map.addLayer(new ArcGISTiledMapServiceLayer(PreferenceHelper.getMapSite(preferences)));
+        Ln.d("Loading basemap from [%s]", preferences.mapSite().get());
+        int id = map.addLayer(new ArcGISTiledMapServiceLayer(preferences.mapSite().get()));
         Ln.d("Base layer id %d", id);
         map.setOnStatusChangedListener(new MapInitializedListener());
     }
@@ -184,10 +191,12 @@ public class MapFragment extends RoboFragment {
         }
     }
 
+/*
     private void loadSite() {
         Uri uri = Uri.parse(URL);
         startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
+*/
 
     private void center() {
         map.centerAt(new Point(2214749.0606268025, 6460923.093105682), true);
@@ -205,8 +214,10 @@ public class MapFragment extends RoboFragment {
     }
 
     protected void updateView(@Observes IntervalSynchronizationService.ViewDataChangedEvent event) {
-        updateUserPositions();
-        updateReceivedPositions();
+        if (map.getLayers().length > 0) {
+            updateUserPositions();
+            updateReceivedPositions();
+        }
     }
 
     private void updateReceivedPositions() {
@@ -278,10 +289,20 @@ public class MapFragment extends RoboFragment {
 
     private class NetworkEnabledListener implements NetworkEnabledReceiver.INetworkEnabledListener {
 
+        private boolean isRegistered;
+
+        public boolean isRegistered() {
+            return isRegistered;
+        }
+
+        public void setRegistered(boolean isRegistered) {
+            this.isRegistered = isRegistered;
+        }
+
         @Override
         public void onEnable() {
             init();
-            unregisterNetworkEnabledListener();
+            unregisterNetworkEnabledListenerIfNeeded();
         }
     }
 
@@ -310,7 +331,7 @@ public class MapFragment extends RoboFragment {
 
         @Override
         public void onError(Throwable error) {
-            Ln.e("ConnectionError could not receive JSON");
+            Ln.e(error, "ConnectionError could not receive JSON");
         }
     }
 
