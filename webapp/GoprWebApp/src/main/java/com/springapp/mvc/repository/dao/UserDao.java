@@ -9,11 +9,11 @@ import java.util.List;
 
 public interface UserDao extends JpaRepository<User,Long> {
 
-    User findByLastname(String lastname);
+    User findBySurname(String surname);
 
     List<User> findAll();
 
-    @Query("select DISTINCT(u) from User u where u.firstname like :query or u.lastname like :query")
+    @Query("select DISTINCT(u) from User u where u.name like :query or u.surname like :query")
     List<User> findByQuery(@Param("query") String query);
 
 }

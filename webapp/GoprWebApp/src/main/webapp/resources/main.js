@@ -8,7 +8,7 @@
 
     require([
         'dojo/ready',
-        'bootstrap.js'
+        '/resources/bootstrap.js'
     ], function(ready, bootstrap) {
         ready(function () {
             bootstrap.start();

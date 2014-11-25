@@ -2,6 +2,7 @@ package com.springapp.mvc.api;
 
 import com.springapp.mvc.dto.LoginResponseDto;
 import com.springapp.mvc.dto.LoginResponseListItem;
+import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.User;
 import com.springapp.mvc.repository.UserRepository;
 import org.apache.log4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 @Controller
@@ -23,6 +25,23 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @RequestMapping(method=RequestMethod.POST)
+    public @ResponseBody
+    User create(
+            @RequestParam("name") String name,
+            @RequestParam("surname") String surname,
+            @RequestParam("login") String login,
+            @RequestParam("password") String password,
+            @RequestParam("nick") String nick) {
+        User user = new User();
+        user.setName(name);
+        user.setSurname(surname);
+        user.setLogin(login);
+        user.setPassword(password);
+        user.setNick(nick);
+        return userRepository.save(user);
+    }
 
     @RequestMapping(value = LOGIN, method = RequestMethod.GET)
     public

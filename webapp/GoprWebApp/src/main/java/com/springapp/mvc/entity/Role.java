@@ -8,8 +8,9 @@ import java.util.Collection;
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "role_seq", sequenceName = "t_role_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "role_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
@@ -24,8 +25,8 @@ public class Role {
     @Column(name = "pictogram", nullable = true)
     private String pictogram;
 
-    @OneToMany(mappedBy = "role")
-    private Collection<User> users;
+   /* @OneToMany(mappedBy = "role")
+    private Collection<User> users;*/
 
     public Long getId() {
         return id;
@@ -59,13 +60,13 @@ public class Role {
         this.pictogram = pictogram;
     }
 
-    public Collection<User> getUsers() {
+   /* public Collection<User> getUsers() {
         return users;
     }
 
     public void setUsers(Collection<User> users) {
         this.users = users;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {

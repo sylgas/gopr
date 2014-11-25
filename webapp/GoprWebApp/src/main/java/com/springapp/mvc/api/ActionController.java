@@ -3,28 +3,24 @@ package com.springapp.mvc.api;
 import com.springapp.mvc.dto.ActionDto;
 import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
+import com.springapp.mvc.entity.User;
 import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.AreaRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Controller
-@RequestMapping("/action")
+@RequestMapping(value="api/action")
 public class ActionController {
 
     private static final Logger logger = Logger.getLogger(ActionController.class);
-
-    private static final String CREATE_ACTION = "/create";
-    private static final String GET_ACTION = "/get";
 
     @Autowired
     private ActionRepository actionRepository;
@@ -32,22 +28,23 @@ public class ActionController {
     @Autowired
     private AreaRepository areaRepository;
 
+
     /*
-     * Create new action and save its searching areas.
-     *
-     * Areas (geometries param) given as structure with fields:
-     *  - (int) numberInAction
-     *  - (string) name
-     *  - (string) geometry
-     */
-    @RequestMapping(value = CREATE_ACTION, method = RequestMethod.POST)
+    * Create new action and save its searching areas.
+    *
+    * Areas (geometries param) given as structure with fields:
+    *  - (int) numberInAction
+    *  - (string) name
+    *  - (string) geometry
+    */
+    @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
-    Long createAction(
+    Long create(
             @RequestParam("name") String name,
             @RequestParam("startDateTime") long startDateTime,
             @RequestParam("description") String description) {
 
-        logger.info(CREATE_ACTION +
+        logger.info("create " +
                 "\nname: " + name +
                 "\nstartDateTime: " + startDateTime +
                 "\nopis: " + description);
@@ -57,23 +54,25 @@ public class ActionController {
         action.setName(name);
         action.setStartDate(new Timestamp(new Date().getTime()));
 
-        return actionRepository.saveAction(action).getId();
+        return actionRepository.save(action).getId();
     }
 
-    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody
-    ActionDto getAction(
-            @RequestParam("id") Long id) {
+    ActionDto get(
+            @PathVariable("id") Long id) {
 
         logger.info("getting action " + id);
-        Action action = actionRepository.getActionById(id);
+        Action action = actionRepository.getById(id);
         Set<Area> areas = areaRepository.getByAction(action);
         action.setAreas(areas);
         return new ActionDto(action);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String start() {
-        return "action";
+    public
+    @ResponseBody
+    List<Action> getAll() {
+        return actionRepository.getAll();
     }
 }

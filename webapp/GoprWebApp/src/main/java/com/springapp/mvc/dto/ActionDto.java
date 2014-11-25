@@ -4,7 +4,7 @@ import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
 import com.springapp.mvc.entity.Group;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,17 +18,18 @@ public class ActionDto {
     private String comments;
     private String staticDatabaseId;
     private String isridDatabaseId;
-    private Collection<Group> groups;
-    private Collection<AreaDto> areas;
+    private List<Group> groups;
+    private List<AreaDto> areas;
 
     public ActionDto(Action action) {
         this.id = action.getId();
         this.name = action.getName();
-        List<AreaDto> areass = new ArrayList<AreaDto>();
+        this.description = action.getDescription();
+        this.startDate = action.getStartDate();
+        areas = new ArrayList<AreaDto>();
         for(Area area: action.getAreas()) {
-            areass.add(new AreaDto(area));
+            areas.add(new AreaDto(area));
         }
-        this.areas = areass;
     }
     public Long getId() {
         return id;
@@ -102,11 +103,11 @@ public class ActionDto {
          this.groups = groups;
      }
  */
-    public Collection<AreaDto> getAreas() {
+    public List<AreaDto> getAreas() {
         return areas;
     }
 
-    public void setAreas(Collection<AreaDto> areas) {
+    public void setAreas(List<AreaDto> areas) {
         this.areas = areas;
     }
 

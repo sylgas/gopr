@@ -8,8 +8,9 @@ import java.util.Collection;
 public class Group {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "group_seq", sequenceName = "t_group_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "group_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic

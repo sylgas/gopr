@@ -157,23 +157,19 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
         geometriesOnMap = {};
         for (var i = 0; i < geometries.length; i++) {
             var polygon = new Polygon(JSON.parse(geometries[i].data).area);
-            console.log(polygon)
             var newGraphic = new Graphic(polygon, fillSymbol);
             map.graphics.add(newGraphic);
-            console.log(map.graphics)
 
             /*if (geometriesOnMap[geometries[i].numberInAction]){
              console.log("displayAreas: duplicated numberInAction");
              alert("Cos nie tak");
              }*/
-            console.log(map.graphics.graphics.indexOf(newGraphic))
             geometriesOnMap[i] =
                 map.graphics.graphics.indexOf(newGraphic);
         }
     }
 
     function onAddOrDeleteArea(addOrDeleteAreaFun) {
-        console.log(addOrDeleteAreaFun)
         addOrDeleteAreaFunction = addOrDeleteAreaFun
     }
 

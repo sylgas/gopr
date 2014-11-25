@@ -9,6 +9,7 @@ import com.springapp.mvc.repository.AreaRepository;
 import com.springapp.mvc.repository.PositionRepository;
 import com.springapp.mvc.repository.UserRepository;
 import org.apache.log4j.Logger;
+import org.hibernate.exception.SQLGrammarException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -25,11 +27,11 @@ import java.util.Date;
 public class AreaController {
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
-    public static final String GET_LAYER = "area/get";
-    public static final String SEND_LAYER = "area/send";
-    public static final String GET_POINTS = "/com/springapp/mvc/rest/point/get";
-    public static final String SEND_POINTS = "/com/springapp/mvc/rest/point/send";
-    public static final String GET_ALL_POINTS = "/com/springapp/mvc/rest/point/getAllPoints";
+    public static final String GET_LAYER = "/api/area/get";
+    public static final String SEND_LAYER = "/api/area/send";
+    public static final String GET_POINTS = "/api/point/get";
+    public static final String SEND_POINTS = "/api/point/post";
+    public static final String GET_ALL_POINTS = "/api/point/get/all";
 
     @Autowired
     private AreaRepository areaRepository;
@@ -52,13 +54,13 @@ public class AreaController {
         logger.info("GET LAYER: " + actionId);
 
         //TODO: read from db and pass geometries
-
-        Area area = (Area) areaRepository.getByAction(actionRepository.getActionById(new Long(actionId))).toArray()[0];
+        Area area = (Area) areaRepository.getByAction(actionRepository.getById(new Long(actionId))).toArray()[0];
 /*
         return "{\"geometries\":[{\"area\":{\"rings\":[[[1626888.6995589186,7158670.943098946],[2492767.355973165,7158670.943098946],[2492767.355973165,6918964.422396697],[1626888.6995589186,6918964.422396697],[1626888.6995589186,7158670.943098946]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":1},{\"area\":{\"rings\":[[[2013354.3145686672,7306039.634557807],[2098613.6437922814,7158366.144523265],[1928094.9853450526,7158366.144523265],[2013354.3145686672,7306039.634557807]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":2}]}";
 */
-        logger.info(area.getData());
-        return area.getData();
+        //logger.info(area.getData());
+        //return area.getData();
+        return "";
     }
 
     /*
@@ -78,9 +80,20 @@ public class AreaController {
 
         //TODO: save jsonobject["geometries"] to db )
 
-        Action action = actionRepository.getActionById(actionId);
-        Area area = new Area("first", geometries.toString(), action);
-        areaRepository.save(area);
+        Action action = actionRepository.getById(actionId);
+        try {
+            Area area = new Area();
+
+            area.setAction(action);
+            area.setData(geometries.toString());
+            area.setName("first");
+            area.setDateTime(new Timestamp(new Date().getTime()));
+            area.setIsActive(true);
+            areaRepository.save(area);
+        } catch (SQLGrammarException e) {
+            for (Throwable ex = e; ex != null; ex = e.getCause())
+                if (ex instanceof SQLException) { ex = ((SQLException)ex).getNextException();ex.printStackTrace(); }
+        }
         return true;
     }
 
@@ -127,8 +140,8 @@ public class AreaController {
         JSONObject json1 = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         JSONObject coordinate1 = new JSONObject();
-        coordinate1.put("x", -8864114.480484284);
-        coordinate1.put("y", 4362469.970217699);
+        coordinate1.put("latitude", 50.069444);
+        coordinate1.put("longitude", 21.701389);
         jsonArray1.put(coordinate1);
         json1.put("userId", "8");
         json1.put("positions", jsonArray1);
@@ -136,11 +149,11 @@ public class AreaController {
         JSONObject json2 = new JSONObject();
         JSONArray jsonArray2 = new JSONArray();
         JSONObject coordinate2 = new JSONObject();
-        coordinate2.put("x", -9584114.480484284);
-        coordinate2.put("y", 3962469.970217699);
+        coordinate2.put("latitude", 52.483333);
+        coordinate2.put("longitude", -1.906389);
         JSONObject coordinate3 = new JSONObject();
-        coordinate3.put("x", 2214749.0606268025);
-        coordinate3.put("y", 6200923.093105682);
+        coordinate3.put("latitude", 50.061389);
+        coordinate3.put("longitude", 19.938333);
         jsonArray2.put(coordinate2);
         jsonArray2.put(coordinate3);
         json2.put("userId", "5");
@@ -176,9 +189,9 @@ public class AreaController {
 
         //TODO: save jsonobject["geometries"] to db )
         logger.info(areaRepository.getAmount());
-        Area layer = new Area("first", positions.toString());
-        areaRepository.save(layer);
-        logger.info(areaRepository.getAmount());
+        //Area layer = new Area("first", positions.toString());
+        //areaRepository.save(layer);
+        //logger.info(areaRepository.getAmount());
 
         return true;
     }
@@ -189,13 +202,13 @@ public class AreaController {
     String passAllPoints(@RequestParam("actionId") int actionId) {
        // logger.info("GET LAYER: " + actionId);
 
-        User user = new User("Jan", "Kowalski", "1234");
+       /* User user = new User("Jan", "Kowalski", "1234");
         userRepository.saveUser(user);
 
         User user1 = new User("Anna", "Nowak", "32424");
         userRepository.saveUser(user1);
 
-        Action action = actionRepository.getActionById(new Long(actionId));
+        Action action = actionRepository.getById(new Long(actionId));
 
         Position position = new Position(-8864114.480484284,
                 4362469.970217699,
@@ -217,13 +230,13 @@ public class AreaController {
                 action,
                 user1);
         positionRepository.savePosition(position);
-
+*/
 
         JSONObject json1 = new JSONObject();
         JSONArray jsonArray1 = new JSONArray();
         JSONObject coordinate1 = new JSONObject();
-        coordinate1.put("x", -8864114.480484284);
-        coordinate1.put("y", 4362469.970217699);
+        coordinate1.put("latitude", 50.069444); //x -> longitude, y -> latitude
+        coordinate1.put("longitude", 21.701389);
         jsonArray1.put(coordinate1);
         json1.put("userId", "8");
         json1.put("positions", jsonArray1);
@@ -231,11 +244,11 @@ public class AreaController {
         JSONObject json2 = new JSONObject();
         JSONArray jsonArray2 = new JSONArray();
         JSONObject coordinate2 = new JSONObject();
-        coordinate2.put("x", -9664114.480484284);
-        coordinate2.put("y", 3962469.970217699);
+        coordinate2.put("latitude", 52.483333);
+        coordinate2.put("longitude", -1.906389);
         JSONObject coordinate3 = new JSONObject();
-        coordinate3.put("x", 2214749.0606268025);
-        coordinate3.put("y", 6460923.093105682);
+        coordinate3.put("latitude", 50.061389);
+        coordinate3.put("longitude", 19.938333);
         jsonArray2.put(coordinate2);
         jsonArray2.put(coordinate3);
         json2.put("userId", "5");

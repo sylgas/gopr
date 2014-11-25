@@ -21,9 +21,7 @@ function actionController(angular, Map, SimpleLineSymbol, SimpleFillSymbol, Poly
         userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
         userLocalizations = {}   //Dictionary[userInActionId] = graphic with localization index on map
 
-        $.get("http://localhost:8090/action/get", {
-            id: stateParams.id
-        })
+        $.get("http://localhost:8090/api/action/" + stateParams.id)
             .done(function (response) {
                 console.log(response)
 

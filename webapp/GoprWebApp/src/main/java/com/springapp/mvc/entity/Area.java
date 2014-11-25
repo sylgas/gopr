@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -15,8 +16,9 @@ public class Area implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "area_seq", sequenceName = "t_area_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "area_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
@@ -28,24 +30,24 @@ public class Area implements Serializable {
     private Timestamp dateTime;
 
     @Basic
-    @Column(columnDefinition="TEXT", name = "data", nullable = false)
+    @Column(columnDefinition="TEXT", name = "data")
     private String data;
 
     @Basic
     @Column(name = "number")
-    private String number;
+    private Integer number;
 
     @Basic
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = true)
     private Boolean isActive;
 
     @ManyToOne
     @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
     private Action action;
-
+/*
     @OneToMany(mappedBy = "area")
     @JsonManagedReference
-    private Set<GroupArea> groupAreas;
+    private Set<GroupArea> groupAreas;*/
 
     public Area() {}
 
@@ -53,11 +55,12 @@ public class Area implements Serializable {
         this();
         this.name = name;
         this.data = data;
+        this.dateTime = new Timestamp(new Date().getTime());
     }
 
     public Area(String name, String layerData, Action action) {
         this(name, layerData);
-        this.action = action;
+        //this.action = action;
     }
 
     public Long getId() {
@@ -92,11 +95,11 @@ public class Area implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public String getNumber() {
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
@@ -115,12 +118,12 @@ public class Area implements Serializable {
     public void setAction(Action action) {
         this.action = action;
     }
-
+/*
     public Set<GroupArea> getGroupAreas() {
         return groupAreas;
     }
 
     public void setGroupAreas(Set<GroupArea> groupAreas) {
         this.groupAreas = groupAreas;
-    }
+    }*/
 }

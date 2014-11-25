@@ -11,8 +11,8 @@
     <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-    <link rel="stylesheet" type="text/css" href="/styles/createAction.css" media="screen" />
-    <link href="/styles/action.css" rel="stylesheet" type="text/css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="resources/styles/createAction.css" media="screen" />
+    <link href="resources/styles/action.css" rel="stylesheet" type="text/css" media="screen" />
     <script src="http://js.arcgis.com/3.10/"></script>
 </head>
 <body>
@@ -32,8 +32,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a ui-sref="actionList">Lista akcji</a></li>
-                <li><a ui-sref="createAction">Stwórz akcję</a></li>
+                <li><a ui-sref="action-list">Lista akcji</a></li>
+                <li><a ui-sref="action-create">Stwórz akcję</a></li>
                 <li><a ui-sref="#">Wczytaj akcję</a></li>
             </ul>
         </div><!-- /.navbar-collapse -->
@@ -45,6 +45,6 @@
 
 <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
 <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="main.js"></script>
+<script src="resources/main.js"></script>
 
 </html>

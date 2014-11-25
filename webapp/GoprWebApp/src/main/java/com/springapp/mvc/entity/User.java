@@ -4,52 +4,45 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "t_user", schema = "public", catalog = "gopr")
+@Table(name = "t_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "user_seq", sequenceName = "t_user_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 25)
-    private String firstname;
 
     @Basic
-    @Column(name = "surname", nullable = false, length = 25)
-    private String lastname;
+    @Column(name = "name", nullable = false, insertable = true, updatable = true)
+    private String name;
 
     @Basic
-    @Column(name = "login", nullable = true, length = 25)
+    @Column(name = "surname", nullable = true, insertable = true, updatable = true)
+    private String surname;
+
+    @Basic
+    @Column(name = "login", nullable = true, insertable = true, updatable = true)
     private String login;
 
     @Basic
-    @Column(name = "password", nullable = true, length = 25)
+    @Column(name = "password", nullable = true, insertable = true, updatable = true)
     private String password;
 
     @Basic
-    @Column(name = "phone", nullable = true, length = 12)
+    @Column(name = "phone", nullable = true, insertable = true, updatable = true)
     private String phone;
 
     @Basic
-    @Column(name = "nick", nullable = true, length = 25)
+    @Column(name = "nick", nullable = true, insertable = true, updatable = true)
     private String nick;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    private Role role;
-
-    public User() {}
-
-    public User(String firstname, String lastname, String phone) {
-        this();
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.phone = phone;
-    }
+    /*@ManyToOne
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = true)
+    private Role role;*/
 
     public Long getId() {
         return id;
@@ -59,20 +52,20 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getPhone() {
@@ -83,13 +76,13 @@ public class User implements Serializable {
         this.phone = phone;
     }
 
-    public Role getRole() {
+    /*public Role getRole() {
         return role;
     }
 
     public void setRole(Role role) {
         this.role = role;
-    }
+    }*/
 
     public String getLogin() {
         return login;
@@ -113,31 +106,5 @@ public class User implements Serializable {
 
     public void setNick(String nick) {
         this.nick = nick;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User that = (User) o;
-
-        if (firstname != null ? !firstname.equals(that.firstname) : that.firstname != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        //if (roleId != null ? !roleId.equals(that.roleId) : that.roleId != null) return false;
-        if (lastname != null ? !lastname.equals(that.lastname) : that.lastname != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
-        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        //result = 31 * result + (roleId != null ? roleId.hashCode() : 0);
-        return result;
     }
 }

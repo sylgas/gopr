@@ -15,8 +15,9 @@ public class Action implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "user_seq", sequenceName = "t_user_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
@@ -41,11 +42,11 @@ public class Action implements Serializable {
 
     @Basic
     @Column(name = "static_database_id", nullable = true)
-    private String staticDatabaseId;
+    private Long staticDatabaseId;
 
     @Basic
     @Column(name = "isrid_database_id", nullable = true)
-    private String isridDatabaseId;
+    private Long isridDatabaseId;
 
 
     @OneToMany(mappedBy = "action", fetch = FetchType.EAGER)
@@ -104,19 +105,19 @@ public class Action implements Serializable {
         this.comments = comments;
     }
 
-    public String getStaticDatabaseId() {
+    public Long getStaticDatabaseId() {
         return staticDatabaseId;
     }
 
-    public void setStaticDatabaseId(String staticDatabaseId) {
+    public void setStaticDatabaseId(Long staticDatabaseId) {
         this.staticDatabaseId = staticDatabaseId;
     }
 
-    public String getIsridDatabaseId() {
+    public Long getIsridDatabaseId() {
         return isridDatabaseId;
     }
 
-    public void setIsridDatabaseId(String isridDatabaseId) {
+    public void setIsridDatabaseId(Long isridDatabaseId) {
         this.isridDatabaseId = isridDatabaseId;
     }
 

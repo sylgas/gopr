@@ -22,6 +22,7 @@ public class AreaDto {
     public AreaDto(Area area) {
         this.name = area.getName();
         this.data = area.getData();
+        this.id = area.getId();
         //this.action = new ActionDto(area.getAction());
     }
 

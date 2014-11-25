@@ -8,21 +8,26 @@ import java.util.Collection;
 public class UserInAction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "user_in_action_seq", sequenceName = "t_user_in_action_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "user_in_action_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
     @Column(name = "phone", nullable = false, length = 12)
     private String phone;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName = "id")
+    private Group group;
 
     @OneToMany(mappedBy = "userInAction")
     private Collection<Position> positions;
@@ -45,7 +50,7 @@ public class UserInAction {
         return user;
     }
 
-    public void setUsers(User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -65,9 +70,14 @@ public class UserInAction {
         this.phone = phone;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public Group getGroup() {
+        return this.group;
     }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
 
     public Collection<Position> getPositions() {
         return positions;

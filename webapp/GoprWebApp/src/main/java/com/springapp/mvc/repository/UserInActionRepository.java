@@ -13,8 +13,8 @@ public class UserInActionRepository {
     @Autowired
     UserInActionDao userInActionDao;
 
-    public UserInAction saveUserAccount(UserInAction layer) {
-        return userInActionDao.saveAndFlush(layer);
+    public UserInAction save(UserInAction userInAction) {
+        return userInActionDao.saveAndFlush(userInAction);
     }
     public Collection<UserInAction> getUserActscoun() { return userInActionDao.findAll(); }
 

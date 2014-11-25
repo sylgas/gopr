@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
-<div data-ng-init="initMap()" ng-controller="ActionGroupsController" class="col-md-12">
+<div data-ng-init="initMap()" class="col-md-12">
     <div class="col-md-6">
+        <h1 class="col-md-12">
+            {{action.name}}
+        </h1>
         Uczestnicy:
         <table class="table table-striped table-bordered table-hover table-condensed">
             <tr>
@@ -11,18 +14,16 @@
                 <th>Imię</th>
                 <th>Nazwisko</th>
                 <th>Login</th>
-                <th>Cośtam</th>
+                <th>Telefon</th>
                 <th></th>
             </tr>
             <tr ng-repeat="user in users">
                 <td>{{user.id}}</td>
                 <td>{{user.nick}}</td>
-                <td>{{user.firstname}}</td>
-                <td>{{user.lastname}}</td>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
                 <td>{{user.login}}</td>
-                <td>
-                    <button class="btn-xs btn-primary">Szczegóły</button>
-                </td>
+                <td>{{groupUser.phone}}</td>
                 <td>
                     <button class="btn-xs glyphicon glyphicon-arrow-right" ng-click="addToGroup(user)"></button>
                 </td>
@@ -40,20 +41,22 @@
                     <th>Imię</th>
                     <th>Nazwisko</th>
                     <th>Login</th>
-                    <th>Cośtam</th>
+                    <th>Telefon</th>
+                    <th></th>
                 </tr>
-                <tr ng-repeat="groupUser in groupUsers">
+                <tr ng-repeat="groupUser in group.users">
                     <td>
                         <button class="btn-xs glyphicon glyphicon-arrow-left"
                                 ng-click="removeFromGroup(groupUser)"></button>
                     </td>
                     <td>{{groupUser.id}}</td>
                     <td>{{groupUser.nick}}</td>
-                    <td>{{groupUser.firstname}}</td>
-                    <td>{{groupUser.lastname}}</td>
+                    <td>{{groupUser.name}}</td>
+                    <td>{{groupUser.surname}}</td>
                     <td>{{groupUser.login}}</td>
+                    <td>{{groupUser.phone}}</td>
                     <td>
-                        <button class="btn-xs btn-primary">Szczegóły</button>
+                        <button class="btn-xs btn-primary" ng-click="editUser($index)">Edytuj</button>
                     </td>
                 </tr>
             </table>
@@ -61,14 +64,27 @@
                 <label for="groupName" class="col-sm-4 control-label">Nazwa grupy</label>
 
                 <div class="col-sm-8">
-                    <input class="form-control" id="groupName" placeholder="Nazwa grupy" ng-model="groupName">
+                    <input class="form-control" id="groupName" placeholder="Nazwa grupy" ng-model="group.name">
                 </div>
             </div>
             <div class="form-group">
-                <label for="comment" class="col-sm-4 control-label">Komentarz</label>
+                <label for="area" class="col-sm-4 control-label">Obszar: </label>
 
                 <div class="col-sm-8">
-                    <input class="form-control" id="comment" placeholder="Komentarz" ng-model="comment">
+                    <select class="form-control" id="area" ng-model="group.area">
+                        <option ng-repeat="area in action.areas"
+                                value="{{area.id}}">
+                            {{area.name}}
+                        </option>
+                    </select>
+                    {{group.area}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="comment" class="col-sm-4 control-label">Nazwa grupy</label>
+
+                <div class="col-sm-8">
+                    <input class="form-control" id="comment" placeholder="Komentarz" ng-model="group.comment">
                 </div>
             </div>
             <div class="form-group">
@@ -78,13 +94,6 @@
                 </div>
             </div>
         </form>
-        <div>
-            Obszary:
-            <table id="areasTable" border="1"
-                   style="cursor: pointer; width: 100%">
-                <tr></tr>
-            </table>
-        </div>
         <div id="mapDiv"></div>
     </div>
     <div class="col-sm-offset-10 col-sm-2 btn-group pull-right">

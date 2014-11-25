@@ -15,12 +15,12 @@ public class UserRepository {
     @Autowired
     private UserDao userDao;
 
-    public User findUserByLastname(String login) {
-        return userDao.findByLastname(login);
+    public User findUserBySurname(String surname) {
+        return userDao.findBySurname(surname);
     }
 
-    public User saveUser(User layer) {
-        return userDao.saveAndFlush(layer);
+    public User save(User user) {
+        return userDao.saveAndFlush(user);
     }
 
     public List<User> getAll() { return new ArrayList<User>(userDao.findAll()); }

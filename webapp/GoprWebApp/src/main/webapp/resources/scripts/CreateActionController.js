@@ -20,7 +20,7 @@ function createActionController(angular) {
             };
         }
 
-        $.post("http://localhost:8090/action/create", {
+        $.post("http://localhost:8090/action/", {
             name: scope.actionName,
             startDateTime: new Date().getTime(),
             geometries: JSON.stringify(geometryList),
@@ -40,6 +40,7 @@ function createActionController(angular) {
     }*/
 
     function startAction() {
+
         var actionId;
         var geometries = MapManager.getGeometries();
         var geometryList = Array();
@@ -49,13 +50,16 @@ function createActionController(angular) {
             console.log(i)
             geometryList[i - 1] = {
                 numberInAction: geometries[i].numberInAction,
-                name: geometries[i].geometryName,
+                name: geometries[i].geometryName
             };
         }
-        $.post("http://localhost:8090/action/create", {
-            name: "name",
+        console.log(scope)
+        console.log(scope.action.name)
+        console.log(scope.action.description)
+        $.post("http://localhost:8090/api/action", {
+            name: scope.action.name,
             startDateTime: new Date().getTime(),
-            description: "desc"
+            description: scope.action.description
         })
             .done(function (response) {
                 if (isNaN(parseInt(response)) || parseInt(response) == -1){
@@ -70,7 +74,7 @@ function createActionController(angular) {
                 }
 
                 for(var j = 0; j<geometryList.length; j++) {
-                    $.post("http://localhost:8090/area/send", {
+                    $.post("http://localhost:8090/api/area/send", {
                         actionId: actionId,
                         geometries: JSON.stringify(geometryList[j])
                     })
@@ -79,7 +83,7 @@ function createActionController(angular) {
                                 alert("Wystąpił błąd z połączeniem z serwerem ale przeszlo!");
                             //window.location.href = "http://localhost:8090/action";
                             if(j == geometryList.length) {
-                                state.go("setActionGroups", {id: actionId, inherit: false});
+                                state.go("action-groups", {id: actionId, reload: true});
                             }
                         })
                         .fail(function () {
@@ -111,11 +115,8 @@ function createActionController(angular) {
         },
 
         initToolbarAndContextMenu: function initToolbarAndContextMenu() {
-            console.log("i'm here")
             toolbar = MapManager.getToolbar();
             contextMenu = MapManager.getContextMenu();
-            console.log(toolbar)
-            console.log(contextMenu)
         },
 
         selectTableRow: function selectTableRow(tableRow) {
@@ -142,6 +143,7 @@ function createActionController(angular) {
         state = $state;
         scope = $scope;
         scope.init = init;
+        scope.action = {};
     }
 
     return {
