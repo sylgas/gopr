@@ -6,6 +6,9 @@
         <h1 class="col-md-12">
             {{action.name}}
         </h1>
+        <div class="col-md-12">
+        <button class="btn btn-primary" ng-click="addUser()">Dodaj uzytkownika</button>
+        </div>
         Uczestnicy:
         <table class="table table-striped table-bordered table-hover table-condensed">
             <tr>
@@ -23,7 +26,7 @@
                 <td>{{user.name}}</td>
                 <td>{{user.surname}}</td>
                 <td>{{user.login}}</td>
-                <td>{{groupUser.phone}}</td>
+                <td>{{user.phone}}</td>
                 <td>
                     <button class="btn-xs glyphicon glyphicon-arrow-right" ng-click="addToGroup(user)"></button>
                 </td>
