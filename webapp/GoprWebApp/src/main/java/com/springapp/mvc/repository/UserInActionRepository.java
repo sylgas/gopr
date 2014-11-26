@@ -16,6 +16,4 @@ public class UserInActionRepository {
     public UserInAction save(UserInAction userInAction) {
         return userInActionDao.saveAndFlush(userInAction);
     }
-    public Collection<UserInAction> getUserActscoun() { return userInActionDao.findAll(); }
-
 }

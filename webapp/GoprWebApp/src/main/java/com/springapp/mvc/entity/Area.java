@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -44,6 +45,9 @@ public class Area implements Serializable {
     @ManyToOne
     @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
     private Action action;
+
+    @OneToMany(mappedBy = "pk.area", fetch = FetchType.EAGER)
+    private Set<GroupArea> groupAreas;
 /*
     @OneToMany(mappedBy = "area")
     @JsonManagedReference
@@ -53,6 +57,7 @@ public class Area implements Serializable {
 
     public Area(String name, String data) {
         this();
+        this.groupAreas = new HashSet<GroupArea>();
         this.name = name;
         this.data = data;
         this.dateTime = new Timestamp(new Date().getTime());
@@ -118,12 +123,12 @@ public class Area implements Serializable {
     public void setAction(Action action) {
         this.action = action;
     }
-/*
+
     public Set<GroupArea> getGroupAreas() {
         return groupAreas;
     }
 
     public void setGroupAreas(Set<GroupArea> groupAreas) {
         this.groupAreas = groupAreas;
-    }*/
+    }
 }

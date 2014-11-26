@@ -37,13 +37,15 @@ public class UserInActionController {
     @RequestMapping(method=RequestMethod.POST)
     public @ResponseBody
     UserInAction create(
-            @RequestParam("user") User user,
-            @RequestParam("phone") String phone,
-            @RequestParam("group") Group group) {
+            @RequestParam("userId") long userId,
+            @RequestParam("groupId") long groupId,
+            @RequestParam(value = "phone", required = false) String phone) {
         UserInAction userInAction = new UserInAction();
-        userInAction.setPhone(phone);
-        userInAction.setGroup(group);
-        userInAction.setUser(user);
+        if(phone != null) {
+            userInAction.setPhone(phone);
+        }
+        userInAction.setGroup(groupRepository.get(groupId));
+        userInAction.setUser(userRepository.get(userId));
         return userInActionRepository.save(userInAction);
     }
 }

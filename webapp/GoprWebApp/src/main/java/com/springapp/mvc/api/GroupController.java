@@ -1,9 +1,7 @@
 package com.springapp.mvc.api;
 
-import com.springapp.mvc.entity.Action;
-import com.springapp.mvc.entity.Area;
-import com.springapp.mvc.entity.Group;
-import com.springapp.mvc.entity.User;
+import com.springapp.mvc.dto.AreaDto;
+import com.springapp.mvc.entity.*;
 import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.AreaRepository;
 import com.springapp.mvc.repository.GroupRepository;
@@ -36,18 +34,31 @@ public class GroupController {
     @Autowired
     private AreaRepository areaRepository;
 
+    //@Autowired
+    //private GroupAreaRepository groupAreaRepository;
+
     /*
      * Saves group of given action.
      */
     @RequestMapping(value = "/api/group", method = RequestMethod.POST)
     public
     @ResponseBody
-    Group saveGroup(@RequestParam("actionId") int actionId,
+    Group create(@RequestParam("actionId") long actionId,
                     @RequestParam("name") String name,
-                    @RequestParam("area") Area area) {
-        logger.info("Save group: " + name + area.getId());
-
-        Group group = new Group(name, actionRepository.getById(new Long(actionId)));
+                    @RequestParam("areaId") long areaId) {
+        logger.info("Save group: " + name + areaId);
+        //Area area = areaRepository.getById(new Long(areaId));
+        //area.setGroupAreas(area.getGroupAreas().add(new GroupArea()));
+        logger.info(actionId + " " + areaId);
+        Group group = new Group(name, actionRepository.get(actionId));
+        logger.info("group created");
+        GroupArea groupArea = new GroupArea();
+        groupArea.setGroup(group);
+        logger.info("group set");
+        groupArea.setArea(areaRepository.get(areaId));
+        logger.info("area set");
+        group.getGroupAreas().add(groupArea);
+        logger.info("added");
         return groupRepository.save(group);
     }
 }
