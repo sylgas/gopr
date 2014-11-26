@@ -1,7 +1,9 @@
 package com.springapp.mvc.repository;
 
+import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Group;
 import com.springapp.mvc.repository.dao.GroupDao;
+import java.util.Collection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +15,10 @@ public class GroupRepository {
 
     public Group save(Group group) {
         return groupDao.saveAndFlush(group);
+    }
+
+    public Collection<Group> getGroupsByAction(Action action){
+        return groupDao.findAllByAction(action);
     }
 
 }

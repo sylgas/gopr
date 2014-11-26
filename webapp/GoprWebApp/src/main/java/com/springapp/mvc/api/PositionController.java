@@ -1,8 +1,19 @@
 package com.springapp.mvc.api;
 
+import java.sql.Timestamp;
+import java.util.*;
+
+import com.springapp.mvc.dto.PositionDto;
+import com.springapp.mvc.dto.UserPositionsDto;
+import com.springapp.mvc.entity.Group;
+import com.springapp.mvc.entity.Position;
+import com.springapp.mvc.entity.UserInAction;
+import com.springapp.mvc.repository.ActionRepository;
+import com.springapp.mvc.repository.GroupRepository;
+import com.springapp.mvc.repository.PositionRepository;
+import com.springapp.mvc.repository.UserInActionRepository;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,29 +28,53 @@ public class PositionController {
     private static final String ALL_ACTION_POSITIONS = "/action_all";
     private static final String ACTION_POSITIONS = "/action";
 
+    @Autowired
+    private PositionRepository positionRepository;
+
+    @Autowired
+    private UserInActionRepository userInActionRepository;
+
+    @Autowired
+    private GroupRepository groupRepository;
+
+    @Autowired
+    private ActionRepository actionRepository;
+
     /*
-     * Method returns list of all positions per user in action:
-     *
-     *  Each position per user contains:
-     *   - userInActionId
-     *   - list of positions
-     *
-     *  Each position contains:
-     *   - latitude
-     *   - longitude
-     *   - dateTime
+     * Method returns list of all positions per user in action
      */
     @RequestMapping(value = ALL_ACTION_POSITIONS, method = RequestMethod.GET)
-    public @ResponseBody String getAllActionPossitions(
+    public @ResponseBody List<UserPositionsDto>  getAllActionPositions(
             @RequestParam("actionId") int actionId){
 
         logger.info(ALL_ACTION_POSITIONS +
                 "\nactionId: " + actionId);
 
-        //TODO: zwracanie wszystkich pozycji wszystkich grup akcji z bazy
+        List<UserInAction> userInActionList = new ArrayList<UserInAction>();
+        for (Group group : groupRepository.getGroupsByAction(actionRepository.getById(new Long(actionId)))){
+            userInActionList.addAll(userInActionRepository.getUserInActionsByGroup(group));
+        }
+
+        List<UserPositionsDto> userInActionPositionList = new ArrayList<UserPositionsDto>();
+        for (UserInAction userInAction : userInActionList){
+            List<PositionDto> positionDtoList = new ArrayList<PositionDto>();
+            for (Position position : positionRepository.getPositionByUserInAction(userInAction)){
+                PositionDto positionDto = new PositionDto();
+                positionDto.setLatitude(position.getLatitude());
+                positionDto.setLongitude(position.getLongitude());
+                positionDto.setDateTime(position.getDateTime());
+                positionDtoList.add(positionDto);
+            }
+            UserPositionsDto userPositionsDto = new UserPositionsDto();
+            userPositionsDto.setUserInActionId(userInAction.getId());
+            userPositionsDto.setPositions(positionDtoList);
+            userInActionPositionList.add(userPositionsDto);
+        }
+
+        return userInActionPositionList;
 
         //region tmp
-
+        /*
         JSONArray positions = new JSONArray();
 
         JSONObject position11 = new JSONObject();
@@ -93,37 +128,49 @@ public class PositionController {
         positions.put(user1);
         positions.put(user2);
         positions.put(user3);
-
+        */
         //endregion
 
-        return positions.toString();
+        //positions.toString();
     }
 
     /*
-     * Method returns list of all positions per user in action after giving date time:
-     *
-     *  Each position per user contains:
-     *   - userInActionId
-     *   - list of positions
-     *
-     *  Each position contains:
-     *   - latitude
-     *   - longitude
-     *   - dateTime
+     * Method returns list of all positions per user in action after giving date time.
      */
     @RequestMapping(value = ACTION_POSITIONS, method = RequestMethod.GET)
-    public @ResponseBody String getAllActionPossitions(
+    public @ResponseBody List<UserPositionsDto> getAllActionPositions(
             @RequestParam("actionId") int actionId,
             @RequestParam("afterDateTime") long afterDateTime){
 
         logger.info(ALL_ACTION_POSITIONS +
                 "\nactionId: " + actionId);
 
-        //TODO: zwracanie wszystkich pozycji wszystkich grup akcji z bazy
-        //TODO: pozniejsze niz podany timestamp!!
+        List<UserInAction> userInActionList = new ArrayList<UserInAction>();
+        for (Group group : groupRepository.getGroupsByAction(actionRepository.getById(new Long(actionId)))){
+            userInActionList.addAll(userInActionRepository.getUserInActionsByGroup(group));
+        }
+
+        List<UserPositionsDto> userInActionPositionList = new ArrayList<UserPositionsDto>();
+        for (UserInAction userInAction : userInActionList){
+            List<PositionDto> positionDtoList = new ArrayList<PositionDto>();
+            for (Position position : positionRepository.getPositionByUserInActionAfterDateTime(userInAction, new Timestamp(afterDateTime))){
+                PositionDto positionDto = new PositionDto();
+                positionDto.setLatitude(position.getLatitude());
+                positionDto.setLongitude(position.getLongitude());
+                positionDto.setDateTime(position.getDateTime());
+                positionDtoList.add(positionDto);
+            }
+            UserPositionsDto userPositionsDto = new UserPositionsDto();
+            userPositionsDto.setUserInActionId(userInAction.getId());
+            userPositionsDto.setPositions(positionDtoList);
+            userInActionPositionList.add(userPositionsDto);
+        }
+
+        return userInActionPositionList;
+
 
         //region tmp
-
+        /*
         JSONArray positions = new JSONArray();
 
         JSONObject position11 = new JSONObject();
@@ -167,9 +214,11 @@ public class PositionController {
         positions.put(user1);
         positions.put(user2);
         positions.put(user3);
-
+        */
         //endregion
 
-        return positions.toString();
+        //return positions.toString();
     }
+
+
 }
