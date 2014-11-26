@@ -117,7 +117,24 @@ function actionGroupsController(angular) {
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
-    };
+    }
+
+    function addUser() {
+        $.post("http://localhost:8090/api/user", {
+            name: "user",
+            surname: "user",
+            login: "user",
+            password: "user",
+            nick: "user"
+        })
+            .done(function (response) {
+                console.log('user created')
+                scope.$apply()
+            })
+            .fail(function () {
+                alert("Wystąpił błąd z połączeniem z serwerem!");
+            });
+    }
 
     function ActionGroupsController($scope, $state, $stateParams, $modal, mapFactory) {
         MapManager = mapFactory;
@@ -131,6 +148,7 @@ function actionGroupsController(angular) {
         scope.addToGroup = addToGroup;
         scope.removeFromGroup = removeFromGroup;
         scope.addGroup = addGroup;
+        scope.addUser = addUser;
         scope.group = {};
         scope.group.users = [];
         scope.group.areas = {};
