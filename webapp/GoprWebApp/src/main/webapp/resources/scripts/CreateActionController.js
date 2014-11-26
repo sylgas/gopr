@@ -44,18 +44,13 @@ function createActionController(angular) {
         var actionId;
         var geometries = MapManager.getGeometries();
         var geometryList = Array();
-        console.log(geometries);
         for (i = 1; i <= Object.keys(geometries).length; i++) {
             //Parse GeometryEx structure
-            console.log(i)
             geometryList[i - 1] = {
                 numberInAction: geometries[i].numberInAction,
                 name: geometries[i].geometryName
             };
         }
-        console.log(scope)
-        console.log(scope.action.name)
-        console.log(scope.action.description)
         $.post("http://localhost:8090/api/action", {
             name: scope.action.name,
             startDateTime: new Date().getTime(),
@@ -152,7 +147,7 @@ function createActionController(angular) {
             return CreateActionController;
         }
     };
-};
+}
 
 define(['angular', 'esri/map', "esri/toolbars/draw", "esri/toolbars/edit", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol",
     "esri/graphic", "esri/Color", "dojo/dom", "dojo/on", "dijit/Menu", "dijit/MenuItem", "dijit/MenuSeparator", "dijit/form/Button",

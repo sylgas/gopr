@@ -1,11 +1,8 @@
 package com.springapp.mvc.entity;
 
-import org.codehaus.jackson.annotate.JsonManagedReference;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,10 +45,6 @@ public class Area implements Serializable {
 
     @OneToMany(mappedBy = "pk.area", fetch = FetchType.EAGER)
     private Set<GroupArea> groupAreas;
-/*
-    @OneToMany(mappedBy = "area")
-    @JsonManagedReference
-    private Set<GroupArea> groupAreas;*/
 
     public Area() {}
 
@@ -108,7 +101,7 @@ public class Area implements Serializable {
         this.number = number;
     }
 
-    public Boolean getIsActive() {
+    public Boolean isActive() {
         return isActive;
     }
 

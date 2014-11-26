@@ -8,7 +8,6 @@
     <input id="actionName" class="form-control" ng-model="action.name" placeholder="Nazwa akcji"/>
     <label for="actionDescription">Opis akcji</label>
     <input id="actionDescription" class="form-control" ng-model="action.description" placeholder="Opis akcji"/>
-    {{action.name}} {{action.description}}
     <br>
     <div class="" id="areaDrawDiv" ng-model="areaDrawDiv">
         <label>Dodaj obszar</label>

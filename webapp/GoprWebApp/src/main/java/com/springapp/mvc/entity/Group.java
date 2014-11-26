@@ -3,7 +3,6 @@ package com.springapp.mvc.entity;
 import org.codehaus.jackson.annotate.JsonBackReference;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +28,7 @@ public class Group {
     @Column(name = "pictogram", nullable = true)
     private String pictogram;
 
-    @OneToMany(mappedBy = "pk.group", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "pk.group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<GroupArea> groupAreas;
 

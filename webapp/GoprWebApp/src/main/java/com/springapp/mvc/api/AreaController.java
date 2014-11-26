@@ -2,12 +2,8 @@ package com.springapp.mvc.api;
 
 import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
-import com.springapp.mvc.entity.Position;
-import com.springapp.mvc.entity.User;
 import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.AreaRepository;
-import com.springapp.mvc.repository.PositionRepository;
-import com.springapp.mvc.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.SQLGrammarException;
 import org.json.JSONArray;
@@ -39,11 +35,6 @@ public class AreaController {
     @Autowired
     private ActionRepository actionRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PositionRepository positionRepository;
     /*
      * Returns searching areas connected with given action.
      */

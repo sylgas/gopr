@@ -28,7 +28,7 @@
                 <td>{{user.login}}</td>
                 <td>{{user.phone}}</td>
                 <td>
-                    <button class="btn-xs glyphicon glyphicon-arrow-right" ng-click="addToGroup(user)"></button>
+                    <button class="btn-xs glyphicon glyphicon-arrow-right" ng-click="addUserToGroup(user)"></button>
                 </td>
             </tr>
         </table>
@@ -50,7 +50,7 @@
                 <tr ng-repeat="groupUser in group.users">
                     <td>
                         <button class="btn-xs glyphicon glyphicon-arrow-left"
-                                ng-click="removeFromGroup(groupUser)"></button>
+                                ng-click="removeUserFromGroup(groupUser)"></button>
                     </td>
                     <td>{{groupUser.id}}</td>
                     <td>{{groupUser.nick}}</td>
@@ -80,7 +80,6 @@
                             {{area.name}}
                         </option>
                     </select>
-                    {{group.area}}
                 </div>
             </div>
             <div class="form-group">
@@ -97,6 +96,21 @@
                 </div>
             </div>
         </form>
+        Dodane grupy
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <tr>
+                <th>Id</th>
+                <th>Nazwa</th>
+                <th>Obszar</th>
+                <th>Uczestnicy</th>
+            </tr>
+            <tr ng-repeat="group in groups">
+                <td>{{group.id}}</td>
+                <td>{{group.name}}</td>
+                <td>{{group.area.id}}</td>
+                <td>{{group.users}}</td>
+            </tr>
+        </table>
         <div id="mapDiv"></div>
     </div>
     <div class="col-sm-offset-10 col-sm-2 btn-group pull-right">
