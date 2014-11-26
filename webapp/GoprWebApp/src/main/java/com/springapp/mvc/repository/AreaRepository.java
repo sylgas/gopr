@@ -23,7 +23,7 @@ public class AreaRepository {
         return areaDao.saveAndFlush(area);
     }
 
-    public Area getById(Long areaId) {
+    public Area get(Long areaId) {
         return areaDao.findOne(areaId);
     }
 

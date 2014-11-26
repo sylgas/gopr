@@ -60,11 +60,14 @@ function actionGroupsController(angular) {
     }
 
     function saveGroupParticipants(group) {
+        console.log(group)
+        console.log(scope.group.users)
         scope.group.users.forEach(function(user, index) {
+            console.log(user)
             $.post("http://localhost:8090/api/action/user", {
-                user: user,
+                userId: user.id,
                 phone: user.phone,
-                group: group
+                groupId: group.id
             })
                 .done(function (response) {
                     console.log("got user in action")
@@ -72,7 +75,6 @@ function actionGroupsController(angular) {
                     scope.group.users.splice(scope.group.users.indexOf(user), 1)
                 })
         })
-
     }
 
     function addGroup() {
@@ -82,7 +84,7 @@ function actionGroupsController(angular) {
         $.post("http://localhost:8090/api/group", {
             actionId: stateParams.id,
             name: scope.group.name,
-            area: scope.group.area
+            areaId: scope.group.area
         })
             .done(function (response) {
                 scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);

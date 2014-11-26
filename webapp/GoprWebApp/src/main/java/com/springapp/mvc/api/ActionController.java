@@ -63,7 +63,7 @@ public class ActionController {
             @PathVariable("id") Long id) {
 
         logger.info("getting action " + id);
-        Action action = actionRepository.getById(id);
+        Action action = actionRepository.get(id);
         Set<Area> areas = areaRepository.getByAction(action);
         action.setAreas(areas);
         return new ActionDto(action);

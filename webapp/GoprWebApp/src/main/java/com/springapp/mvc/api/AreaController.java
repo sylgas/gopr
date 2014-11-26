@@ -50,11 +50,11 @@ public class AreaController {
     @RequestMapping(value = GET_LAYER, method = RequestMethod.GET)
     public
     @ResponseBody
-    String passGeometries(@RequestParam("actionId") int actionId) {
+    String passGeometries(@RequestParam("actionId") long actionId) {
         logger.info("GET LAYER: " + actionId);
 
         //TODO: read from db and pass geometries
-        Area area = (Area) areaRepository.getByAction(actionRepository.getById(new Long(actionId))).toArray()[0];
+        Area area = (Area) areaRepository.getByAction(actionRepository.get(actionId)).toArray()[0];
 /*
         return "{\"geometries\":[{\"area\":{\"rings\":[[[1626888.6995589186,7158670.943098946],[2492767.355973165,7158670.943098946],[2492767.355973165,6918964.422396697],[1626888.6995589186,6918964.422396697],[1626888.6995589186,7158670.943098946]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":1},{\"area\":{\"rings\":[[[2013354.3145686672,7306039.634557807],[2098613.6437922814,7158366.144523265],[1928094.9853450526,7158366.144523265],[2013354.3145686672,7306039.634557807]]],\"spatialReference\":{\"wkid\":102100,\"latestWkid\":3857}},\"areaId\":2}]}";
 */
@@ -80,7 +80,7 @@ public class AreaController {
 
         //TODO: save jsonobject["geometries"] to db )
 
-        Action action = actionRepository.getById(actionId);
+        Action action = actionRepository.get(actionId);
         try {
             Area area = new Area();
 

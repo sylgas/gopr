@@ -1,7 +1,11 @@
 package com.springapp.mvc.entity;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "t_group", schema = "public", catalog = "gopr")
@@ -25,8 +29,9 @@ public class Group {
     @Column(name = "pictogram", nullable = true)
     private String pictogram;
 
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
-    private Collection<GroupArea> groupAreas;
+    @OneToMany(mappedBy = "pk.group", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Set<GroupArea> groupAreas;
 
     @ManyToOne
     @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
@@ -35,10 +40,11 @@ public class Group {
     public Group(String name, Action action) {
         this.name = name;
         this.action = action;
+        this.groupAreas = new HashSet<GroupArea>();
     }
 
     public Group() {
-
+        this.groupAreas = new HashSet<GroupArea>();
     }
 
     public Long getId() {
@@ -73,19 +79,19 @@ public class Group {
         this.pictogram = pictogram;
     }
 
-    public Collection<GroupArea> getGroupAreas() {
+    public Set<GroupArea> getGroupAreas() {
         return groupAreas;
     }
 
-    public void setGroupAreas(Collection<GroupArea> groupAreas) {
+    public void setGroupAreas(Set<GroupArea> groupAreas) {
         this.groupAreas = groupAreas;
     }
 
-    public Action getActionerGroups() {
+    public Action getAction() {
         return action;
     }
 
-    public void setActionerGroups(Action action) {
+    public void setAction(Action action) {
         this.action = action;
     }
 }

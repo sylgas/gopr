@@ -17,6 +17,9 @@ public class GroupRepository {
         return groupDao.saveAndFlush(group);
     }
 
+    public Group get(Long groupId) {
+        return groupDao.findOne(groupId);
+    }
     public Collection<Group> getGroupsByAction(Action action){
         return groupDao.findAllByAction(action);
     }

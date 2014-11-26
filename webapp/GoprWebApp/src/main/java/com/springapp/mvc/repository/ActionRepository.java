@@ -19,8 +19,8 @@ public class ActionRepository {
         return actionDao.saveAndFlush(action);
     }
 
-    public List<Action> getAll() { return new ArrayList<Action>(actionDao.findAll()); }
+    public Action get(Long id) { return actionDao.findOne(id); }
 
-    public Action getById(Long id) { return actionDao.findOne(id); }
+    public List<Action> getAll() { return new ArrayList<Action>(actionDao.findAll()); }
 
 }
