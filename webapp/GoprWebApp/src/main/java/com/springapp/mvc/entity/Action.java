@@ -5,7 +5,6 @@ import org.codehaus.jackson.annotate.JsonBackReference;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity

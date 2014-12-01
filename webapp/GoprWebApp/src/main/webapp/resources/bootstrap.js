@@ -42,7 +42,7 @@
                     })
                     .state('group-user', {
                         url: '/action/:id/group/user',
-                        templateUrl: 'group-user',
+                        templateUrl: 'group-user-dialog',
                         controller: 'GroupUserController'
                     });
 

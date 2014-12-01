@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public interface PositionDao extends JpaRepository<Position, Long> {
 
-    Collection<Position> findAllByUserInAction(UserInAction userInAction);
+    //Collection<Position> findAllByUserInAction(UserInAction userInAction);
 
-    Collection<Position> findByAllByUserInActionAndDateTimeGreaterThan(UserInAction userInAction, Timestamp dateTime);
+    //Collection<Position> findAllByUserInActionAndDateTimeGreaterThan(UserInAction userInAction, Timestamp dateTime);
 }

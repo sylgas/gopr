@@ -36,5 +36,5 @@ public class DefaultController {
 
     @RequestMapping(value="group-user", method = RequestMethod.GET)
     public String editUserInGroup() {
-        return "group-user"; }
+        return "group-user-dialog"; }
 }

@@ -3,13 +3,12 @@ function groupUserController(angular) {
     var modal;
 
     function save () {
-        console.log(scope.user)
         modal.close(scope.user);
-    };
+    }
 
     function cancel() {
         modal.dismiss('cancel');
-    };
+    }
 
     function GroupUserController($scope, $modalInstance, user) {
         scope = $scope;
@@ -25,6 +24,6 @@ function groupUserController(angular) {
             return GroupUserController;
         }
     };
-};
+}
 
-define(['angular'], groupUserController)
+define(['angular'], groupUserController);

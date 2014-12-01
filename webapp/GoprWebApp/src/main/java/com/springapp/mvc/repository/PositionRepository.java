@@ -22,10 +22,10 @@ public class PositionRepository {
     public Collection<Position> getPositions() { return positionDao.findAll(); }
 
     public Collection<Position> getPositionByUserInAction(UserInAction userInAction) {
-        return positionDao.findAllByUserInAction(userInAction);
+        return null;//positionDao.findAllByUserInAction(userInAction);
     }
 
     public Collection<Position> getPositionByUserInActionAfterDateTime(UserInAction userInAction, Timestamp dateTime) {
-        return positionDao.findByAllByUserInActionAndDateTimeGreaterThan(userInAction, dateTime);
+        return null;//positionDao.findAllByUserInActionAndDateTimeGreaterThan(userInAction, dateTime);
     }
 }

@@ -35,7 +35,8 @@ public class GpsPostPositionsService {
     private LocationManager locationManager;
 
     @Inject
-    private SettingsAlertDialog settingsAlertDialog;
+    private
+    SettingsAlertDialog settingsAlertDialog;
 
     @Inject
     private PositionService positionService;

@@ -21,7 +21,7 @@ public class ConnectionService {
 
     @Inject
     public ConnectionService(Context context) {
-        this.context = context;
+        this.context = context
         RoboGuice.injectMembers(context, this);
     }
 

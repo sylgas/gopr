@@ -3,7 +3,6 @@ package com.springapp.mvc.api;
 import com.springapp.mvc.dto.ActionDto;
 import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
-import com.springapp.mvc.entity.User;
 import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.AreaRepository;
 import org.apache.log4j.Logger;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -72,7 +72,11 @@ public class ActionController {
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    List<Action> getAll() {
-        return actionRepository.getAll();
+    List<ActionDto> getAll() {
+        List<ActionDto> actions = new ArrayList<ActionDto>();
+        for(Action action: actionRepository.getAll()) {
+            actions.add(new ActionDto(action));
+        }
+        return actions;
     }
 }

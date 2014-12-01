@@ -1,10 +1,10 @@
 package com.springapp.mvc.entity;
 
+import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
-//import com.google.common.base.Objects;
-
+@Embeddable
 public class GroupAreaId implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,4 +50,24 @@ public class GroupAreaId implements Serializable {
     public void getGroupId(Long groupId) {
         this.groupId = groupId;
     }*/
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        GroupAreaId that = (GroupAreaId) o;
+
+        if (area != null ? !area.equals(that.area) : that.area != null) return false;
+        if (group != null ? !group.equals(that.group) : that.group != null)
+            return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (area != null ? area.hashCode() : 0);
+        result = 31 * result + (group != null ? group.hashCode() : 0);
+        return result;
+    }
 }

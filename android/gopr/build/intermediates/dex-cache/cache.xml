@@ -8,35 +8,17 @@
         revision="20.0.0"
         sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\gson-2.3-e7eb8753212e02978618b90021f2a31d94380c9d.jar"
-        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3\5fc52c41ef0239d1093a1eb7c3697036183677ce\gson-2.3.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="5fc52c41ef0239d1093a1eb7c3697036183677ce"/>
-    <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-a30c29aaba660fb5430479764c6356e88d438c60.jar"
-        jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="ffbb48e87fa5e9107c17aaa0616f724d785a4d71"/>
-    <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\guice-multibindings-3.0-2f8208b3ab7515cd7ad2747798ffafafc998cb4e.jar"
         jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.google.inject.extensions\guice-multibindings\3.0\5e670615a927571234df68a8b1fe1a16272be555\guice-multibindings-3.0.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="5e670615a927571234df68a8b1fe1a16272be555"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-app-toolkit-7bead9b67e3fc8d05920e29321bcfe75af2830ea.jar"
-        jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\arcgis-android-app-toolkit.jar"
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jcifs-1.3.17-02e8f1f5d03f15cbce983f383a599a49846d8508.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\libs\jcifs-1.3.17.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="ba8d428ad04e30febd942365c6119bb62d7199bb"/>
-    <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-00d010623c4278a8848e14ec48bd09c3e62082b2.jar"
-        jar="C:\AndroidStudio\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+        sha1="1a2f0e28cc9497fb4927ea2422605fb8023969b6"/>
     <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\ormlite-jdbc-4.48-b82779a55f1a68f4c3822aa0432e200a6cf1e68f.jar"
         jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-jdbc\4.48\b915ebd2c4b901eec32e4df44e5503752e92ce38\ormlite-jdbc-4.48.jar"
@@ -50,17 +32,17 @@
         revision="20.0.0"
         sha1="75ac72d19377a95225217cb4fdfa1290f3c81145"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\roboguice-2.0-dd2e36598ed7529248c55b35911fab62b4539bca.jar"
-        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.roboguice\roboguice\2.0\727ccb8f376109d0b5c44abca6f791dccc5c5dbc\roboguice-2.0.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="727ccb8f376109d0b5c44abca6f791dccc5c5dbc"/>
-    <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\aopalliance-1.0-4212c27b5a7b775a65a097fe261219c62c10630f.jar"
         jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\aopalliance\aopalliance\1.0\235ba8b489512805ac13a8f9ea77a1ca5ebe3e8\aopalliance-1.0.jar"
         jumboMode="false"
         revision="20.0.0"
         sha1="0235ba8b489512805ac13a8f9ea77a1ca5ebe3e8"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\roboguice-2.0-dd2e36598ed7529248c55b35911fab62b4539bca.jar"
+        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.roboguice\roboguice\2.0\727ccb8f376109d0b5c44abca6f791dccc5c5dbc\roboguice-2.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="727ccb8f376109d0b5c44abca6f791dccc5c5dbc"/>
     <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\javax.inject-1-36157241796d80a0aab78ddcf69d15ab2f9be994.jar"
         jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
@@ -74,11 +56,23 @@
         revision="20.0.0"
         sha1="afa06f539a4026c10b247386312aa67404b80a16"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\cglib-2.2.1-v20090111-1cdb932a1ffd09ffacf4ab38d03a6d00b9e31c12.jar"
-        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.sonatype.sisu.inject\cglib\2.2.1-v20090111\7ce5e983fd0e6c78346f4c9cbfa39d83049dda2\cglib-2.2.1-v20090111.jar"
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\internal_impl-20.0.0-2acd2231d20792bbb4f2f00af72e474a509872ff.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\libs\internal_impl-20.0.0.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="07ce5e983fd0e6c78346f4c9cbfa39d83049dda2"/>
+        sha1="e40b3078e3fbd353c9f44da8df25a8fc0078209d"/>
+    <item
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-core-lgpl-1.9.5-a4b2b666912cca12aa714b10454493bb2ca2de90.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\libs\jackson-core-lgpl-1.9.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="75ac72d19377a95225217cb4fdfa1290f3c81145"/>
+    <item
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-api-8461992fdb0afd75b1e15dc63658db79912a3fd0.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\libs\arcgis-android-api.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="6eb8b263ff94c660bc05ec011589e4053d65957b"/>
     <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\guice-3.0-no_aop-e26eee9e358029351a995ec7ae0b5b1e9a88ceaa.jar"
         jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.google.inject\guice\3.0\28586dc97c525501329d9a242fc3402041e3572d\guice-3.0-no_aop.jar"
@@ -92,6 +86,54 @@
         revision="20.0.0"
         sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
     <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\ormlite-core-4.48-1c6596ea93b6721d419c6348ceaaccb2ee740379.jar"
+        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-core\4.48\e579bd2905d0399af5029aaaf9817d5fa0ca88a5\ormlite-core-4.48.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\gson-2.3-e7eb8753212e02978618b90021f2a31d94380c9d.jar"
+        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3\5fc52c41ef0239d1093a1eb7c3697036183677ce\gson-2.3.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="5fc52c41ef0239d1093a1eb7c3697036183677ce"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-a30c29aaba660fb5430479764c6356e88d438c60.jar"
+        jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="ffbb48e87fa5e9107c17aaa0616f724d785a4d71"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-app-toolkit-7bead9b67e3fc8d05920e29321bcfe75af2830ea.jar"
+        jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\arcgis-android-app-toolkit.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="ba8d428ad04e30febd942365c6119bb62d7199bb"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\support-annotations-20.0.0-00d010623c4278a8848e14ec48bd09c3e62082b2.jar"
+        jar="C:\AndroidStudio\sdk\extras\android\m2repository\com\android\support\support-annotations\20.0.0\support-annotations-20.0.0.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-app-toolkit-54736a8da76fa4f14d2e35a0b04b8c8abce7eb11.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\libs\arcgis-android-app-toolkit.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="ba8d428ad04e30febd942365c6119bb62d7199bb"/>
+    <item
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\classes-aede7f36e8744755428e862effe49d0f6cf065e0.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\exploded-aar\com.android.support\support-v4\20.0.0\classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="8694693636ab36910c8100ce527c258ff3ebece0"/>
+    <item
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\cglib-2.2.1-v20090111-1cdb932a1ffd09ffacf4ab38d03a6d00b9e31c12.jar"
+        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.sonatype.sisu.inject\cglib\2.2.1-v20090111\7ce5e983fd0e6c78346f4c9cbfa39d83049dda2\cglib-2.2.1-v20090111.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="07ce5e983fd0e6c78346f4c9cbfa39d83049dda2"/>
+    <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jcifs-1.3.17-f4f3b91b63bda3a06251089d6b0f7338a9bb51d4.jar"
         jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\jcifs-1.3.17.jar"
         jumboMode="false"
@@ -104,11 +146,11 @@
         revision="20.0.0"
         sha1="dcc2193db20e19e1feca8b1240dbbc4e190824fa"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\androidannotations-api-3.1-15039f3c5b12960ef6df4626dec423e90c6dca73.jar"
-        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.androidannotations\androidannotations-api\3.1\ac33174269a767fcbf3a944cdb3d52e07ef93bee\androidannotations-api-3.1.jar"
+        dex="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\jackson-mapper-lgpl-1.9.5-cafebc55c0b88132aa5e63ae8920d8ec7fa8dda6.jar"
+        jar="C:\Users\Ucash\Documents\InżynieryTmp\gopr\android\gopr\app\libs\jackson-mapper-lgpl-1.9.5.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="ac33174269a767fcbf3a944cdb3d52e07ef93bee"/>
+        sha1="ffbb48e87fa5e9107c17aaa0616f724d785a4d71"/>
     <item
         dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\arcgis-android-api-1f18c41f64b74be7d71cea281dda4fcf702fd9e0.jar"
         jar="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\libs\arcgis-android-api.jar"
@@ -116,10 +158,10 @@
         revision="20.0.0"
         sha1="6eb8b263ff94c660bc05ec011589e4053d65957b"/>
     <item
-        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\ormlite-core-4.48-1c6596ea93b6721d419c6348ceaaccb2ee740379.jar"
-        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\com.j256.ormlite\ormlite-core\4.48\e579bd2905d0399af5029aaaf9817d5fa0ca88a5\ormlite-core-4.48.jar"
+        dex="C:\Users\Ucash\Documents\Inżynierka\gopr\android\gopr\app\build\intermediates\pre-dexed\debug\androidannotations-api-3.1-15039f3c5b12960ef6df4626dec423e90c6dca73.jar"
+        jar="C:\Users\Ucash\.gradle\caches\modules-2\files-2.1\org.androidannotations\androidannotations-api\3.1\ac33174269a767fcbf3a944cdb3d52e07ef93bee\androidannotations-api-3.1.jar"
         jumboMode="false"
         revision="20.0.0"
-        sha1="e579bd2905d0399af5029aaaf9817d5fa0ca88a5"/>
+        sha1="ac33174269a767fcbf3a944cdb3d52e07ef93bee"/>
 
 </pre-dex-items>

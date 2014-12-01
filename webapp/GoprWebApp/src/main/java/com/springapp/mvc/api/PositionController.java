@@ -51,7 +51,7 @@ public class PositionController {
                 "\nactionId: " + actionId);
 
         List<UserInAction> userInActionList = new ArrayList<UserInAction>();
-        for (Group group : groupRepository.getGroupsByAction(actionRepository.getById(new Long(actionId)))){
+        for (Group group : groupRepository.getGroupsByAction(actionRepository.get(new Long(actionId)))){
             userInActionList.addAll(userInActionRepository.getUserInActionsByGroup(group));
         }
 
@@ -146,7 +146,7 @@ public class PositionController {
                 "\nactionId: " + actionId);
 
         List<UserInAction> userInActionList = new ArrayList<UserInAction>();
-        for (Group group : groupRepository.getGroupsByAction(actionRepository.getById(new Long(actionId)))){
+        for (Group group : groupRepository.getGroupsByAction(actionRepository.get(new Long(actionId)))){
             userInActionList.addAll(userInActionRepository.getUserInActionsByGroup(group));
         }
 

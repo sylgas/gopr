@@ -39,4 +39,23 @@ public class GroupArea {
     public void setGroup(Group group) {
         getPk().setGroup(group);
     }
+
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        GroupArea that = (GroupArea) o;
+
+        if (getPk() != null ? !getPk().equals(that.getPk())
+                : that.getPk() != null)
+            return false;
+
+        return true;
+    }
+
+    public int hashCode() {
+        return (getPk() != null ? getPk().hashCode() : 0);
+    }
 }
