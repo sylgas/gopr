@@ -1,21 +1,21 @@
 package com.agh.gopr.app.response;
 
-import java.util.*;
+import java.util.List;
 
 public class LoginResponse {
     private boolean status;
-    List<LoginResponseListItem> loginResponseListItems;
+    List<BasicActionInfo> basicActionInfos;
 
-    public LoginResponse(boolean status, List<LoginResponseListItem> loginResponseListItems) {
+    public LoginResponse(boolean status, List<BasicActionInfo> basicActionInfos) {
         this.status = status;
-        this.loginResponseListItems = loginResponseListItems;
+        this.basicActionInfos = basicActionInfos;
     }
 
     public boolean getStatus() {
         return status;
     }
 
-    public List<LoginResponseListItem> getLoginResponseListItems() {
-        return loginResponseListItems;
+    public List<BasicActionInfo> getBasicActionInfos() {
+        return basicActionInfos;
     }
 }

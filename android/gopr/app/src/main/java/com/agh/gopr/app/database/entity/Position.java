@@ -117,6 +117,7 @@ public class Position {
         JSONObject object = new JSONObject();
         object.put(Columns.LONGITUDE, longitude);
         object.put(Columns.LATITUDE, latitude);
+        object.put(Columns.DATE, date.getTime());
         return object;
     }
 

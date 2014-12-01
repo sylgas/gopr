@@ -20,8 +20,6 @@ public class PositionService {
     private Preferences_ preferences;
 
     public Position save(Position position) {
-        // TODO: change with new api
-        position.setDate(new Date(System.currentTimeMillis()));
         position.setActionId(preferences.actionId().get());
         try {
             if (!existsForUserIdAndDate(position.getUserId(), position.getDate())) {

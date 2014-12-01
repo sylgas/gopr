@@ -331,7 +331,7 @@ public class MapFragment extends RoboFragment {
 
         @Override
         public void onError(Throwable error) {
-            Ln.e(error, "ConnectionError could not receive JSON");
+            Ln.e("ConnectionError could not receive JSON");
         }
     }
 

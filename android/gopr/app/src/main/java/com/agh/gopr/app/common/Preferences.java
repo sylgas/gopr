@@ -23,7 +23,8 @@ public interface Preferences {
 
     boolean showLayer();
 
-    @DefaultString("sylwusiusiunia")
+    //todo: remove this after proper registation
+    @DefaultString("1")
     String userId();
 
     @DefaultLong(0L)

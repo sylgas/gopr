@@ -12,8 +12,8 @@ import android.widget.Toast;
 import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MethodException;
+import com.agh.gopr.app.response.BasicActionInfo;
 import com.agh.gopr.app.response.LoginResponse;
-import com.agh.gopr.app.response.LoginResponseListItem;
 import com.agh.gopr.app.service.rest.RequestService;
 import com.agh.gopr.app.service.rest.service.method.RestMethod;
 import com.google.gson.Gson;
@@ -114,11 +114,11 @@ public class LoginActivity extends AbstractActivity {
             LoginResponse loginResponse = gson.fromJson(json, LoginResponse.class);
 
             if (loginResponse.getStatus()) {
-                List<LoginResponseListItem> items = loginResponse.getLoginResponseListItems();
+                List<BasicActionInfo> items = loginResponse.getBasicActionInfos();
                 if (items.size() == 0) {
                     displayErrorToast(getString(R.string.not_assign_to_action_message));
                 } else {
-                    ActionListActivity_.intent(LoginActivity.this).responseList(loginResponse.getLoginResponseListItems()).start();
+                    ActionListActivity_.intent(LoginActivity.this).responseList(loginResponse.getBasicActionInfos()).start();
                     LoginActivity.this.finish();
                 }
             } else {

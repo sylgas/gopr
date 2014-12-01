@@ -112,7 +112,6 @@ public class GpsPostPositionsService {
                     return;
                 }
                 position.setUserId(preferences.userId().get());
-                position.setActionId(preferences.actionId().get());
                 position.setDate(new Date(System.currentTimeMillis()));
                 positionService.save(position);
             } else {
