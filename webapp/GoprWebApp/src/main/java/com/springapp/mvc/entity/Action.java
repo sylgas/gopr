@@ -120,14 +120,10 @@ public class Action implements Serializable {
         this.isridDatabaseId = isridDatabaseId;
     }
 
-   /* public Collection<Group> getGroups() {
-        return groups;
-    }
+   public Set<Group> getGroups() { return groups; }
 
-    public void setGroups(Collection<Group> groups) {
-        this.groups = groups;
-    }
-*/
+    public void setGroups(Set<Group> groups) { this.groups = groups; }
+
     public Set<Area> getAreas() {
         return areas;
     }
