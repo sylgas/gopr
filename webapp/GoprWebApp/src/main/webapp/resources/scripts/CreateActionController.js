@@ -39,7 +39,7 @@ function createActionController(angular) {
             });
     }*/
 
-    function startAction() {
+    function setActionGroups() {
 
         var actionId;
         var geometries = MapManager.getGeometries();
@@ -128,7 +128,7 @@ function createActionController(angular) {
         MapManager.addGeometryEx(mapFunctions.GeometryEx);
         scope.selectArea = MapManager.selectArea;
         scope.changeAreaProperties = mapFunctions.changeAreaProperties;
-        scope.startAction = startAction;
+        scope.setActionGroups = setActionGroups;
         //scope.setActionGroups = setActionGroups;
         scope.selected = null;
     }

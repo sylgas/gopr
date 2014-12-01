@@ -40,7 +40,7 @@
         </tr>
     </table>
     <p class="btn-group pull-right">
-        <a class="btn btn-primary" ng-click="startAction()">Start</a>
+        <a class="btn btn-primary" ng-click="setActionGroups()">Start</a>
         <a class="btn btn-default" ui-sref='home'>Wróć</a>
     </p>
 </div>

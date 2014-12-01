@@ -114,7 +114,7 @@
         <div id="mapDiv"></div>
     </div>
     <div class="col-sm-offset-10 col-sm-2 btn-group pull-right">
-        <button class="btn btn-primary" onclick="startAction()">Rozpocznij akcję</button>
+        <button class="btn btn-primary" ng-click="startAction()">Rozpocznij akcję</button>
         <button class="btn btn-default" ui-sref='home'>Wróć</button>
     </div>
 

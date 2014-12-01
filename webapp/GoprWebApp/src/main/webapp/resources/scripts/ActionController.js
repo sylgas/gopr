@@ -1,5 +1,4 @@
-function actionController(angular, Map, SimpleLineSymbol, SimpleFillSymbol, Polygon,
-             SpatialReference, Polyline, Point, Graphic, Color,
+function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, Color,
              SimpleMarkerSymbol, CartographicLineSymbol) {
 
     var scope, stateParams
@@ -32,19 +31,6 @@ function actionController(angular, Map, SimpleLineSymbol, SimpleFillSymbol, Poly
                 alert("Wystąpił błąd z połączeniem z serwerem!");
             });
         }, 3000);
-        /*$.getJSON("http://localhost:8090/action/action", {
-            actionId: actionId
-        })
-            .done(function (data) {
-                console.log(data);
-                actionData = data;
-                displayAreas(actionData.geometries);
-                displayGroups(actionData.groups);
-            })
-            .fail(function () {
-                alert("Wystąpił błąd podczas połączenia z serwerem!");
-            });
-*/
 /*        lastAskTime = new Date().getTime();
         $.getJSON("http://localhost:8090/positions/action_all", {
             actionId: actionId
@@ -251,6 +237,7 @@ function actionController(angular, Map, SimpleLineSymbol, SimpleFillSymbol, Poly
     function ActionController($scope, $stateParams, mapFactory) {
         MapManager = mapFactory;
         scope = $scope;
+        console.log($stateParams)
         stateParams = $stateParams;
         scope.initAction = initAction
     }
@@ -264,6 +251,5 @@ function actionController(angular, Map, SimpleLineSymbol, SimpleFillSymbol, Poly
 
 };
 
-define(['angular', "esri/map", "esri/symbols/SimpleLineSymbol", "esri/symbols/SimpleFillSymbol", "esri/geometry/Polygon", "esri/SpatialReference",
-    "esri/geometry/Polyline", "esri/geometry/Point", "esri/graphic", "esri/Color", "esri/symbols/SimpleMarkerSymbol",
+define(['angular', "esri/symbols/SimpleLineSymbol", "esri/geometry/Polyline", "esri/geometry/Point", "esri/graphic", "esri/Color", "esri/symbols/SimpleMarkerSymbol",
     "esri/symbols/CartographicLineSymbol", "dojo/domReady!"], actionController)

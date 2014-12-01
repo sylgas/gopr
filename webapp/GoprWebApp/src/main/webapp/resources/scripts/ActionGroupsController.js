@@ -4,12 +4,6 @@ function actionGroupsController(angular) {
     var MapManager;
     var modal;
 
-    function saveGroups(){
-        //TODO: poparsować i wysłać podział na grupy
-        state.go("actionGroups", {id: actionId, inherit: false});
-
-    }
-
     function displayUsers() {
         $.get("http://localhost:8090/api/user/")
             .done(function (response) {
@@ -22,7 +16,7 @@ function actionGroupsController(angular) {
     }
 
     function initMap() {
-        if (isNaN(parseInt(stateParams.id)) || parseInt(stateParams.id) == -1) {
+        if (isNaN(parseInt(actionId)) || parseInt(actionId) == -1) {
             alert("ERROR  :(");
             //TODO: przenieść na stronę z errorem, którą też trzeba zrobić
             return;
@@ -33,7 +27,7 @@ function actionGroupsController(angular) {
             userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
             userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
 
-            $.get("http://localhost:8090/api/action/" + stateParams.id)
+            $.get("http://localhost:8090/api/action/" + actionId)
                 .done(function (response) {
                     scope.action = response;
                     scope.$apply();
@@ -72,7 +66,7 @@ function actionGroupsController(angular) {
 
     function addGroup() {
         $.post("http://localhost:8090/api/group", {
-            actionId: stateParams.id,
+            actionId: actionId,
             name: scope.group.name,
             areaId: scope.group.area
         })
@@ -90,7 +84,7 @@ function actionGroupsController(angular) {
     }
 
     function displayGroups() {
-        $.get("http://localhost:8090/api/group/action/" + stateParams.id)
+        $.get("http://localhost:8090/api/group/action/" + actionId)
             .done(function (response) {
                 scope.groups = response;
                 scope.$apply();
@@ -136,11 +130,16 @@ function actionGroupsController(angular) {
             });
     }
 
+    function startAction() {
+        state.go("action", {id: actionId, reload: true});
+    }
+
     function ActionGroupsController($scope, $state, $stateParams, $modal, mapFactory) {
         MapManager = mapFactory;
         scope = $scope;
         state = $state;
-        stateParams = $stateParams;
+        console.log($stateParams)
+        actionId = $stateParams.id;
         modal = $modal;
         scope.map = MapManager.generateDrawableMap('mapDiv');
         scope.initMap = initMap;
@@ -153,6 +152,7 @@ function actionGroupsController(angular) {
         scope.group.areas = {};
         scope.groups = [];
         scope.editUser = editUser;
+        scope.startAction = startAction;
         displayUsers();
         displayGroups();
     }
