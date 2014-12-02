@@ -15,30 +15,33 @@ public class DefaultController {
         return "default";
     }
 
-    @RequestMapping(value="action-list", method = RequestMethod.GET)
+    @RequestMapping(value = "action-list", method = RequestMethod.GET)
     public String actionList() {
         return "action-list";
     }
 
-    @RequestMapping(value="action-groups", method = RequestMethod.GET)
+    @RequestMapping(value = "action-groups", method = RequestMethod.GET)
     public String actionGroups() {
         return "action-groups";
     }
 
-    @RequestMapping(value="action", method = RequestMethod.GET)
+    @RequestMapping(value = "action", method = RequestMethod.GET)
     public String action() {
         return "action";
     }
 
-    @RequestMapping(value="action-create", method = RequestMethod.GET)
-    public String createAction() {
-        return "action-create"; }
+    @RequestMapping(value = "action-create", method = RequestMethod.GET)
+    public String createAction() { return "action-create"; }
 
-    @RequestMapping(value="group-user-dialog", method = RequestMethod.GET)
-    public String editUserInGroup() {
-        return "group-user-dialog"; }
+    @RequestMapping(value = "group-user-dialog", method = RequestMethod.GET)
+    public String editUserInGroup() { return "group-user-dialog"; }
 
-    @RequestMapping(value="area-dialog", method = RequestMethod.GET)
-    public String ediActionArea() {
-        return "area-dialog"; }
+    @RequestMapping(value = "area-dialog", method = RequestMethod.GET)
+    public String editActionArea() { return "area-dialog"; }
+
+    @RequestMapping(value = "user-list", method = RequestMethod.GET)
+    public String users() { return "user-list"; }
+
+    @RequestMapping(value = "user-add-dialog", method = RequestMethod.GET)
+    public String addUser() { return "user-add-dialog"; }
 }

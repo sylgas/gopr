@@ -36,13 +36,15 @@ public class UserController {
             @RequestParam("surname") String surname,
             @RequestParam("login") String login,
             @RequestParam("password") String password,
-            @RequestParam("nick") String nick) {
+            @RequestParam("nick") String nick,
+            @RequestParam("phone") String phone) {
         User user = new User();
         user.setName(name);
         user.setSurname(surname);
         user.setLogin(login);
         user.setPassword(password);
         user.setNick(nick);
+        user.setPhone(phone);
         return userRepository.save(user);
     }
 

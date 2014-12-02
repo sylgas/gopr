@@ -3,7 +3,7 @@ function groupUserController(angular) {
     var modal;
 
     function save () {
-        modal.close(scope.user);
+        modal.close(scope.editedUser);
     }
 
     function cancel() {
@@ -13,7 +13,7 @@ function groupUserController(angular) {
     function GroupUserController($scope, $modalInstance, user) {
         scope = $scope;
         modal = $modalInstance;
-        scope.user = user;
+        scope.editedUser = angular.copy(user);
         $scope.save = save;
         $scope.cancel = cancel;
     }

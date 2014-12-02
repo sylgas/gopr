@@ -45,20 +45,19 @@ function createActionController(angular) {
             });
     }
 
-    function editArea(area) {
-        console.log(area);
+    function editArea(index) {
         var modalInstance = modal.open({
             templateUrl: 'area-dialog',
             controller: 'AreaController',
             resolve: {
                 area: function () {
-                    return area;
+                    return scope.areas[index];
                 }
             }
         });
 
-        modalInstance.result.then(function (area) {
-            console.log(area);
+        modalInstance.result.then(function (editedArea) {
+            //TODO: save edited area
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });

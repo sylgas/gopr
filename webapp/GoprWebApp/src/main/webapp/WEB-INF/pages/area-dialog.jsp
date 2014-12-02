@@ -1,20 +1,18 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h3 class="modal-title">Obszar: {{area}}</h3>
+        <h3 class="modal-title">Obszar: {{editedArea}}</h3>
     </div>
     <div class="modal-body form-horizontal">
         <div class="form-group">
             <label for="areaNumberInAction" class="col-md-3 control-label">Numer:</label>
-
             <div class="col-md-7">
-                <input class="form-control" id="areaNumberInAction" placeholder="Numer" ng-model="area.numberInAction">
+                <input class="form-control" id="areaNumberInAction" placeholder="Numer" ng-model="editedArea.numberInAction">
             </div>
         </div>
         <div class="form-group">
             <label for="areaName" class="col-md-3 control-label">Nazwa:</label>
-
             <div class="col-md-7">
-                <input class="form-control" id="areaName" placeholder="Nazwa" ng-model="area.geometryName">
+                <input class="form-control" id="areaName" placeholder="Nazwa" ng-model="editedArea.geometryName">
             </div>
         </div>
         <div class="modal-footer">

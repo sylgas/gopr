@@ -9,8 +9,10 @@
         '/resources/scripts/ActionGroupsController.js',
         '/resources/scripts/ActionListController.js',
         '/resources/scripts/GroupUserController.js',
-        '/resources/scripts/AreaController.js'
-    ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController, AreaController) {
+        '/resources/scripts/AreaController.js',
+        '/resources/scripts/UserListController.js',
+        '/resources/scripts/UserController.js'
+    ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController, AreaController, UserListController, UserController) {
 
         function init() {
             var App = angular.module('app', ['ui.bootstrap', 'ngTable', 'ui.router']);
@@ -50,6 +52,16 @@
                         url: '/action/:id/group/user',
                         templateUrl: 'area-dialog',
                         controller: 'AreaController'
+                    }).
+                    state('user-list', {
+                        url: '/users',
+                        templateUrl: 'user-list',
+                        controller: 'UserListController'
+                    })
+                    .state('user-add-dialog', {
+                        url: '/users',
+                        templateUrl: 'user-list',
+                        controller: 'UserListController'
                     });
 
                 //$locationProvider.html5Mode(true);
@@ -62,6 +74,8 @@
             ActionListController.start(App);
             GroupUserController.start(App);
             AreaController.start(App);
+            UserListController.start(App);
+            UserController.start(App);
 
             angular.bootstrap(document.body, ['app']);
             return App;

@@ -26,8 +26,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a ui-sref="action-list">Lista akcji</a></li>
-                <li><a ui-sref="action-create">Stwórz akcję</a></li>
-                <li><a ui-sref="#">Wczytaj akcję</a></li>
+                <li><a ui-sref="action-create">Nowa akcja</a></li>
+                <li><a ui-sref="user-list">Użytkownicy</a></li>
             </ul>
         </div>
     </div>

@@ -107,27 +107,11 @@ function actionGroupsController(angular) {
             }
         });
 
-        modalInstance.result.then(function (user) {
-            scope.group.users[user.index] = user;
+        modalInstance.result.then(function (editedUser) {
+            scope.group.users[user.index] = editedUser;
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });
-    }
-
-    function addUser() {
-        $.post("http://localhost:8090/api/user", {
-            name: "user",
-            surname: "user",
-            login: "user",
-            password: "user",
-            nick: "user"
-        })
-            .done(function (response) {
-                scope.$apply()
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
     }
 
     function startAction() {
@@ -162,7 +146,6 @@ function actionGroupsController(angular) {
             return ActionGroupsController;
         }
     };
-
 }
 
 define(['angular'], actionGroupsController);

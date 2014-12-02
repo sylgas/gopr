@@ -3,7 +3,7 @@ function areaController(angular) {
     var modal;
 
     function save () {
-        modal.close(scope.area);
+        modal.close(scope.editedArea);
     }
 
     function cancel() {
@@ -13,7 +13,7 @@ function areaController(angular) {
     function AreaController($scope, $modalInstance, area) {
         scope = $scope;
         modal = $modalInstance;
-        scope.area = area;
+        scope.editedArea = angular.copy(area);
         $scope.save = save;
         $scope.cancel = cancel;
     }

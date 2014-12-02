@@ -6,11 +6,7 @@
         <h1 class="col-md-12">
             {{action.name}}
         </h1>
-
-        <div class="col-md-12">
-            <button class="btn btn-primary" ng-click="addUser()">Dodaj uzytkownika</button>
-        </div>
-        Uczestnicy:
+        Użytkownicy:
         <table class="table table-striped table-bordered table-hover table-condensed">
             <tr>
                 <th>Id</th>

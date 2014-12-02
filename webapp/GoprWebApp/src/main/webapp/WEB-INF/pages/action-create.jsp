@@ -29,7 +29,7 @@
                     <td ng-model="area.numberInAction">{{area.numberInAction}}</td>
                     <td ng-model="area.geometryName">{{area.geometryName}}</td>
                     <td class="col-md-1">
-                        <a ng-click="editArea(area)"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a ng-click="editArea(area.$index)"><span class="glyphicon glyphicon-edit"></span></a>
                     </td>
                 </tr>
             </div>
