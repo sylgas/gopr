@@ -98,7 +98,7 @@ function actionGroupsController(angular) {
         var user = scope.group.users[index];
         user.index = index;
         var modalInstance = modal.open({
-            templateUrl: 'group-user',
+            templateUrl: 'group-user-dialog',
             controller: 'GroupUserController',
             resolve: {
                 user: function () {
@@ -138,7 +138,6 @@ function actionGroupsController(angular) {
         MapManager = mapFactory;
         scope = $scope;
         state = $state;
-        console.log($stateParams)
         actionId = $stateParams.id;
         modal = $modal;
         scope.map = MapManager.generateDrawableMap('mapDiv');

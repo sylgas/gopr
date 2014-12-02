@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div data-ng-init="initAction()" ng-controller="ActionController">
     <div id="mapDiv"></div>

@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.Preferences_;
-import com.agh.gopr.app.response.LoginResponse;
-import com.agh.gopr.app.response.LoginResponseListItem;
-import com.google.gson.Gson;
+import com.agh.gopr.app.response.BasicActionInfo;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -31,20 +29,20 @@ public class ActionListActivity extends Activity {
     protected Preferences_ preferences;
 
     @Extra
-    public List<LoginResponseListItem> responseList;
+    public List<BasicActionInfo> responseList;
 
     @ViewById(R.id.actionListView)
     protected ListView actionListView;
 
     @AfterViews
-    protected void init(){
+    protected void init() {
         ActionListAdapter listAdapter = new ActionListAdapter(this, responseList);
         actionListView.setAdapter(listAdapter);
 
         actionListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LoginResponseListItem chosenAction = responseList.get(position);
+                BasicActionInfo chosenAction = responseList.get(position);
                 preferences.actionId().put(chosenAction.getActionId());
                 preferences.userId().put(chosenAction.getUserInActionId());
                 MainActivity_.intent(ActionListActivity.this).start();
@@ -53,26 +51,26 @@ public class ActionListActivity extends Activity {
         });
     }
 
-    private class ActionListAdapter extends ArrayAdapter<LoginResponseListItem> {
+    private class ActionListAdapter extends ArrayAdapter<BasicActionInfo> {
 
         private Context context;
-        private List<LoginResponseListItem> responseList;
+        private List<BasicActionInfo> responseList;
 
-        public ActionListAdapter(Context context, List<LoginResponseListItem> responseList) {
+        public ActionListAdapter(Context context, List<BasicActionInfo> responseList) {
             super(context, R.layout.action_list_item, responseList);
             this.context = context;
             this.responseList = responseList;
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
+        public View getView(int position, View convertView, ViewGroup parent) {
             View rowView = convertView;
 
-            if(rowView == null){
+            if (rowView == null) {
                 LayoutInflater layoutInflater = LayoutInflater.from(context);
                 rowView = layoutInflater.inflate(R.layout.action_list_item, null, true);
 
-                LoginResponseListItem responseItem = responseList.get(position);
+                BasicActionInfo responseItem = responseList.get(position);
 
                 TextView actionNameView = (TextView) rowView.findViewById(R.id.actionNameView);
                 TextView actionIdView = (TextView) rowView.findViewById(R.id.actionIdView);

@@ -53,7 +53,7 @@ public class RequestService {
             connect(buildUrl(methodName), "GET");
             String json = readFrom(httpURLConnection.getInputStream());
             handler.handle(json);
-        } catch (Throwable e) {
+        } catch (Exception e) {
             handler.onError(e);
         } finally {
             if (httpURLConnection != null) {

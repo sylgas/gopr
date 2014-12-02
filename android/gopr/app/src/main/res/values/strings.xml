@@ -31,13 +31,12 @@
 
     <!-- Notes -->
     <string name="take_photo">Take photo</string>
-    <string name="save_note">Save note</string>
     <string name="add_note_text">Add note here.</string>
     <string name="note_save_error">Error during saving note occurred</string>
     <string name="note_save_success">Note has been saved</string>
     <string name="photo_take_error">Error during taking photo occurred</string>
     <string name="photo_take_success">Photo has been saved</string>
-    <string name="cancel_note">Cancel</string>
+    <string name="not_attached_photo">Photo not attached</string>
 
     <!-- Enable Dialog -->
     <string name="not_enabled">%s not enabled</string>
@@ -52,6 +51,8 @@
     <!-- Buttons -->
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
     <string name="title_activity_camera">CameraActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

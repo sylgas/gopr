@@ -1,43 +1,8 @@
 function createActionController(angular) {
 
     var map, toolbar, contextMenu;
-    var scope, state;
+    var scope, state, modal;
     var MapManager;
-
-    //endregion
-/*
-    function setActionGroups() {
-        //if (!areGeometriesFine())
-          //  return;
-
-        geometryList = Array();
-        for (i = 1; i <= Object.keys(geometries).length; i++) {
-            //Parse GeometryEx structure
-                geometryList[i - 1] = {
-                numberInAction: geometries[i].numberInAction,
-                name: geometries[i].geometryName,
-                geometry: map.graphics.graphics[i].geometry.toJson()
-            };
-        }
-
-        $.post("http://localhost:8090/action/", {
-            name: scope.actionName,
-            startDateTime: new Date().getTime(),
-            geometries: JSON.stringify(geometryList),
-            description: scope.actionDescription
-        })
-            .done(function (response) {
-                if (isNaN(parseInt(response)) || parseInt(response) == -1){
-                    alert("Wystąpił błąd z odpowiedzią od serwera!");
-                    return;
-                }
-                sessionStorage.setItem("actionId", response);
-                window.location.href = "http://localhost:8090/setActionGroups/";
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
-    }*/
 
     function setActionGroups() {
 
@@ -91,6 +56,25 @@ function createActionController(angular) {
             });
     }
 
+    function editArea(area) {
+        console.log(area);
+        var modalInstance = modal.open({
+            templateUrl: 'area-dialog',
+            controller: 'AreaController',
+            resolve: {
+                area: function () {
+                    return area;
+                }
+            }
+        });
+
+        modalInstance.result.then(function (area) {
+            console.log(area);
+        }, function () {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    }
+
     var mapFunctions = {
         updateTable: function updateTable(geometries) {
             scope.areas = MapManager.getGeometries();
@@ -102,8 +86,8 @@ function createActionController(angular) {
             this.geometryName = geometryName;
         },
 
-        changeAreaProperties: function changeAreaProperties(areaId) {
-            console.log("in changeGeometryInfo " + graphicId);
+        changeAreaProperties: function changeAreaProperties(index) {
+            //editArea(index)
             //TODO: zaimplementowac jakis dialog, zeby pobrac inta i stringa
             //TODO: ustawic geometry[index].numberInAction i geometry[index].geometryName
             //updateTable();
@@ -129,13 +113,14 @@ function createActionController(angular) {
         scope.selectArea = MapManager.selectArea;
         scope.changeAreaProperties = mapFunctions.changeAreaProperties;
         scope.setActionGroups = setActionGroups;
-        //scope.setActionGroups = setActionGroups;
+        scope.editArea = editArea;
         scope.selected = null;
     }
 
-    function CreateActionController($scope, $state, MapFactory) {
+    function CreateActionController($scope, $state, $modal, MapFactory) {
         MapManager = MapFactory;
         state = $state;
+        modal = $modal;
         scope = $scope;
         scope.init = init;
         scope.action = {};
@@ -143,7 +128,7 @@ function createActionController(angular) {
 
     return {
         start: function (App) {
-            App.controller('CreateActionController', ['$scope', '$state', 'MapFactory', CreateActionController]);
+            App.controller('CreateActionController', ['$scope', '$state', '$modal', 'MapFactory', CreateActionController]);
             return CreateActionController;
         }
     };

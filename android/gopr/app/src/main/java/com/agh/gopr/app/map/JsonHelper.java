@@ -3,10 +3,13 @@ package com.agh.gopr.app.map;
 import android.graphics.Color;
 
 import com.agh.gopr.app.database.entity.Position;
+import com.agh.gopr.app.response.PositionDto;
+import com.agh.gopr.app.response.PositionListResponse;
 import com.esri.core.geometry.GeometryEngine;
 import com.esri.core.geometry.MapGeometry;
 import com.esri.core.map.Graphic;
 import com.esri.core.symbol.SimpleFillSymbol;
+import com.google.gson.Gson;
 
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonParser;
@@ -54,30 +57,19 @@ public class JsonHelper {
     }
 
     public static void readUserPositions(String json, UserPositionProcessListener listener) {
-        try {
-            JSONTokener tokener = new JSONTokener(json);
-            JSONArray root = new JSONArray(tokener);
-            for (int i = 0; i < root.length(); i++) {
-                readUser(listener, root.getJSONObject(i));
+        Gson gson = new Gson();
+        PositionListResponse[] positionListResponses = gson.fromJson(json, PositionListResponse[].class);
+        for (PositionListResponse positionListResponse : positionListResponses) {
+            for (PositionDto positionDto : positionListResponse.getPositions()) {
+                Position position = positionDto.toPosition();
+                position.setUserId(String.valueOf(positionListResponse.getUserInActionId()));
+                listener.process(position);
             }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private static void readUser(UserPositionProcessListener listener, JSONObject root) throws JSONException {
-        String id = root.getString(USER_ID_FIELD);
-        JSONArray positions = root.getJSONArray(POSITIONS_FIELD);
-        for (int i = 0; i < positions.length(); i++) {
-            Position gpsPosition = Position.fromJson(positions.getJSONObject(i));
-            gpsPosition.setUserId(id);
-            listener.process(gpsPosition);
         }
     }
 
     public static JSONObject createJsonFromPositions(String name, List<Position> positionList) throws JSONException {
+        //TODO: change it to sending PositionDto
         JSONObject json = new JSONObject();
         json.put(USER_ID_FIELD, name);
         JSONArray positions = new JSONArray();
