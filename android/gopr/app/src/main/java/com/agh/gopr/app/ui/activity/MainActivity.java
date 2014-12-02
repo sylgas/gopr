@@ -86,13 +86,13 @@ public class MainActivity extends AbstractActivity {
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (noteFragment.isVisible()) {
-                noteFragment.hide();
-            }
-            if (position == SectionsPagerAdapter.MAP_FRAGMENT_INDEX) {
-                pager.setPagingEnabled(false);
-            } else {
+            if (position != SectionsPagerAdapter.MAP_FRAGMENT_INDEX) {
+                if (noteFragment.isVisible()) {
+                    noteFragment.hide();
+                }
                 pager.setPagingEnabled(true);
+            } else {
+                pager.setPagingEnabled(false);
             }
         }
 
