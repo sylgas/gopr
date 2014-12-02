@@ -124,7 +124,7 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
             console.log("addGraphic: duplicated index");
             //alert("Cos nie tak");
         }
-        geometries[index] = new GeometryEx(0, "-");
+        geometries[index] = new GeometryEx(index, "obszar " + index);
 
         addOrDeleteAreaFunction();
     }
@@ -156,7 +156,7 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
     function displayAreas(geometries){
         geometriesOnMap = {};
         for (var i = 0; i < geometries.length; i++) {
-            var polygon = new Polygon(JSON.parse(geometries[i].data).area);
+            var polygon = new Polygon(JSON.parse(geometries[i].data));
             var newGraphic = new Graphic(polygon, fillSymbol);
             map.graphics.add(newGraphic);
 

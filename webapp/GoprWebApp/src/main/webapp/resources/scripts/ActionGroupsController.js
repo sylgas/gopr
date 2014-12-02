@@ -58,10 +58,14 @@ function actionGroupsController(angular) {
                 groupId: group.id
             })
                 .done(function (response) {
-                    console.log("got user in action");
                     scope.group.users.splice(scope.group.users.indexOf(user), 1)
                 })
         })
+    }
+
+    function clearGroupUsersPanel() {
+        scope.group = {};
+        scope.group.users = []
     }
 
     function addGroup() {
@@ -72,11 +76,11 @@ function actionGroupsController(angular) {
         })
             .done(function (group) {
                 scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);
-
-                console.log("got group");
                 group.users = scope.group.users;
                 saveGroupParticipants(group);
-                displayGroups();
+                scope.groups.push(group);
+                scope.$apply();
+                clearGroupUsersPanel();
             })
             .fail(function () {
                 alert("Wystąpił błąd z połączeniem z serwerem!");
@@ -129,7 +133,6 @@ function actionGroupsController(angular) {
         scope.addUserToGroup = addUserToGroup;
         scope.removeUserFromGroup = removeUserFromGroup;
         scope.addGroup = addGroup;
-        scope.addUser = addUser;
         scope.group = {};
         scope.group.users = [];
         scope.group.areas = {};

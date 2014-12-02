@@ -4,18 +4,26 @@ import java.util.*;
 
 public class LoginResponseDto {
     private boolean status;
-    List<LoginResponseListItem> LoginResponseListItems;
+    private List<LoginResponseListItem> loginResponseListItems;
 
     public LoginResponseDto(boolean status, List<LoginResponseListItem> loginResponseListItems) {
         this.status = status;
-        LoginResponseListItems = loginResponseListItems;
+        this.loginResponseListItems = loginResponseListItems;
     }
 
     public boolean isStatus() {
         return status;
     }
 
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
     public List<LoginResponseListItem> getLoginResponseListItems() {
-        return LoginResponseListItems;
+        return loginResponseListItems;
+    }
+
+    public void setLoginResponseListItems(List<LoginResponseListItem> loginResponseListItems) {
+        this.loginResponseListItems = loginResponseListItems;
     }
 }

@@ -1,10 +1,9 @@
 package com.springapp.mvc.dto;
 
-import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
 import com.springapp.mvc.entity.GroupArea;
 
-import java.security.Timestamp;
+import java.sql.Timestamp;
 import java.util.Collection;
 
 public class AreaDto {
@@ -12,7 +11,7 @@ public class AreaDto {
     private String name;
     private Timestamp dateTime;
     private String data;
-    private String number;
+    private int number;
     private Boolean isActive;
     private ActionDto action;
     private Collection<GroupArea> groupAreas;
@@ -20,9 +19,12 @@ public class AreaDto {
     public AreaDto() {}
 
     public AreaDto(Area area) {
-        this.name = area.getName();
-        this.data = area.getData();
         this.id = area.getId();
+        this.name = area.getName();
+        this.dateTime = area.getDateTime();
+        this.data = area.getData();
+        this.number = area.getNumber();
+        this.isActive = area.isActive();
         //this.action = new ActionDto(area.getAction());
     }
 
@@ -58,11 +60,11 @@ public class AreaDto {
         this.dateTime = dateTime;
     }
 
-    public String getNumber() {
+    public int getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(int number) {
         this.number = number;
     }
 

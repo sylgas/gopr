@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h3 class="modal-title">Obszar: {{editedArea}}</h3>
+        <h3 class="modal-title">Edycja obszaru</h3>
     </div>
     <div class="modal-body form-horizontal">
         <div class="form-group">

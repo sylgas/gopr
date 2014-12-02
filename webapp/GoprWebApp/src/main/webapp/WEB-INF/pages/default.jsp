@@ -5,14 +5,14 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
-    <script src="/bower_components/angular/angular.min.js"></script>
-    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/bower_components/ng-table/ng-table.min.js"></script>
-    <script src="/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="./bower_components/angular/angular.min.js"></script>
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="./bower_components/ng-table/ng-table.min.js"></script>
+    <script src="./bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/dojo/dijit/themes/claro/claro.css">
     <link rel="stylesheet" href="http://js.arcgis.com/3.10/js/esri/css/esri.css">
-    <link rel="stylesheet" type="text/css" href="resources/styles/createAction.css" media="screen"/>
-    <link href="resources/styles/action.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="./resources/styles/createAction.css" media="screen"/>
+    <link href="./resources/styles/action.css" rel="stylesheet" type="text/css" media="screen"/>
     <script src="http://js.arcgis.com/3.10/"></script>
 </head>
 <body>
@@ -36,8 +36,8 @@
 
 </body>
 
-<link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css"/>
-<script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="resources/main.js"></script>
+<link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css"/>
+<script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="./resources/main.js"></script>
 
 </html>

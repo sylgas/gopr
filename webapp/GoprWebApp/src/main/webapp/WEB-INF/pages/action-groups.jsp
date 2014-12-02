@@ -2,10 +2,10 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div data-ng-init="initMap()" class="col-md-12">
+    <div class="col-md-12">
+        <h1>{{action.name}}</h1>
+    </div>
     <div class="col-md-6">
-        <h1 class="col-md-12">
-            {{action.name}}
-        </h1>
         Użytkownicy:
         <table class="table table-striped table-bordered table-hover table-condensed">
             <tr>
@@ -77,7 +77,7 @@
                     <select class="form-control" id="area" ng-model="group.area">
                         <option ng-repeat="area in action.areas"
                                 value="{{area.id}}">
-                            {{area.name}}
+                            {{area.name}}({{area.number}})
                         </option>
                     </select>
                 </div>
@@ -107,8 +107,12 @@
             <tr ng-repeat="group in groups">
                 <td>{{group.id}}</td>
                 <td>{{group.name}}</td>
-                <td>{{group.area.id}}</td>
-                <td>{{group.users}}</td>
+                <td>{{group.area}}</td>
+                <td>
+                    <div ng-repeat="user in group.users">
+                        {{user.nick}}
+                    </div>
+                </td>
             </tr>
         </table>
         <div id="mapDiv"></div>

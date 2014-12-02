@@ -57,7 +57,9 @@ function createActionController(angular) {
         });
 
         modalInstance.result.then(function (editedArea) {
-            //TODO: save edited area
+            var geometries = MapManager.getGeometries();
+            geometries[index].geometryName = editedArea.geometryName;
+            geometries[index].numberInAction = editedArea.numberInAction
         }, function () {
             console.log('Modal dismissed at: ' + new Date());
         });

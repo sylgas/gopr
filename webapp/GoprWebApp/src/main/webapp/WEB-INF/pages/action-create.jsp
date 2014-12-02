@@ -19,17 +19,15 @@
             <tr>
                 <th>Numer</th>
                 <th>Nazwa</th>
-                <th>Opis</th>
             </tr>
             </thead>
             <div>
-                <tr ng-repeat="area in areas" ng-click="selectArea($index)" ng-dblclick="changeAreaProperties($index)"
+                <tr ng-repeat="(index, area) in areas" ng-click="selectArea($index)" ng-dblclick="changeAreaProperties($index)"
                     ng-show="areas" ng-class="{'info': $index === selected}">
-                    <td ng-model="area.number">{{$index + 1}}</td>
                     <td ng-model="area.numberInAction">{{area.numberInAction}}</td>
                     <td ng-model="area.geometryName">{{area.geometryName}}</td>
                     <td class="col-md-1">
-                        <a ng-click="editArea(area.$index)"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a ng-click="editArea(index)"><span class="glyphicon glyphicon-edit"></span></a>
                     </td>
                 </tr>
             </div>
