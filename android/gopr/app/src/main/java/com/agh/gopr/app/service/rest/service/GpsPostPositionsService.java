@@ -29,7 +29,7 @@ public class GpsPostPositionsService {
 
     private static final long MIN_TIME_BT_UPDATES_IN_MILLIS = 5000;
 
-    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 7;
+    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 2;
 
     @Inject
     private LocationManager locationManager;
