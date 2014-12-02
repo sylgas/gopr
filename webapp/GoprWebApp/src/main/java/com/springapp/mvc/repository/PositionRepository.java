@@ -23,10 +23,6 @@ public class PositionRepository {
 
     public Collection<Position> getPositions() { return positionDao.findAll(); }
 
-    public Collection<Position> getAllPositions() {
-        return positionDao.findAll();
-    }
-
     public Collection<Position> getPositionsAfterDateTime(Timestamp dateTime) {
         return positionDao.findByDateTimeGreaterThan(dateTime);
     }

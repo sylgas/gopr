@@ -14,6 +14,8 @@ import com.springapp.mvc.repository.GroupRepository;
 import com.springapp.mvc.repository.PositionRepository;
 import com.springapp.mvc.repository.UserInActionRepository;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,10 +32,13 @@ public class PositionController {
     private static final String ACTION_POSITIONS = "/action";
     private static final String ALL_USER_POSITIONS = "/user_all";
     private static final String USER_POSITIONS = "/user";
-
+    private static final String SEND_POINTS = "/post";
 
     @Autowired
     private PositionRepository positionRepository;
+
+    @Autowired
+    private UserInActionRepository userInActionRepository;
 
     /*
      * Method returns list of all positions per user in action
@@ -45,14 +50,18 @@ public class PositionController {
         logger.info(ALL_ACTION_POSITIONS +
                 "\nactionId: " + actionId);
 
-        List<Position> positions = new ArrayList<Position>(positionRepository.getAllPositions());
+        List<Position> positions = new ArrayList<Position>(positionRepository.getPositions());
         Map<Long, List<PositionDto>> userToPositions = new HashMap<Long, List<PositionDto>>();
 
         for (Position p : positions){
-            if (!userToPositions.containsKey(p.getUserInAction().getId()))
-                userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
+            try{
+                if (!userToPositions.containsKey(p.getUserInAction().getId()))
+                    userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
 
-            userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+            } catch (Exception e){
+                //continue...
+            }
         }
 
         List<UserPositionsDto> result = new ArrayList<UserPositionsDto>();
@@ -69,20 +78,25 @@ public class PositionController {
     @RequestMapping(value = ACTION_POSITIONS, method = RequestMethod.GET)
     public @ResponseBody List<UserPositionsDto> getAllActionPositions(
             @RequestParam("actionId") int actionId,
-            @RequestParam("afterDateTime") long afterDateTime){
+            @RequestParam("dateTime") long dateTime){
 
         logger.info(ACTION_POSITIONS +
                 "\nactionId: " + actionId +
-                "\nafterDateTime: " + afterDateTime);
+                "\ndateTime: " + dateTime);
 
-        List<Position> positions = new ArrayList<Position>(positionRepository.getPositionsAfterDateTime(new Timestamp(afterDateTime)));
+        //List<Position> positions = new ArrayList<Position>(positionRepository.getPositionsAfterDateTime(new Timestamp(dateTime)));
+        List<Position> positions = new ArrayList<Position>(positionRepository.getPositions());
         Map<Long, List<PositionDto>> userToPositions = new HashMap<Long, List<PositionDto>>();
 
         for (Position p : positions){
-            if (!userToPositions.containsKey(p.getUserInAction().getId()))
-                userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
+            try{
+                if (!userToPositions.containsKey(p.getUserInAction().getId()))
+                    userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
 
-            userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+            } catch (Exception e){
+                //continue...
+            }
         }
 
         List<UserPositionsDto> result = new ArrayList<UserPositionsDto>();
@@ -140,4 +154,31 @@ public class PositionController {
         return userPositions;
     }
 
+    @RequestMapping(value = SEND_POINTS, method = RequestMethod.POST)
+    public
+    @ResponseBody
+    boolean receivePoints(@RequestParam("actionId") long actionId, @RequestParam("positions") JSONObject positions) {
+
+        logger.info(SEND_POINTS +
+                "\nactionId: " + actionId +
+                "\npola: " + positions.toString());
+
+        long userInActionId = positions.getLong("userId");
+        JSONArray pos = positions.getJSONArray("positions");
+        for (int i = 0; i < pos.length(); i++){
+            JSONObject p = pos.getJSONObject(i);
+            double longitude = p.getDouble("longitude");
+            double latitude = p.getDouble("latitude");
+            Timestamp dateTime = new Timestamp(p.getLong("date"));
+
+            Position position = new Position();
+            position.setUserInAction(userInActionRepository.get(userInActionId));
+            position.setLatitude(latitude);
+            position.setLongitude(longitude);
+            position.setDateTime(dateTime);
+
+            positionRepository.savePosition(position);
+        }
+        return true;
+    }
 }

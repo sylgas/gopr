@@ -3,6 +3,8 @@ package com.springapp.mvc.api;
 import com.springapp.mvc.dto.LoginResponseDto;
 import com.springapp.mvc.dto.LoginResponseListItem;
 import com.springapp.mvc.entity.User;
+import com.springapp.mvc.entity.UserInAction;
+import com.springapp.mvc.repository.UserInActionRepository;
 import com.springapp.mvc.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserInActionRepository userInActionRepository;
 
     @RequestMapping(method=RequestMethod.POST)
     public @ResponseBody
@@ -45,16 +50,29 @@ public class UserController {
     public
     @ResponseBody
     LoginResponseDto loginUser(
-            @RequestParam("login") int login,
-            @RequestParam("password") int password) {
+            @RequestParam("login") String login,
+            @RequestParam("password") String password) {
 
-        logger.info("LOGIN: " + login + " " + password);
+        logger.info("LOGIN: " + login + " / " + password);
 
-        //TODO: sprawdzanie poprawnosci log i haslo + pobranie opdpowienich danych do wyslania
+        User user = userRepository.getByLoginAndPassword(login, password);
 
-        List<LoginResponseListItem> items = new ArrayList<LoginResponseListItem>();
-        items.add(new LoginResponseListItem(1, 1, "KROWA"));
-        LoginResponseDto result = new LoginResponseDto(true, items);
+        if (user != null){
+            List<LoginResponseListItem> items = new ArrayList<LoginResponseListItem>();
+            List<UserInAction> userInActions = userInActionRepository.getByUser(user);
+
+            for (UserInAction uia : userInActions){
+                LoginResponseListItem item = new LoginResponseListItem();
+                item.setUserInActionId(uia.getId());
+                item.setActionId(uia.getGroup().getAction().getId());
+                item.setActionName(uia.getGroup().getAction().getName());
+                items.add(item);
+            }
+
+            return new LoginResponseDto(true, items);
+        }
+
+        LoginResponseDto result = new LoginResponseDto(false, new ArrayList<LoginResponseListItem>());
         return result;
     }
 

@@ -8,6 +8,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
     function initAction() {
         scope.map = MapManager.generateDrawableMap('mapDiv');
+        map = scope.map;
         if (isNaN(parseInt(stateParams.id)) || parseInt(stateParams.id) == -1){
             alert("ERROR  :(");
             //TODO: przenieść na stronę z errorem, którą też trzeba zrobić
@@ -22,41 +23,40 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
         $.get("http://localhost:8090/api/action/" + stateParams.id)
             .done(function (response) {
-                console.log(response)
-
-                console.log(response.areas)
                 MapManager.displayAreas(response.areas);
             })
             .fail(function () {
                 alert("Wystąpił błąd z połączeniem z serwerem!");
             });
-        }, 3000);
-/*        lastAskTime = new Date().getTime();
-        $.getJSON("http://localhost:8090/positions/action_all", {
-            actionId: actionId
-        })
+
+
+        lastAskTime = new Date().getTime();
+
+        $.get("http://localhost:8090/api/positions/action_all", {
+                actionId: stateParams.id
+            })
             .done(function (data){
                 displayPoints(data);
             })
             .fail(function () {
-                alert("Wystąpił błąd podczas połączenia z serwerem!");
+                console.log("Wystąpił błąd podczas połączenia z serwerem!: http://localhost:8090/api/positions/action_all");
             });
 
         window.setInterval(function () {
-            $.getJSON("http://localhost:8090/positions/action", {
-                actionId: actionId,
-                afterDateTime: lastAskTime
+            $.get("http://localhost:8090/api/positions/action", {
+                actionId: stateParams.id,
+                dateTime: lastAskTime
             })
-                .done(function (data){
-                    lastAskTime = new Date().getTime();
-                    displayPoints(data);
-                })
-                .fail(function () {
-                    alert("Wystąpił błąd podczas połączenia z serwerem!");
-                });
-        }, 5000); // repeat forever, polling every 5 seconds*/
+            .done(function (data){
+                lastAskTime = new Date().getTime();
+                displayPoints(data);
+            })
+            .fail(function () {
+                console.log("Wystąpił błąd podczas połączenia z serwerem!: http://localhost:8090/api/positions/action");
+            });
+        }, 5000); // repeat forever, polling every 5 seconds
+    }, 3000);
     }
-
     function displayGroups(groups){
         var table =  document.getElementById("groupsTable");
 
@@ -119,10 +119,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
     }
 
     function updateUserLocalization(userInActionId, lastPosition){
-        var point = new Point(
-            lastPosition.latitude,
-            lastPosition.longitude,
-            map.spatialReference);
+        var point = new Point([lastPosition.longitude ,lastPosition.latitude]);
 
         if (!userLocalizations[userInActionId]){
             var graphic = new Graphic(point, markerSymbol);
@@ -135,17 +132,16 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
     function updateUserPath(userInActionId, positions){
         if (!userPaths[userInActionId]){
-            var polylineGraphic = new Graphic(new Polyline(map.spatialReference), lineSymbol);
-            polylineGraphic.geometry.addPath([[positions[0].latitude, positions[0].longitude]]);
+            var polylineGraphic = new Graphic(new Polyline([[positions[0].longitude, positions[0].latitude]]), lineSymbol);
             map.graphics.add(polylineGraphic);
             userPaths[userInActionId] = map.graphics.graphics.indexOf(polylineGraphic);
         }
 
         var polyline = map.graphics.graphics[userPaths[userInActionId]].geometry;
-        for (var i = 0; i < positions.length; i++){
+        for (var i = 0; i < positions.length; i++) {
             polyline.insertPoint(0,
                 polyline.paths[0].length,
-                new Point(positions[i].latitude, positions[i].longitude));
+                new Point([positions[i].longitude, positions[i].latitude]));
         }
         map.graphics.graphics[userPaths[userInActionId]].setGeometry(polyline);
     }
@@ -205,7 +201,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
     var markerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,         //style
         10,                                                                            //size
         new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0,0,0]), 1),     //outline
-        new Color([255,255,255,0.8]));                                                 //color
+        new Color([255,0,0,0.8]));                                                 //color
 
     var selectedMarkerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, //style
         10,                                                                            //size

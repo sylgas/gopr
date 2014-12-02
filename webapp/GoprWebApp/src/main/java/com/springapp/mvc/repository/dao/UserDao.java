@@ -16,4 +16,5 @@ public interface UserDao extends JpaRepository<User,Long> {
     @Query("select DISTINCT(u) from User u where u.name like :query or u.surname like :query")
     List<User> findByQuery(@Param("query") String query);
 
+    User findByLoginAndPassword(String login, String password);
 }

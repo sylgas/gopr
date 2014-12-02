@@ -29,4 +29,7 @@ public class UserRepository {
         return userDao.findBySurname(surname);
     }
 
+    public User getByLoginAndPassword(String login, String password) {
+        return userDao.findByLoginAndPassword(login, password);
+    }
 }
