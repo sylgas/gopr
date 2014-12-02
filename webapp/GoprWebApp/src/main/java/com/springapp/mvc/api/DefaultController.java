@@ -34,7 +34,11 @@ public class DefaultController {
     public String createAction() {
         return "action-create"; }
 
-    @RequestMapping(value="group-user", method = RequestMethod.GET)
+    @RequestMapping(value="group-user-dialog", method = RequestMethod.GET)
     public String editUserInGroup() {
         return "group-user-dialog"; }
+
+    @RequestMapping(value="area-dialog", method = RequestMethod.GET)
+    public String ediActionArea() {
+        return "area-dialog"; }
 }

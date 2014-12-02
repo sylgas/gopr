@@ -6,8 +6,9 @@
         <h1 class="col-md-12">
             {{action.name}}
         </h1>
+
         <div class="col-md-12">
-        <button class="btn btn-primary" ng-click="addUser()">Dodaj uzytkownika</button>
+            <button class="btn btn-primary" ng-click="addUser()">Dodaj uzytkownika</button>
         </div>
         Uczestnicy:
         <table class="table table-striped table-bordered table-hover table-condensed">
@@ -28,7 +29,9 @@
                 <td>{{user.login}}</td>
                 <td>{{user.phone}}</td>
                 <td>
-                    <button class="btn-xs glyphicon glyphicon-arrow-right" ng-click="addUserToGroup(user)"></button>
+                    <a ng-click="addUserToGroup(user)">
+                        <span class="glyphicon glyphicon-arrow-right"></span>
+                    </a>
                 </td>
             </tr>
         </table>
@@ -49,8 +52,9 @@
                 </tr>
                 <tr ng-repeat="groupUser in group.users">
                     <td>
-                        <button class="btn-xs glyphicon glyphicon-arrow-left"
-                                ng-click="removeUserFromGroup(groupUser)"></button>
+                        <a ng-click="removeUserFromGroup(groupUser)">
+                            <span class="glyphicon glyphicon-arrow-left"></span>
+                        </a>
                     </td>
                     <td>{{groupUser.id}}</td>
                     <td>{{groupUser.nick}}</td>
@@ -58,8 +62,8 @@
                     <td>{{groupUser.surname}}</td>
                     <td>{{groupUser.login}}</td>
                     <td>{{groupUser.phone}}</td>
-                    <td>
-                        <button class="btn-xs btn-primary" ng-click="editUser($index)">Edytuj</button>
+                    <td class="col-md-1">
+                        <a ng-click="editUser($index)"><span class="glyphicon glyphicon-edit"></span></a>
                     </td>
                 </tr>
             </table>
