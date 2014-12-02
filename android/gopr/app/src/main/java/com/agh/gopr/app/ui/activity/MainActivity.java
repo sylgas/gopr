@@ -66,14 +66,24 @@ public class MainActivity extends AbstractActivity {
 
     @Override
     public void onBackPressed() {
-        if (noteFragment.isVisible())
+        if (noteFragment.isVisible()) {
             noteFragment.hide();
+        } else if (pager.getCurrentItem() != SectionsPagerAdapter.MAP_FRAGMENT_INDEX) {
+            pager.setCurrentItem(SectionsPagerAdapter.MAP_FRAGMENT_INDEX);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private class ScrollPageListener implements ViewPager.OnPageChangeListener {
+
+
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            if (position == 0) {
+            if (noteFragment.isVisible()) {
+                noteFragment.hide();
+            }
+            if (position == SectionsPagerAdapter.MAP_FRAGMENT_INDEX) {
                 pager.setPagingEnabled(false);
             } else {
                 pager.setPagingEnabled(true);
@@ -92,6 +102,7 @@ public class MainActivity extends AbstractActivity {
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
+        public static final int MAP_FRAGMENT_INDEX = 0;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -102,7 +113,7 @@ public class MainActivity extends AbstractActivity {
          */
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == MAP_FRAGMENT_INDEX) {
                 return mapFragment;
             }
             return MessengerFragment_.builder().build();
