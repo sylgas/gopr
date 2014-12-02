@@ -31,7 +31,7 @@
 
     <!-- Notes -->
     <string name="take_photo">Take photo</string>
-    <string name="save_note">Save note</string>
+    <string name="save">Save</string>
     <string name="add_note_text">Add note here.</string>
     <string name="note_save_error">Error during saving note occurred</string>
     <string name="note_save_success">Note has been saved</string>

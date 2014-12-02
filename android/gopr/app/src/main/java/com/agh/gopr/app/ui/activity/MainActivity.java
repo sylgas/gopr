@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.agh.gopr.app.R;
-import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.agh.gopr.app.ui.fragment.MessengerFragment_;
 import com.agh.gopr.app.ui.fragment.NoteFragment;
@@ -28,17 +27,11 @@ public class MainActivity extends AbstractActivity {
 
     private final SectionsPagerAdapter adapter;
 
-    private GpsPostPositionsService gpsPostPositions;
-
     @Inject
     private MapFragment mapFragment;
 
-    @Inject
-    private GpsPostPositionsService getGpsPostPositions;
-
     @FragmentById
     protected NoteFragment noteFragment;
-
 
     @ViewById
     protected CustomViewPager pager;
@@ -60,10 +53,11 @@ public class MainActivity extends AbstractActivity {
 
     @OptionsItem(R.id.notes)
     protected void notes() {
-        if (noteFragment.isVisible())
+        if (noteFragment.isVisible()) {
             noteFragment.hide();
-        else
+        } else {
             noteFragment.show();
+        }
     }
 
     protected void disablePager(@Observes MapFragment.StartMessengerEvent startMessengerEvent) {
