@@ -91,8 +91,10 @@ public class MainActivity extends AbstractActivity {
                     noteFragment.hide();
                 }
                 pager.setPagingEnabled(true);
+                getActionBar().setTitle(R.string.messenger_title);
             } else {
                 pager.setPagingEnabled(false);
+                getActionBar().setTitle(R.string.map_title);
             }
         }
 

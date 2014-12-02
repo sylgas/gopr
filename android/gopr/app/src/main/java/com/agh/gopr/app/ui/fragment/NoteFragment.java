@@ -21,7 +21,6 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.res.StringRes;
 import org.androidannotations.annotations.sharedpreferences.Pref;
@@ -45,9 +44,6 @@ public class NoteFragment extends RoboFragment {
     @StringRes
     protected String notAttachedPhoto;
 
-    @StringRes
-    protected String photoTakeSuccess;
-
     @Pref
     protected Preferences_ preferences;
 
@@ -66,11 +62,13 @@ public class NoteFragment extends RoboFragment {
     @Inject
     private NoteService noteService;
 
-    private Note.Type type = Note.Type.TEXT;
-
     @AfterViews
     protected void init() {
-        hide();
+        if (photoPath == null) {
+            hide();
+        } else {
+            updateFileName();
+        }
     }
 
     @Click(R.id.save_note_button)
@@ -78,9 +76,9 @@ public class NoteFragment extends RoboFragment {
         Note note = createNote();
         boolean result = noteService.save(note);
         if (result) {
-            displayToast(getString(R.string.note_save_success));
+            displayToast(R.string.note_save_success);
         } else {
-            displayToast(getString(R.string.note_save_error));
+            displayToast(R.string.note_save_error);
         }
         restoreDefaultView();
     }
@@ -94,7 +92,7 @@ public class NoteFragment extends RoboFragment {
             String fileName = makeFileName();
             newPhotoFile = createFile(fileName);
         } catch (IOException e) {
-            displayToast(getString(R.string.photo_take_error));
+            displayToast(R.string.photo_take_error);
             return;
         }
         photoPath = newPhotoFile.getPath();
@@ -117,13 +115,13 @@ public class NoteFragment extends RoboFragment {
         restoreDefaultView();
     }
 
+    /**
+     * runned in background thread
+     */
     @OnActivityResult(TAKE_PHOTO_CODE)
     public void onResult(int resultCode) {
         if (resultCode == Activity.RESULT_OK) {
-            type = Note.Type.PHOTO;
-            displayToast(photoTakeSuccess);
-            String photoFileName = photoPath.substring(photoPath.lastIndexOf("/") + 1);
-            photoName.setText(photoFileName);
+            updateFileName();
         } else {
             File file = new File(photoPath);
             file.delete();
@@ -132,23 +130,29 @@ public class NoteFragment extends RoboFragment {
         show();
     }
 
+    private void updateFileName() {
+        String photoFileName = photoPath.substring(photoPath.lastIndexOf("/") + 1);
+        photoName.setText(photoFileName);
+    }
+
     private Note createNote() {
         Note note = new Note();
-        note.setType(type);
-        note.setText(noteEditText.getText().toString());
-        if (type == Note.Type.PHOTO) {
+        if (photoPath == null) {
+            note.setType(Note.Type.TEXT);
+        } else {
+            note.setType(Note.Type.PHOTO);
             note.setResourcePath(photoPath);
         }
+        note.setText(noteEditText.getText().toString());
         return note;
     }
 
     private void restoreDefaultView() {
+        hide();
         photoPath = null;
         noteEditText.setText(null);
         noteEditText.clearFocus();
         photoName.setText(notAttachedPhoto);
-        type = Note.Type.TEXT;
-        hide();
     }
 
     private String makeFileName() {
@@ -168,9 +172,8 @@ public class NoteFragment extends RoboFragment {
         return file;
     }
 
-    @UiThread
-    protected void displayToast(final String text) {
-        Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+    protected void displayToast(final int resID) {
+        Toast.makeText(getActivity(), getString(resID), Toast.LENGTH_LONG).show();
     }
 
 

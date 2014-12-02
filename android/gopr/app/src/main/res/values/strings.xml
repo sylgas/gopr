@@ -13,7 +13,6 @@
     <string name="download">Download from ArcgisPage</string>
     <string name="find">Find</string>
     <string name="refresh">Refresh</string>
-    <string name="click_here"></string>
 
     <!-- Messenger -->
     <string name="messenger_title">Messenger</string>
@@ -35,7 +34,6 @@
     <string name="note_save_error">Error during saving note occurred</string>
     <string name="note_save_success">Note has been saved</string>
     <string name="photo_take_error">Error during taking photo occurred</string>
-    <string name="photo_take_success">Photo has been saved</string>
     <string name="not_attached_photo">Photo not attached</string>
 
     <!-- Enable Dialog -->
