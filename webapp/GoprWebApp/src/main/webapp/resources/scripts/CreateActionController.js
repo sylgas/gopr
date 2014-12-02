@@ -32,11 +32,8 @@ function createActionController(angular) {
                         .done(function (response) {
                             if (response != true)
                                 alert("Wystąpił błąd z połączeniem z serwerem ale przeszlo!");
-
-                            if(j == map.graphics.graphics.length) {
-                                console.log("CZY END??????????????????")
+                            if(j == map.graphics.graphics.length)
                                 state.go("action-groups", {id: actionId, reload: true});
-                            }
                         })
                         .fail(function () {
                             alert("Wystąpił błąd z połączeniem z serwerem!");
