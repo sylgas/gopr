@@ -53,7 +53,7 @@ public class AreaController {
             List<Area> areas = new ArrayList<Area>(areaRepository.getByAction(action));
             List<LayerDto> geometries = new ArrayList<LayerDto>();
             for (Area a : areas)
-                geometries.add(new LayerDto(a.getNumber(), a.getData(), a.getName()));
+                geometries.add(new LayerDto(a.getData()));
             return new TmpLayerDto(geometries);
         }
 
@@ -70,27 +70,25 @@ public class AreaController {
      *        area (this is geometry.toJson() stringify)
      */
     @RequestMapping(value = SEND_LAYER, method = RequestMethod.POST)
-    public
-    @ResponseBody
-    boolean saveArea(@RequestParam("actionId") long actionId, @RequestParam("geometries") List<LayerDto> geometries) {
-        logger.info("SEND LAYER: action: " + actionId + ", pola:\n\t" + geometries.toString());
+    public @ResponseBody boolean saveArea(
+            @RequestParam("actionId") long actionId,
+            @RequestParam("numberInAction") int numberInAction,
+            @RequestParam("name") String name,
+            @RequestParam("geometry") String geometry) {
 
-        //TODO: save jsonobject["geometries"] to db )
+        logger.info("SEND LAYER");
 
         Action action = actionRepository.get(actionId);
-        try {
-            Area area = new Area();
 
-            area.setAction(action);
-            area.setData(geometries.toString());
-            area.setName("first");
-            area.setDateTime(new Timestamp(new Date().getTime()));
-            area.setIsActive(true);
-            areaRepository.save(area);
-        } catch (SQLGrammarException e) {
-            for (Throwable ex = e; ex != null; ex = e.getCause())
-                if (ex instanceof SQLException) { ex = ((SQLException)ex).getNextException();ex.printStackTrace(); }
-        }
+        Area area = new Area();
+        area.setAction(action);
+        area.setData(geometry);
+        area.setName(name);
+        area.setNumber(numberInAction);
+        area.setDateTime(new Timestamp(new Date().getTime()));
+        area.setIsActive(true);
+        areaRepository.save(area);
+
         return true;
     }
 }

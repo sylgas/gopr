@@ -7,15 +7,7 @@ function createActionController(angular) {
     function setActionGroups() {
 
         var actionId;
-        var geometries = MapManager.getGeometries();
-        var geometryList = Array();
-        for (i = 1; i <= Object.keys(geometries).length; i++) {
-            //Parse GeometryEx structure
-            geometryList[i - 1] = {
-                numberInAction: geometries[i].numberInAction,
-                name: geometries[i].geometryName
-            };
-        }
+
         $.post("http://localhost:8090/api/action", {
             name: scope.action.name,
             startDateTime: new Date().getTime(),
@@ -28,21 +20,21 @@ function createActionController(angular) {
                 }
                 sessionStorage.setItem("actionId", response);
                 actionId = response
-                geometryList = Array();
-                for (i = 1; i < map.graphics.graphics.length; ++i) {
-                    geometryList[i - 1] = {areaId: i, area: map.graphics.graphics[i].geometry.toJson()};
-                }
 
-                for(var j = 0; j<geometryList.length; j++) {
+                var geometries = MapManager.getGeometries();
+                for(var j = 1; j < map.graphics.graphics.length; j++) {
                     $.post("http://localhost:8090/api/area/send", {
                         actionId: actionId,
-                        geometries: JSON.stringify(geometryList[j])
+                        numberInAction: geometries[j].numberInAction,
+                        name: geometries[j].geometryName,
+                        geometry: JSON.stringify(map.graphics.graphics[j].geometry)
                     })
                         .done(function (response) {
                             if (response != true)
                                 alert("Wystąpił błąd z połączeniem z serwerem ale przeszlo!");
-                            //window.location.href = "http://localhost:8090/action";
-                            if(j == geometryList.length) {
+
+                            if(j == map.graphics.graphics.length) {
+                                console.log("CZY END??????????????????")
                                 state.go("action-groups", {id: actionId, reload: true});
                             }
                         })

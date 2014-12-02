@@ -124,7 +124,7 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
             console.log("addGraphic: duplicated index");
             //alert("Cos nie tak");
         }
-        geometries[index] = new GeometryEx("-", "-");
+        geometries[index] = new GeometryEx(0, "-");
 
         addOrDeleteAreaFunction();
     }
