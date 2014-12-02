@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -89,21 +90,22 @@ public class LoginActivity extends AbstractActivity {
         return false;
     }
 
-    private void displayErrorToast(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-            }
-        });
+    @UiThread
+    protected void displayErrorToast(final String message) {
+        dismissProgressBar();
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        dismissProgressBar();
+    }
 
-        if (progressDialog.isShowing())
+    private void dismissProgressBar() {
+        if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
     }
 
     private class LoginCallback implements RequestService.HttpCallback {
@@ -128,7 +130,7 @@ public class LoginActivity extends AbstractActivity {
 
         @Override
         public void onError(Throwable error) {
-            Ln.e("Could not login: %s", error.getMessage());
+            Ln.e(error, "Could not login");
             progressDialog.dismiss();
             displayErrorToast(getString(R.string.login_error));
         }

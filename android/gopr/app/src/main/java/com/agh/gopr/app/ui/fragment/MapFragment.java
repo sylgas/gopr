@@ -25,6 +25,7 @@ import com.esri.core.map.Graphic;
 import com.esri.core.symbol.PictureMarkerSymbol;
 import com.google.inject.Inject;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
@@ -36,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 
 import roboguice.event.EventManager;
-import roboguice.event.Observes;
 import roboguice.fragment.RoboFragment;
 import roboguice.util.Ln;
 
@@ -73,6 +73,8 @@ public class MapFragment extends RoboFragment {
     private final LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private final Map<String, Integer> markers = new HashMap<String, Integer>();
     private final Map<String, GpsPolyline> polylines = new HashMap<String, GpsPolyline>();
+    private final IntervalSynchronizationService.HandleFinishedListener viewDataChangedListener = new ViewDataChangedListener();
+    private Map<LayerType, Integer> layers;
 
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
@@ -82,16 +84,29 @@ public class MapFragment extends RoboFragment {
 
     private void init() {
         if (map.getLayers().length == 0) {
+            layers = new HashMap<LayerType, Integer>();
             sendRequestForTerritoriesLayer();
             loadBaseLayer();
             loadPolylinesLayer();
             loadMarkersLayer();
+        } else {
+            addOrRemoveTerritoriesLayerIfNeeded();
         }
+    }
+
+    @AfterViews
+    public void setUp() {
+        intervalSynchronizationService.register(viewDataChangedListener);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        initIfNeeded();
+        map.unpause();
+    }
+
+    private void initIfNeeded() {
         if (connectionService.isConnected()) {
             init();
         } else {
@@ -101,13 +116,12 @@ public class MapFragment extends RoboFragment {
             }
             registerNetworkEnabledListenerIfNeeded();
         }
-        map.unpause();
-        addTerritoriesLayerIfNeeded();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        intervalSynchronizationService.unregister(viewDataChangedListener);
         unregisterNetworkEnabledListenerIfNeeded();
     }
 
@@ -149,20 +163,20 @@ public class MapFragment extends RoboFragment {
     private void loadBaseLayer() {
         Ln.d("Loading basemap from [%s]", preferences.mapSite().get());
         int id = map.addLayer(new ArcGISTiledMapServiceLayer(preferences.mapSite().get()));
-        Ln.d("Base layer id %d", id);
+        layers.put(LayerType.BASE_LAYER, id);
         map.setOnStatusChangedListener(new MapInitializedListener());
     }
 
     private void loadPolylinesLayer() {
         polylinesLayer = new GraphicsLayer();
         int id = map.addLayer(polylinesLayer);
-        Ln.d("Polyline layer id %d", id);
+        layers.put(LayerType.POLYLINES_LAYER, id);
     }
 
     private void loadMarkersLayer() {
         markersLayer = new GraphicsLayer();
         int id = map.addLayer(markersLayer);
-        Ln.d("Marker layer id %d", id);
+        layers.put(LayerType.MARKERS_LAYER, id);
     }
 
     public String getUserId() {
@@ -171,23 +185,33 @@ public class MapFragment extends RoboFragment {
     }
 
     private void addTerritoriesLayerIfNeeded() {
-        if (preferences.showLayer().get()) {
+        if (preferences.showLayer().get() && !territoriesLayerIsAddedToMap()) {
             addTerritoriesLayer();
-        } else {
-            removeTerritoriesLayer();
         }
     }
 
-    private void removeTerritoriesLayer() {
-        if (territoriesLayer != null) {
-            map.removeLayer(territoriesLayer);
+    private void addOrRemoveTerritoriesLayerIfNeeded() {
+        if (!preferences.showLayer().get()) {
+            if (territoriesLayerIsAddedToMap()) {
+                map.removeLayer(territoriesLayer);
+                layers.remove(LayerType.TERRITORIES_LAYER);
+            }
+        } else {
+            if (!territoriesLayerIsAddedToMap()) {
+                addTerritoriesLayer();
+            }
         }
+    }
+
+    private boolean territoriesLayerIsAddedToMap() {
+        return layers.containsKey(LayerType.TERRITORIES_LAYER) &&
+                map.getLayer(layers.get(LayerType.TERRITORIES_LAYER)) != null;
     }
 
     private void addTerritoriesLayer() {
         if (territoriesLayer != null) {
             int id = map.addLayer(territoriesLayer);
-            Ln.d("Territories layer id %d", id);
+            layers.put(LayerType.TERRITORIES_LAYER, id);
         }
     }
 
@@ -211,13 +235,6 @@ public class MapFragment extends RoboFragment {
             territoriesLayer.addGraphic(g);
         }
         addTerritoriesLayerIfNeeded();
-    }
-
-    protected void updateView(@Observes IntervalSynchronizationService.ViewDataChangedEvent event) {
-        if (map.getLayers().length > 0) {
-            updateUserPositions();
-            updateReceivedPositions();
-        }
     }
 
     private void updateReceivedPositions() {
@@ -306,6 +323,17 @@ public class MapFragment extends RoboFragment {
         }
     }
 
+    private class ViewDataChangedListener implements IntervalSynchronizationService.HandleFinishedListener {
+
+        @Override
+        public void onFinish() {
+            if (map.getLayers().length > 0) {
+                updateUserPositions();
+                updateReceivedPositions();
+            }
+        }
+    }
+
     private class MapInitializedListener implements OnStatusChangedListener {
 
         @Override
@@ -325,7 +353,7 @@ public class MapFragment extends RoboFragment {
                 List<Graphic> areas = JsonHelper.readLayer(json);
                 loadTerritoriesLayer(areas);
             } catch (Exception e) {
-                e.printStackTrace();
+                Ln.e(e, "Could not add territories layer");
             }
         }
 
@@ -333,6 +361,13 @@ public class MapFragment extends RoboFragment {
         public void onError(Throwable error) {
             Ln.e("ConnectionError could not receive JSON");
         }
+    }
+
+    private enum LayerType {
+        BASE_LAYER,
+        TERRITORIES_LAYER,
+        POLYLINES_LAYER,
+        MARKERS_LAYER
     }
 
 }

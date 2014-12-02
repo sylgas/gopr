@@ -8,11 +8,14 @@ import android.content.Intent;
 import com.agh.gopr.app.service.rest.service.IMethodService;
 import com.google.inject.Inject;
 
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import roboguice.event.EventManager;
+import roboguice.inject.ContextSingleton;
 import roboguice.receiver.RoboBroadcastReceiver;
 
+@ContextSingleton
 public class IntervalSynchronizationService extends RoboBroadcastReceiver {
 
     public static final String ACTION_ALARM = "com.agh.gopr.app.service.ACTION_ALARM";
@@ -27,8 +30,7 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
     @Inject
     private Set<IMethodService> services;
 
-    @Inject
-    private EventManager eventManager;
+    private final List<HandleFinishedListener> listeners = new CopyOnWriteArrayList<HandleFinishedListener>();
 
     @Override
     protected void handleReceive(Context context, Intent intent) {
@@ -40,6 +42,14 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
         alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 TIME_BW_ALARMS_IN_MILLIS,
                 TIME_BW_ALARMS_IN_MILLIS, pendingIntent(context));
+    }
+
+    public void register(HandleFinishedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void unregister(HandleFinishedListener listener) {
+        listeners.remove(listener);
     }
 
     private void handle() {
@@ -57,7 +67,9 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
     }
 
     private void handleFinished() {
-        eventManager.fire(new ViewDataChangedEvent());
+        for (HandleFinishedListener handleFinishedListener : listeners) {
+            handleFinishedListener.onFinish();
+        }
     }
 
     private PendingIntent pendingIntent(Context context) {
@@ -66,6 +78,7 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
         return PendingIntent.getBroadcast(context, 0, intent, 0);
     }
 
-    public class ViewDataChangedEvent {
+    public interface HandleFinishedListener {
+        void onFinish();
     }
 }

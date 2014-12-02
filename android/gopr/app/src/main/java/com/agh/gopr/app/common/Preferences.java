@@ -18,13 +18,13 @@ public interface Preferences {
     @DefaultRes(R.string.default_map_site)
     String mapSite();
 
-    @DefaultString("1")
+    @DefaultString("19")
     String actionId();
 
     boolean showLayer();
 
     //todo: remove this after proper registation
-    @DefaultString("1")
+    @DefaultString("2")
     String userId();
 
     @DefaultLong(0L)
