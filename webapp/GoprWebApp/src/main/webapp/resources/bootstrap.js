@@ -3,15 +3,15 @@
 
     define([
         'angular',
-        '/resources/scripts/MapFactory.js',
-        '/resources/scripts/CreateActionController.js',
-        '/resources/scripts/ActionController.js',
-        '/resources/scripts/ActionGroupsController.js',
-        '/resources/scripts/ActionListController.js',
-        '/resources/scripts/GroupUserController.js',
-        '/resources/scripts/AreaController.js',
-        '/resources/scripts/UserListController.js',
-        '/resources/scripts/UserController.js'
+        './resources/scripts/MapFactory.js',
+        './resources/scripts/CreateActionController.js',
+        './resources/scripts/ActionController.js',
+        './resources/scripts/ActionGroupsController.js',
+        './resources/scripts/ActionListController.js',
+        './resources/scripts/GroupUserController.js',
+        './resources/scripts/AreaController.js',
+        './resources/scripts/UserListController.js',
+        './resources/scripts/UserController.js'
     ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController, AreaController, UserListController, UserController) {
 
         function init() {
