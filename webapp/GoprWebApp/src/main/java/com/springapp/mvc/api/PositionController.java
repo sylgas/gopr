@@ -84,8 +84,7 @@ public class PositionController {
                 "\nactionId: " + actionId +
                 "\ndateTime: " + dateTime);
 
-        //List<Position> positions = new ArrayList<Position>(positionRepository.getPositionsAfterDateTime(new Timestamp(dateTime)));
-        List<Position> positions = new ArrayList<Position>(positionRepository.getPositions());
+        List<Position> positions = new ArrayList<Position>(positionRepository.getPositionsAfterDateTime(new Timestamp(dateTime)));
         Map<Long, List<PositionDto>> userToPositions = new HashMap<Long, List<PositionDto>>();
 
         for (Position p : positions){
