@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_server_address">http://192.168.0.12:8090</string>
+    <string name="default_server_address">http://149.156.205.250:17290</string>
 </resources>

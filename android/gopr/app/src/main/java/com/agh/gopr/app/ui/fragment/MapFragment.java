@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 import com.agh.gopr.app.R;
+import com.agh.gopr.app.common.ApplicationEventManagerConnector;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.database.entity.Position;
 import com.agh.gopr.app.exception.MethodException;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import roboguice.event.EventListener;
 import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 import roboguice.util.Ln;
@@ -59,32 +61,34 @@ public class MapFragment extends RoboFragment {
     private Context context;
 
     @Inject
-    private IntervalSynchronizationService intervalSynchronizationService;
-
-    @Inject
     private ConnectionService connectionService;
 
     @Inject
     private PositionService positionService;
 
-    private long lastReceivedPositionUpdate = 0L;
-    private long lastUserPositionUpdate = 0L;
+    @Inject
+    private IntervalSynchronizationService intervalSynchronizationService;
 
     private final LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private final Map<String, Integer> markers = new HashMap<String, Integer>();
     private final Map<String, GpsPolyline> polylines = new HashMap<String, GpsPolyline>();
-    private final IntervalSynchronizationService.HandleFinishedListener viewDataChangedListener = new ViewDataChangedListener();
-    private Map<LayerType, Integer> layers;
+    private final Map<LayerType, Integer> layers = new HashMap<LayerType, Integer>();
+    private final ViewChangedListenener viewChangedListenener = new ViewChangedListenener();
 
+    private long lastReceivedPositionUpdate = 0L;
+
+    private long lastUserPositionUpdate = 0L;
+    private ApplicationEventManagerConnector applicationEventManager;
     private GraphicsLayer territoriesLayer;
     private GraphicsLayer markersLayer;
     private GraphicsLayer polylinesLayer;
-
     private NetworkEnabledListener networkEnabledListener;
 
     private void init() {
         if (map.getLayers().length == 0) {
-            layers = new HashMap<LayerType, Integer>();
+            layers.clear();
+            markers.clear();
+            polylines.clear();
             sendRequestForTerritoriesLayer();
             loadBaseLayer();
             loadPolylinesLayer();
@@ -96,7 +100,8 @@ public class MapFragment extends RoboFragment {
 
     @AfterViews
     public void setUp() {
-        intervalSynchronizationService.register(viewDataChangedListener);
+        applicationEventManager = new ApplicationEventManagerConnector(context);
+        applicationEventManager.get().registerObserver(IntervalSynchronizationService.HandleFinishedEvent.class, viewChangedListenener);
     }
 
     @Override
@@ -121,8 +126,8 @@ public class MapFragment extends RoboFragment {
     @Override
     public void onStop() {
         super.onStop();
-        intervalSynchronizationService.unregister(viewDataChangedListener);
         unregisterNetworkEnabledListenerIfNeeded();
+        applicationEventManager.get().unregisterObserver(IntervalSynchronizationService.HandleFinishedEvent.class, viewChangedListenener);
     }
 
     @OptionsItem(R.id.messenger)
@@ -239,14 +244,18 @@ public class MapFragment extends RoboFragment {
 
     private void updateReceivedPositions() {
         List<Position> positions = positionService.getReceivedPositionsFrom(lastReceivedPositionUpdate);
-        draw(positions, R.drawable.map_marker_azure);
-        lastReceivedPositionUpdate = System.currentTimeMillis();
+        if (positions.size() > 0) {
+            draw(positions, R.drawable.map_marker_azure);
+            lastReceivedPositionUpdate = positions.get(positions.size() - 1).getDate().getTime();
+        }
     }
 
     private void updateUserPositions() {
         List<Position> positions = positionService.getPositionsFrom(lastUserPositionUpdate);
-        draw(positions, R.drawable.map_marker_green);
-        lastUserPositionUpdate = System.currentTimeMillis();
+        if (positions.size() > 0) {
+            draw(positions, R.drawable.map_marker_green);
+            lastUserPositionUpdate = positions.get(positions.size() - 1).getDate().getTime();
+        }
     }
 
     private void draw(List<Position> positions, int imageResId) {
@@ -323,10 +332,10 @@ public class MapFragment extends RoboFragment {
         }
     }
 
-    private class ViewDataChangedListener implements IntervalSynchronizationService.HandleFinishedListener {
+    private class ViewChangedListenener implements EventListener<IntervalSynchronizationService.HandleFinishedEvent> {
 
         @Override
-        public void onFinish() {
+        public void onEvent(IntervalSynchronizationService.HandleFinishedEvent event) {
             if (map.getLayers().length > 0) {
                 updateUserPositions();
                 updateReceivedPositions();

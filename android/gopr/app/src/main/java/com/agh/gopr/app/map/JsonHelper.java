@@ -21,6 +21,8 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.util.Ln;
+
 public class JsonHelper {
     private static final int TRANSPARENT_GREY = Color.argb(30, 58, 58, 58);
     public static final String GEOMETRIES_FIELD = "geometries";
@@ -71,6 +73,7 @@ public class JsonHelper {
     public static JSONObject createJsonFromPositions(String name, List<Position> positionList) throws JSONException {
         //TODO: change it to sending PositionDto
         JSONObject json = new JSONObject();
+        Ln.d("Post: " + name);
         json.put(USER_ID_FIELD, name);
         JSONArray positions = new JSONArray();
         for (Position position : positionList) {

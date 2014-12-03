@@ -81,6 +81,10 @@ public class RequestService {
         }
     }
 
+    @Background
+    protected void postO(String methodName) {
+    }
+
     private String readFrom(InputStream in) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
         String line;

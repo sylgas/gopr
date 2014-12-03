@@ -27,9 +27,9 @@ import roboguice.util.Ln;
 
 public class GpsPostPositionsService {
 
-    private static final long MIN_TIME_BT_UPDATES_IN_MILLIS = 5000;
+    private static final long MIN_TIME_BT_UPDATES_IN_MILLIS = 60000;
 
-    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 2;
+    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 5;
 
     @Inject
     private LocationManager locationManager;
@@ -81,7 +81,7 @@ public class GpsPostPositionsService {
 
         @Override
         public void onLocationChanged(Location location) {
-            addPositionIfGpsEnabled(location);
+            addPosition(location);
             if (positionService.getNotPostedPositionsCount() == 0) {
                 return;
             }
@@ -90,7 +90,7 @@ public class GpsPostPositionsService {
             try {
                 Ln.d("Trying to post %d positions...", positions.size());
                 JSONObject jsonObject = JsonHelper.createJsonFromPositions(preferences.userId().get(), positions);
-
+                Ln.d("Posting JSON: " + jsonObject.toString().length());
                 String actionId = preferences.actionId().get();
                 try {
                     RestMethod.POST_POINTS.run(context, callback, actionId, jsonObject.toString());
@@ -104,19 +104,12 @@ public class GpsPostPositionsService {
             }
         }
 
-        private void addPositionIfGpsEnabled(Location location) {
-            if (gpsEnabled()) {
-                Position position = Position.fromLocation(location);
-                if (position == null) {
-                    Ln.d("Position is not established");
-                    return;
-                }
-                position.setUserId(preferences.userId().get());
-                position.setDate(new Date(System.currentTimeMillis()));
-                positionService.save(position);
-            } else {
-                Ln.d("Gps is not enabled");
-            }
+        private void addPosition(Location location) {
+            Position position = Position.fromLocation(location);
+            Ln.d("Added position to post " + position.toString());
+            position.setUserId(preferences.userId().get());
+            position.setDate(new Date(System.currentTimeMillis()));
+            positionService.save(position);
         }
 
         @Override
@@ -129,6 +122,6 @@ public class GpsPostPositionsService {
 
         @Override
         public void onProviderDisabled(String provider) {
-        }
+    }
     }
 }
