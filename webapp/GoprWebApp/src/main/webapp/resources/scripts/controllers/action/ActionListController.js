@@ -21,6 +21,6 @@ function actionListController(angular) {
         }
     };
 
-;
+}
 
 define(['angular'], actionListController);
