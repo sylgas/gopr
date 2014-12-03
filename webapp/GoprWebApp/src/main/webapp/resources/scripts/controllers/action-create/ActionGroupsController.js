@@ -1,5 +1,5 @@
 function actionGroupsController(angular) {
-    var scope, state, stateParams;
+    var scope, state;
     var actionId;
     var MapManager;
     var modal;
@@ -102,7 +102,7 @@ function actionGroupsController(angular) {
         var user = scope.group.users[index];
         user.index = index;
         var modalInstance = modal.open({
-            templateUrl: 'group-user-dialog',
+            templateUrl: 'group-user-edit-dialog',
             controller: 'GroupUserController',
             resolve: {
                 user: function () {

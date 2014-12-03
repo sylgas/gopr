@@ -19,7 +19,7 @@ function createActionController(angular) {
                     return;
                 }
                 sessionStorage.setItem("actionId", response);
-                actionId = response
+                actionId = response;
 
                 var geometries = MapManager.getGeometries();
                 for(var j = 1; j < map.graphics.graphics.length; j++) {
@@ -47,7 +47,7 @@ function createActionController(angular) {
 
     function editArea(index) {
         var modalInstance = modal.open({
-            templateUrl: 'area-dialog',
+            templateUrl: 'area-edit-dialog',
             controller: 'AreaController',
             resolve: {
                 area: function () {

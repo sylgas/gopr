@@ -4,16 +4,22 @@
 <div ng-controller="CreateActionController">
     <div class="col-md-10 pull-left" id="mapDiv" data-dojo-type="dijit/layout/ContentPane"></div>
     <div class="col-md-2" data-ng-init="init()" id="menuDiv">
-        <label for="actionName">Nazwa akcji</label>
-        <input id="actionName" class="form-control" ng-model="action.name" placeholder="Nazwa akcji"/>
-        <label for="actionDescription">Opis akcji</label>
-        <input id="actionDescription" class="form-control" ng-model="action.description" placeholder="Opis akcji"/>
-        <label for="areaDrawDiv" class="pull-left">Dodaj obszar</label>
-
-        <div id="areaDrawDiv" class="btn-group col-md-10 btn-block pull-right">
-            <button class="btn btn-default" id="Polygon">Wybierz punkty</button>
-            <button class="btn btn-default" id="FreehandPolygon">Zaznacz obszar</button>
+        <div class="form-group">
+            <label for="actionName">Nazwa akcji</label>
+            <input id="actionName" class="form-control" ng-model="action.name" placeholder="Nazwa akcji"/>
         </div>
+        <div class="form-group">
+            <label for="actionDescription">Opis akcji</label>
+            <textarea id="actionDescription" rows="5" class="form-control" ng-model="action.description" placeholder="Opis akcji"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="areaDrawDiv" class="pull-left">Dodaj obszar</label>
+
+            <div id="areaDrawDiv" class="btn-group col-md-10 btn-block pull-right">
+                <button class="btn btn-default" id="Polygon">Wybierz punkty</button>
+                <button class="btn btn-default" id="FreehandPolygon">Zaznacz obszar</button>
+            </div>
+            </div>
         <table ng-model="table" class="table table-striped table-condensed col-md-12">
             <thead>
             <tr>

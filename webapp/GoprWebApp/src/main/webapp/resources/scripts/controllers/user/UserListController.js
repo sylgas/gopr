@@ -48,4 +48,4 @@ function userListController(angular) {
     };
 }
 
-define(['angular'], userListController)
+define(['angular'], userListController);

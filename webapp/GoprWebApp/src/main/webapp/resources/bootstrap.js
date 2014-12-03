@@ -3,15 +3,15 @@
 
     define([
         'angular',
-        './resources/scripts/MapFactory.js',
-        './resources/scripts/CreateActionController.js',
-        './resources/scripts/ActionController.js',
-        './resources/scripts/ActionGroupsController.js',
-        './resources/scripts/ActionListController.js',
-        './resources/scripts/GroupUserController.js',
-        './resources/scripts/AreaController.js',
-        './resources/scripts/UserListController.js',
-        './resources/scripts/UserController.js'
+        './resources/scripts/factories/MapFactory.js',
+        './resources/scripts/controllers/action-create/CreateActionController.js',
+        './resources/scripts/controllers/action/ActionController.js',
+        './resources/scripts/controllers/action-create/ActionGroupsController.js',
+        './resources/scripts/controllers/action/ActionListController.js',
+        './resources/scripts/controllers/action-create/GroupUserController.js',
+        './resources/scripts/controllers/action-create/AreaController.js',
+        './resources/scripts/controllers/user/UserListController.js',
+        './resources/scripts/controllers/user/UserController.js'
     ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController, AreaController, UserListController, UserController) {
 
         function init() {
@@ -43,29 +43,12 @@
                         templateUrl: 'action-groups',
                         controller: 'ActionGroupsController'
                     })
-                    .state('group-user-dialog', {
-                        url: '/action/:id/group/user',
-                        templateUrl: 'group-user-dialog',
-                        controller: 'GroupUserController'
-                    })
-                    .state('area-dialog', {
-                        url: '/action/:id/group/user',
-                        templateUrl: 'area-dialog',
-                        controller: 'AreaController'
-                    }).
-                    state('user-list', {
-                        url: '/users',
-                        templateUrl: 'user-list',
-                        controller: 'UserListController'
-                    })
-                    .state('user-add-dialog', {
+                    .state('user-list', {
                         url: '/users',
                         templateUrl: 'user-list',
                         controller: 'UserListController'
                     });
-
                 //$locationProvider.html5Mode(true);
-
             });
             MapFactory.start(App);
             CreateActionController.start(App);
@@ -82,5 +65,4 @@
         }
         return { start: init };
     });
-
 }).call(this);

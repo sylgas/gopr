@@ -6,7 +6,7 @@ function actionListController(angular) {
         state = $state;
         $.get("http://localhost:8090/api/action")
             .done(function (response) {
-                scope.actions = response
+                scope.actions = response;
                 scope.$apply()
             })
             .fail(function () {
@@ -21,6 +21,6 @@ function actionListController(angular) {
         }
     };
 
-};
+;
 
-define(['angular'], actionListController)
+define(['angular'], actionListController);

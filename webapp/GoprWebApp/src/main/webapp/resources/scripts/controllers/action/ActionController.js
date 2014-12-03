@@ -1,8 +1,8 @@
 function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, Color,
              SimpleMarkerSymbol, CartographicLineSymbol) {
 
-    var scope, stateParams
-    var map, actionData, actionId;
+    var scope, stateParams;
+    var map, actionData;
     var groupAreas, geometriesOnMap, userPaths, userLocalizations, lastAskTime;
     var MapManager;
 
@@ -19,7 +19,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
         groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
         userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
-        userLocalizations = {}   //Dictionary[userInActionId] = graphic with localization index on map
+        userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
 
         $.get("http://localhost:8090/api/action/" + stateParams.id)
             .done(function (response) {
@@ -67,10 +67,10 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
             var row = table.insertRow(table.rows.length);
             row.onclick = function(){
                 selectGroupAreas(this);
-            }
+            };
             row.ondblclick = function(){
                 sendMsgToGroup(this.cells[0].innerHTML);
-            }
+            };
             var cell0 = row.insertCell(0);
             var cell1 = row.insertCell(1);
             cell0.style.display = "none";
@@ -83,10 +83,10 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
                 var row = table.insertRow(table.rows.length);
                 row.onclick = function(){
                     selectUserPath(this);
-                }
+                };
                 row.ondblclick = function(){
                     sendMsgToUser(this.cells[0].innerHTML);
-                }
+                };
                 var cell0 = row.insertCell(0);
                 var cell1 = row.insertCell(1);
                 var cell2 = row.insertCell(2);
@@ -165,7 +165,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
     }
 
     function getGroupUsers(usersInActionIdList){
-        users = []
+        users = [];
         for (var i = 0; i < usersInActionIdList.length; i++){
             for (var j = 0; j < actionData.users.length; j++){
                 if (actionData.users[j].userInActionId == usersInActionIdList[i])
@@ -233,7 +233,6 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
     function ActionController($scope, $stateParams, mapFactory) {
         MapManager = mapFactory;
         scope = $scope;
-        console.log($stateParams)
         stateParams = $stateParams;
         scope.initAction = initAction
     }
@@ -245,7 +244,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         }
     };
 
-};
+}
 
 define(['angular', "esri/symbols/SimpleLineSymbol", "esri/geometry/Polyline", "esri/geometry/Point", "esri/graphic", "esri/Color", "esri/symbols/SimpleMarkerSymbol",
-    "esri/symbols/CartographicLineSymbol", "dojo/domReady!"], actionController)
+    "esri/symbols/CartographicLineSymbol", "dojo/domReady!"], actionController);
