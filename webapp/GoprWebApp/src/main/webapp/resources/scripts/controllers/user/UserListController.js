@@ -1,5 +1,10 @@
 function userListController(angular) {
     var scope, state, modal;
+    var UserService;
+
+    function userCreated(user) {
+        scope.users.push(user);
+    }
 
     function addUser() {
         var modalInstance = modal.open({
@@ -8,41 +13,34 @@ function userListController(angular) {
         });
 
         modalInstance.result.then(function (user) {
-            $.post("http://localhost:8090/api/user", {
+            var userData = {
                 name: user.name,
                 surname: user.surname,
                 login: user.login,
                 password: user.password,
                 nick: user.nick,
                 phone: user.phone
-            })
-            .done(function (response) {
-                scope.users.push(response);
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+            };
+            UserService.create(userData, userCreated);
         });
     }
 
-    function UserListController($scope, $state, $modal) {
+    function gotUsers(users) {
+        scope.users = users;
+    }
+
+    function UserListController($scope, $state, $modal, userService) {
+        UserService = userService;
         scope = $scope;
         state = $state;
         modal = $modal;
         scope.addUser = addUser;
-        $.get("http://localhost:8090/api/user/")
-            .done(function (response) {
-                scope.users = response;
-                scope.$apply()
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+        UserService.getAll(gotUsers);
     }
 
     return {
         start: function (App) {
-            App.controller('UserListController', ['$scope', '$state', '$modal', UserListController]);
+            App.controller('UserListController', ['$scope', '$state', '$modal', 'UserService', UserListController]);
             return UserListController;
         }
     };

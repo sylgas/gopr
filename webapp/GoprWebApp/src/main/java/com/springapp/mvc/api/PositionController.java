@@ -3,14 +3,9 @@ package com.springapp.mvc.api;
 import java.sql.Timestamp;
 import java.util.*;
 
-import com.google.common.collect.HashBiMap;
 import com.springapp.mvc.dto.PositionDto;
 import com.springapp.mvc.dto.UserPositionsDto;
-import com.springapp.mvc.entity.Group;
 import com.springapp.mvc.entity.Position;
-import com.springapp.mvc.entity.UserInAction;
-import com.springapp.mvc.repository.ActionRepository;
-import com.springapp.mvc.repository.GroupRepository;
 import com.springapp.mvc.repository.PositionRepository;
 import com.springapp.mvc.repository.UserInActionRepository;
 import org.apache.log4j.Logger;
@@ -109,7 +104,7 @@ public class PositionController {
     @RequestMapping(value = ALL_USER_POSITIONS, method = RequestMethod.GET)
     public @ResponseBody
     List<PositionDto> getAllUserPositions(
-            @RequestParam("userInActionId") Long userInActionId){
+            @RequestParam("userInActionId") long userInActionId){
 
         logger.info(ALL_USER_POSITIONS +
                 "\nuserInActionId: " + userInActionId);
@@ -131,7 +126,7 @@ public class PositionController {
     @RequestMapping(value = USER_POSITIONS, method = RequestMethod.GET)
     public @ResponseBody
     List<PositionDto> getUserPositionsAfterDateTime(
-            @RequestParam("userInActionId") Long userInActionId,
+            @RequestParam("userInActionId") long userInActionId,
             @RequestParam("dateTime") Timestamp dateTime){
 
         logger.info(USER_POSITIONS +

@@ -15,8 +15,6 @@ import java.util.List;
 
 @Controller
 public class GroupController {
-    private static final Logger logger = Logger.getLogger(GroupController.class);
-
     @Autowired
     private GroupRepository groupRepository;
 
@@ -47,7 +45,7 @@ public class GroupController {
     @RequestMapping(value = "/api/group/action/{id}", method = RequestMethod.GET)
     public @ResponseBody
     List<GroupDto> getByActionId(
-            @PathVariable("id") Long id) {
+            @PathVariable("id") long id) {
         List<GroupDto> groups = new ArrayList<GroupDto>();
         for(Group group: groupRepository.getByAction(actionRepository.get(id))) {
             groups.add(new GroupDto(group));

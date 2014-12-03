@@ -1,43 +1,41 @@
 function actionGroupsController(angular) {
-    var scope, state;
+    var scope, state, stateParams;
     var actionId;
-    var MapManager;
+    var MapManager, ActionService, GroupService, UserService;
     var modal;
 
+    function gotUsers(users) {
+        scope.users = users;
+    }
+
     function displayUsers() {
-        $.get("http://localhost:8090/api/user/")
-            .done(function (response) {
-                scope.users = response;
-                scope.$apply()
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+        UserService.getAll(gotUsers);
+    }
+
+    function gotActionGroups(groups) {
+        scope.groups = groups;
+    }
+
+    function displayActionGroups() {
+        GroupService.getByActionId(actionId, gotActionGroups)
+    }
+
+    function gotAction(action) {
+        scope.action = action;
+        setTimeout(function () {
+            MapManager.displayAreas(action.areas);
+        }, 2000);
     }
 
     function initMap() {
-        if (isNaN(parseInt(actionId)) || parseInt(actionId) == -1) {
-            alert("ERROR  :(");
-            //TODO: przenieść na stronę z errorem, którą też trzeba zrobić
-            return;
-        }
 
-            geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
-            groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
-            userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
-            userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
+        geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
+        groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
+        userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
+        userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
 
-            $.get("http://localhost:8090/api/action/" + actionId)
-                .done(function (response) {
-                    scope.action = response;
-                    scope.$apply();
-                    setTimeout(function() {
-                        MapManager.displayAreas(response.areas);
-                    }, 2000);
-                })
-                .fail(function () {
-                    alert("Wystąpił błąd z połączeniem z serwerem!");
-                });
+
+        ActionService.get(actionId, gotAction);
     }
 
     function addUserToGroup(user) {
@@ -50,52 +48,46 @@ function actionGroupsController(angular) {
         scope.users.push(user);
     }
 
+    function userInActionCreated(user) {
+        scope.group.users.splice(scope.group.users.indexOf(user), 1)
+    }
+
     function saveGroupParticipants(group) {
-        scope.group.users.forEach(function(user, index) {
-            $.post("http://localhost:8090/api/action/user", {
+        scope.group.users.forEach(function (user, index) {
+            var userData = {
                 userId: user.id,
                 phone: user.phone,
                 groupId: group.id
-            })
-                .done(function (response) {
-                    scope.group.users.splice(scope.group.users.indexOf(user), 1)
-                })
+            };
+            UserService.createForAction(userData, userInActionCreated);
         })
     }
 
-    function clearGroupUsersPanel() {
+    function clearCreateGroupPanel() {
         scope.group = {};
-        scope.group.users = []
+        scope.group.users = [];
+        scope.$apply()
     }
 
-    function addGroup() {
-        $.post("http://localhost:8090/api/group", {
+    function displayGroup(group) {
+        scope.groups.push(group);
+    }
+
+    function groupCreated(group) {
+        scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);
+        group.users = scope.group.users;
+        saveGroupParticipants(group);
+        displayGroup(group);
+        clearCreateGroupPanel();
+    }
+
+    function createGroup() {
+        var groupData = {
             actionId: actionId,
             name: scope.group.name,
             areaId: scope.group.area
-        })
-            .done(function (group) {
-                scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);
-                group.users = scope.group.users;
-                saveGroupParticipants(group);
-                scope.groups.push(group);
-                scope.$apply();
-                clearGroupUsersPanel();
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
-    }
-
-    function displayGroups() {
-        $.get("http://localhost:8090/api/group/action/" + actionId)
-            .done(function (response) {
-                scope.groups = response;
-                scope.$apply();
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+        };
+        GroupService.create(groupData, groupCreated);
     }
 
     function editUser(index) {
@@ -122,8 +114,11 @@ function actionGroupsController(angular) {
         state.go("action", {id: actionId, reload: true});
     }
 
-    function ActionGroupsController($scope, $state, $stateParams, $modal, mapFactory) {
+    function ActionGroupsController($scope, $state, $stateParams, $modal, mapFactory, actionService, groupService, userService) {
         MapManager = mapFactory;
+        ActionService = actionService;
+        GroupService = groupService;
+        UserService = userService;
         scope = $scope;
         state = $state;
         actionId = $stateParams.id;
@@ -132,20 +127,20 @@ function actionGroupsController(angular) {
         scope.initMap = initMap;
         scope.addUserToGroup = addUserToGroup;
         scope.removeUserFromGroup = removeUserFromGroup;
-        scope.addGroup = addGroup;
+        scope.createGroup = createGroup;
         scope.group = {};
         scope.group.users = [];
-        scope.group.areas = {};
         scope.groups = [];
         scope.editUser = editUser;
         scope.startAction = startAction;
         displayUsers();
-        displayGroups();
+        displayActionGroups();
     }
 
     return {
         start: function (App) {
-            App.controller('ActionGroupsController', ['$scope', '$state', '$stateParams', '$modal', 'MapFactory', ActionGroupsController]);
+            App.controller('ActionGroupsController', ['$scope', '$state', '$stateParams', '$modal',
+                'MapFactory', 'ActionService', 'GroupService', 'UserService', ActionGroupsController]);
             return ActionGroupsController;
         }
     };

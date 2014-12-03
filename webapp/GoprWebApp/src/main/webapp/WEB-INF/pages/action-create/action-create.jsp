@@ -45,7 +45,7 @@
         </table>
         <div class="btn-group col-md-10 pull-right btn-block">
             <button class="btn btn-default" ui-sref='home'>Wróć</button>
-            <button class="btn btn-primary" ng-click="setActionGroups()"
+            <button class="btn btn-primary" ng-click="createAction()"
                     ng-disabled="action.name == null || action.description == null || areas == null">
                 Dalej
             </button>

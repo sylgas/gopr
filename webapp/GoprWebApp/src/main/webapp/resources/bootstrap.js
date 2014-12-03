@@ -11,11 +11,21 @@
         './resources/scripts/controllers/action-create/GroupUserController.js',
         './resources/scripts/controllers/action-create/AreaController.js',
         './resources/scripts/controllers/user/UserListController.js',
-        './resources/scripts/controllers/user/UserController.js'
-    ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController, AreaController, UserListController, UserController) {
+        './resources/scripts/controllers/user/UserController.js',
+        './resources/scripts/services/ActionService.js',
+        './resources/scripts/services/AreaService.js',
+        './resources/scripts/services/GroupService.js',
+        './resources/scripts/services/PositionService.js',
+        './resources/scripts/services/UserService.js'
+    ], function(angular, MapFactory, CreateActionController, ActionController, ActionGroupsController, ActionListController, GroupUserController,
+                AreaController, UserListController, UserController,
+                ActionService, AreaService, GroupService, PositionService, UserService) {
 
         function init() {
             var App = angular.module('app', ['ui.bootstrap', 'ngTable', 'ui.router']);
+            App.config(function($httpProvider) {
+                $httpProvider.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+            })
             App.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
                 $urlRouterProvider.otherwise('/');
 
@@ -59,6 +69,11 @@
             AreaController.start(App);
             UserListController.start(App);
             UserController.start(App);
+            ActionService.start(App);
+            AreaService.start(App);
+            GroupService.start(App);
+            PositionService.start(App);
+            UserService.start(App);
 
             angular.bootstrap(document.body, ['app']);
             return App;

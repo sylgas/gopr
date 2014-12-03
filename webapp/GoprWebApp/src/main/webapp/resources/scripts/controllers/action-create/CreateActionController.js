@@ -2,47 +2,30 @@ function createActionController(angular) {
 
     var map, toolbar, contextMenu;
     var scope, state, modal;
-    var MapManager;
+    var MapManager, ActionService, AreaService;
+    var actionId;
 
-    function setActionGroups() {
+    function areasCreated() {
+        state.go("action-groups", {id: actionId, reload: true});
+    }
 
-        var actionId;
+    function actionCreated(id) {
+        actionId = id;
+        var areasData = {
+            actionId: actionId,
+            geometries: MapManager.getGeometries(),
+            graphics: map.graphics.graphics
+        };
+        AreaService.createAll(areasData, areasCreated);
+    }
 
-        $.post("http://localhost:8090/api/action", {
+    function createAction() {
+        var actionData = {
             name: scope.action.name,
             startDateTime: new Date().getTime(),
             description: scope.action.description
-        })
-            .done(function (response) {
-                if (isNaN(parseInt(response)) || parseInt(response) == -1){
-                    alert("Wystąpił błąd z odpowiedzią od serwera!");
-                    return;
-                }
-                sessionStorage.setItem("actionId", response);
-                actionId = response;
-
-                var geometries = MapManager.getGeometries();
-                for(var j = 1; j < map.graphics.graphics.length; j++) {
-                    $.post("http://localhost:8090/api/area/send", {
-                        actionId: actionId,
-                        numberInAction: geometries[j].numberInAction,
-                        name: geometries[j].geometryName,
-                        geometry: JSON.stringify(map.graphics.graphics[j].geometry)
-                    })
-                        .done(function (response) {
-                            if (response != true)
-                                alert("Wystąpił błąd z połączeniem z serwerem ale przeszlo!");
-                            if(j == map.graphics.graphics.length)
-                                state.go("action-groups", {id: actionId, reload: true});
-                        })
-                        .fail(function () {
-                            alert("Wystąpił błąd z połączeniem z serwerem!");
-                        });
-                }
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+        };
+        ActionService.create(actionData, actionCreated)
     }
 
     function editArea(index) {
@@ -71,7 +54,7 @@ function createActionController(angular) {
             scope.$apply()
         },
 
-        GeometryEx: function GeometryEx(numberInAction, geometryName){
+        GeometryEx: function GeometryEx(numberInAction, geometryName) {
             this.numberInAction = numberInAction;
             this.geometryName = geometryName;
         },
@@ -102,13 +85,15 @@ function createActionController(angular) {
         MapManager.addGeometryEx(mapFunctions.GeometryEx);
         scope.selectArea = MapManager.selectArea;
         scope.changeAreaProperties = mapFunctions.changeAreaProperties;
-        scope.setActionGroups = setActionGroups;
+        scope.createAction = createAction;
         scope.editArea = editArea;
         scope.selected = null;
     }
 
-    function CreateActionController($scope, $state, $modal, MapFactory) {
+    function CreateActionController($scope, $state, $modal, MapFactory, actionService, areaService) {
         MapManager = MapFactory;
+        ActionService = actionService;
+        AreaService = areaService;
         state = $state;
         modal = $modal;
         scope = $scope;
@@ -118,7 +103,7 @@ function createActionController(angular) {
 
     return {
         start: function (App) {
-            App.controller('CreateActionController', ['$scope', '$state', '$modal', 'MapFactory', CreateActionController]);
+            App.controller('CreateActionController', ['$scope', '$state', '$modal', 'MapFactory', 'ActionService', 'AreaService', CreateActionController]);
             return CreateActionController;
         }
     };

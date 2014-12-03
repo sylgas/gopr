@@ -1,74 +1,55 @@
 function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, Color,
-             SimpleMarkerSymbol, CartographicLineSymbol) {
+                          SimpleMarkerSymbol, CartographicLineSymbol) {
 
     var scope, stateParams;
-    var map, actionData;
-    var groupAreas, geometriesOnMap, userPaths, userLocalizations, lastAskTime;
-    var MapManager;
+    var actionData;
+    var groupAreas, geometriesOnMap, userPaths, userLocalizations;
+    var MapManager, ActionService, PositionService;
+    var lastAskTime;
+
+    function gotAction(action) {
+        setTimeout(function () { //TODO: display map on init instead of timeout
+            MapManager.displayAreas(action.areas);
+        }, 3000);
+    }
+
+    function gotPositions(data) {
+        lastAskTime = new Date().getTime();
+        displayPoints(data);
+    }
 
     function initAction() {
         scope.map = MapManager.generateDrawableMap('mapDiv');
-        map = scope.map;
-        if (isNaN(parseInt(stateParams.id)) || parseInt(stateParams.id) == -1){
-            alert("ERROR  :(");
-            //TODO: przenieść na stronę z errorem, którą też trzeba zrobić
-            return;
-        }
-        setTimeout(function() {
 
-        geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
-        groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
-        userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
-        userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
+            geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
+            groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
+            userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
+            userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
 
-        $.get("http://localhost:8090/api/action/" + stateParams.id)
-            .done(function (response) {
-                MapManager.displayAreas(response.areas);
-            })
-            .fail(function () {
-                alert("Wystąpił błąd z połączeniem z serwerem!");
-            });
+            ActionService.get(stateParams.id, gotAction);
+            PositionService.getAllByAction({actionId: stateParams.id}, gotPositions);
 
-
-        lastAskTime = new Date().getTime();
-
-        $.get("http://localhost:8090/api/positions/action_all", {
-                actionId: stateParams.id
-            })
-            .done(function (data){
-                displayPoints(data);
-            })
-            .fail(function () {
-                console.log("Wystąpił błąd podczas połączenia z serwerem!: http://localhost:8090/api/positions/action_all");
-            });
-
-        window.setInterval(function () {
-            $.get("http://localhost:8090/api/positions/action", {
-                actionId: stateParams.id,
-                dateTime: lastAskTime
-            })
-            .done(function (data){
-                lastAskTime = new Date().getTime();
-                displayPoints(data);
-            })
-            .fail(function () {
-                console.log("Wystąpił błąd podczas połączenia z serwerem!: http://localhost:8090/api/positions/action");
-            });
-        }, 5000); // repeat forever, polling every 5 seconds
-    }, 3000);
+            window.setInterval(function () {
+                var positionsData = {
+                    actionId: stateParams.id,
+                    dateTime: lastAskTime
+                };
+                PositionService.getAllByActionFromDate(positionsData, gotPositions);
+            }, 5000); // repeat forever, polling every 5 seconds
     }
-    function displayGroups(groups){
-        var table =  document.getElementById("groupsTable");
 
-        for (var i = 0; i < groups.length; i++){
+    function displayGroups(groups) {
+        var table = document.getElementById("groupsTable");
+
+        for (var i = 0; i < groups.length; i++) {
             getGroupAreas(groups[i]);
             var users = getGroupUsers(groups[i].userInActionIdList);
 
             var row = table.insertRow(table.rows.length);
-            row.onclick = function(){
+            row.onclick = function () {
                 selectGroupAreas(this);
             };
-            row.ondblclick = function(){
+            row.ondblclick = function () {
                 sendMsgToGroup(this.cells[0].innerHTML);
             };
             var cell0 = row.insertCell(0);
@@ -79,12 +60,12 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
             cell1.colSpan = 2;
             cell1.innerHTML = "GRUPA " + (i + 1).toString();
 
-            for (var j = 0; j < users.length; j++){
+            for (var j = 0; j < users.length; j++) {
                 var row = table.insertRow(table.rows.length);
-                row.onclick = function(){
+                row.onclick = function () {
                     selectUserPath(this);
                 };
-                row.ondblclick = function(){
+                row.ondblclick = function () {
                     sendMsgToUser(this.cells[0].innerHTML);
                 };
                 var cell0 = row.insertCell(0);
@@ -99,14 +80,14 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         }
     }
 
-    function displayPoints(data){
+    function displayPoints(data) {
         for (var i = 0; i < data.length; i++)
             displayUserPath(data[i].userInActionId, data[i].positions);
     }
 
-    function displayUserPath(userInActionId, positions){
+    function displayUserPath(userInActionId, positions) {
         positions.sort(
-            function (a, b){
+            function (a, b) {
                 return a.dateTime - b.dateTime
             }
         );
@@ -118,40 +99,40 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         updateUserPath(userInActionId, positions);
     }
 
-    function updateUserLocalization(userInActionId, lastPosition){
-        var point = new Point([lastPosition.longitude ,lastPosition.latitude]);
+    function updateUserLocalization(userInActionId, lastPosition) {
+        var point = new Point([lastPosition.longitude, lastPosition.latitude]);
 
-        if (!userLocalizations[userInActionId]){
+        if (!userLocalizations[userInActionId]) {
             var graphic = new Graphic(point, markerSymbol);
-            map.graphics.add(graphic);
-            userLocalizations[userInActionId] = map.graphics.graphics.indexOf(graphic);
+            scope.map.graphics.add(graphic);
+            userLocalizations[userInActionId] = scope.map.graphics.graphics.indexOf(graphic);
         } else {
-            map.graphics.graphics[userLocalizations[userInActionId]].setGeometry(point);
+            scope.map.graphics.graphics[userLocalizations[userInActionId]].setGeometry(point);
         }
     }
 
-    function updateUserPath(userInActionId, positions){
-        if (!userPaths[userInActionId]){
+    function updateUserPath(userInActionId, positions) {
+        if (!userPaths[userInActionId]) {
             var polylineGraphic = new Graphic(new Polyline([[positions[0].longitude, positions[0].latitude]]), lineSymbol);
-            map.graphics.add(polylineGraphic);
-            userPaths[userInActionId] = map.graphics.graphics.indexOf(polylineGraphic);
+            scope.map.graphics.add(polylineGraphic);
+            userPaths[userInActionId] = scope.map.graphics.graphics.indexOf(polylineGraphic);
         }
 
-        var polyline = map.graphics.graphics[userPaths[userInActionId]].geometry;
+        var polyline = scope.map.graphics.graphics[userPaths[userInActionId]].geometry;
         for (var i = 0; i < positions.length; i++) {
             polyline.insertPoint(0,
                 polyline.paths[0].length,
                 new Point([positions[i].longitude, positions[i].latitude]));
         }
-        map.graphics.graphics[userPaths[userInActionId]].setGeometry(polyline);
+        scope.map.graphics.graphics[userPaths[userInActionId]].setGeometry(polyline);
     }
 
 
-    function getGroupAreas(group){
+    function getGroupAreas(group) {
         areas = [];
-        for (var i = 0; i < group.geometryNumberInActionList.length; i++){
-            for (var j = 0; j < actionData.geometries.length; j++){
-                if (actionData.geometries[j].numberInAction ==  group.geometryNumberInActionList[i])
+        for (var i = 0; i < group.geometryNumberInActionList.length; i++) {
+            for (var j = 0; j < actionData.geometries.length; j++) {
+                if (actionData.geometries[j].numberInAction == group.geometryNumberInActionList[i])
                     if (geometriesOnMap[group.geometryNumberInActionList[i]])
                         areas.push(geometriesOnMap[group.geometryNumberInActionList[i]]);
                     else
@@ -164,10 +145,10 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         return areas;
     }
 
-    function getGroupUsers(usersInActionIdList){
+    function getGroupUsers(usersInActionIdList) {
         users = [];
-        for (var i = 0; i < usersInActionIdList.length; i++){
-            for (var j = 0; j < actionData.users.length; j++){
+        for (var i = 0; i < usersInActionIdList.length; i++) {
+            for (var j = 0; j < actionData.users.length; j++) {
                 if (actionData.users[j].userInActionId == usersInActionIdList[i])
                     users.push(actionData.users[j]);
             }
@@ -177,41 +158,44 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         return users;
     }
 
-    function selectGroupAreas(tableRow){
+    function selectGroupAreas(tableRow) {
         var groupId = tableRow.cells[0].innerHTML;
         deselectAllGraphics();
         for (var i = 0; i < groupAreas[groupId].length; i++)
-            map.graphics.graphics[groupAreas[groupId][0]].setSymbol(selectedFillSymbol);
+            scope.map.graphics.graphics[groupAreas[groupId][0]].setSymbol(selectedFillSymbol);
         tableRow.bgColor = "green";
     }
-    function sendMsgToGroup(groupId){
+
+    function sendMsgToGroup(groupId) {
         console.log("msg to group " + groupId.toString());
     }
-    function selectUserPath(tableRow){
+
+    function selectUserPath(tableRow) {
         var userInActionId = tableRow.cells[0].innerHTML;
         deselectAllGraphics();
-        map.graphics.graphics[userLocalizations[userInActionId]].setSymbol(selectedMarkerSymbol);
-        map.graphics.graphics[userPaths[userInActionId]].setSymbol(selectedLineSymbol);
+        scope.map.graphics.graphics[userLocalizations[userInActionId]].setSymbol(selectedMarkerSymbol);
+        scope.map.graphics.graphics[userPaths[userInActionId]].setSymbol(selectedLineSymbol);
         tableRow.bgColor = "green";
     }
-    function sendMsgToUser(userInActionId){
+
+    function sendMsgToUser(userInActionId) {
         console.log("msg to user " + userInActionId.toString());
     }
 
     var markerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE,         //style
         10,                                                                            //size
-        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0,0,0]), 1),     //outline
-        new Color([255,0,0,0.8]));                                                 //color
+        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 0]), 1),     //outline
+        new Color([255, 0, 0, 0.8]));                                                 //color
 
     var selectedMarkerSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, //style
         10,                                                                            //size
-        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0,0,0]), 1),     //outline
-        new Color([0,255,0,0.8]));                                                     //color
+        new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([0, 0, 0]), 1),     //outline
+        new Color([0, 255, 0, 0.8]));                                                     //color
 
 
     var lineSymbol = new CartographicLineSymbol(
         CartographicLineSymbol.STYLE_SOLID,                                            //style
-        new Color([0,0,0]),                                                            //color
+        new Color([0, 0, 0]),                                                            //color
         2,                                                                             //width
         CartographicLineSymbol.CAP_ROUND,                                              //cap
         CartographicLineSymbol.JOIN_ROUND,                                             //join
@@ -219,7 +203,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
     var selectedLineSymbol = new CartographicLineSymbol(
         CartographicLineSymbol.STYLE_SOLID,                                            //style
-        new Color([0,255,0]),                                                          //color
+        new Color([0, 255, 0]),                                                          //color
         2,                                                                             //width
         CartographicLineSymbol.CAP_ROUND,                                              //cap
         CartographicLineSymbol.JOIN_ROUND,                                             //join
@@ -230,8 +214,10 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         alert("TODO: pokazać jakiś formularz z danymi akcji z możliwością edycji kilku");
     }
 
-    function ActionController($scope, $stateParams, mapFactory) {
+    function ActionController($scope, $stateParams, mapFactory, actionService, positionService) {
         MapManager = mapFactory;
+        ActionService = actionService;
+        PositionService = positionService;
         scope = $scope;
         stateParams = $stateParams;
         scope.initAction = initAction
@@ -239,7 +225,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
     return {
         start: function (App) {
-            App.controller('ActionController', ['$scope', '$stateParams', 'MapFactory', ActionController]);
+            App.controller('ActionController', ['$scope', '$stateParams', 'MapFactory', 'ActionService', 'PositionService', ActionController]);
             return ActionController;
         }
     };

@@ -64,7 +64,7 @@
                 </tr>
             </table>
             <div class="form-group">
-                <label for="groupName" class="col-sm-4 control-label">Nazwa grupy</label>
+                <label for="groupName" class="col-sm-4 control-label">Nazwa:</label>
 
                 <div class="col-sm-8">
                     <input class="form-control" id="groupName" placeholder="Nazwa grupy" ng-model="group.name">
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="comment" class="col-sm-4 control-label">Nazwa grupy</label>
+                <label for="comment" class="col-sm-4 control-label">Komentarz:</label>
 
                 <div class="col-sm-8">
                     <input class="form-control" id="comment" placeholder="Komentarz" ng-model="group.comment">
@@ -91,8 +91,7 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-10 col-sm-2 btn-group">
-                    <button type="reset" class="btn btn-default" ng-click=removeGroup()>Usuń</button>
-                    <button type="submit" class="btn btn-default" ng-click=addGroup()>Dodaj</button>
+                    <button type="submit" class="btn btn-default" ng-click=createGroup()>Dodaj</button>
                 </div>
             </div>
         </form>

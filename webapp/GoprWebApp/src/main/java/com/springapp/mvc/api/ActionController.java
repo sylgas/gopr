@@ -60,7 +60,7 @@ public class ActionController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody
     ActionDto get(
-            @PathVariable("id") Long id) {
+            @PathVariable("id") long id) {
 
         logger.info("getting action " + id);
         Action action = actionRepository.get(id);
