@@ -5,7 +5,6 @@ import com.agh.gopr.app.R;
 
 import org.androidannotations.annotations.sharedpreferences.DefaultLong;
 import org.androidannotations.annotations.sharedpreferences.DefaultRes;
-import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
 @SuppressWarnings("UnusedDeclaration")
@@ -18,13 +17,10 @@ public interface Preferences {
     @DefaultRes(R.string.default_map_site)
     String mapSite();
 
-    @DefaultString("19")
     String actionId();
 
     boolean showLayer();
 
-    //todo: remove this after proper registation
-    @DefaultString("2")
     String userId();
 
     @DefaultLong(0L)

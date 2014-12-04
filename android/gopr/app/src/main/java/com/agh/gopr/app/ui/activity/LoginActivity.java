@@ -63,6 +63,11 @@ public class LoginActivity extends AbstractActivity {
 
     @AfterViews
     protected void init() {
+        if (isAssignedToAction()) {
+            MainActivity_.intent(this).start();
+            finish();
+            return;
+        }
         password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -70,6 +75,10 @@ public class LoginActivity extends AbstractActivity {
                 return true;
             }
         });
+    }
+
+    private boolean isAssignedToAction() {
+        return preferences.actionId().get() != null && preferences.userId().get() != null;
     }
 
     @Click(R.id.sign_in_button)
