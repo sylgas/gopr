@@ -46,8 +46,6 @@ import roboguice.util.Ln;
 @OptionsMenu(R.menu.map_menu)
 public class MapFragment extends RoboFragment {
 
-    private static final String URL = "https://www.google.com";
-
     @ViewById
     protected MapView map;
 
@@ -117,7 +115,6 @@ public class MapFragment extends RoboFragment {
         } else {
             if (networkEnabledListener == null) {
                 networkEnabledListener = new NetworkEnabledListener();
-                connectionService.showDialog();
             }
             registerNetworkEnabledListenerIfNeeded();
         }

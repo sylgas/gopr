@@ -17,9 +17,11 @@ import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.response.BasicActionInfo;
 import com.agh.gopr.app.response.LoginResponse;
+import com.agh.gopr.app.service.connection.ConnectionService;
 import com.agh.gopr.app.service.rest.RequestService;
 import com.agh.gopr.app.service.rest.service.method.RestMethod;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -50,6 +52,9 @@ public class LoginActivity extends AbstractActivity {
     @ViewById
     protected CheckBox showPassword;
 
+    @Inject
+    private ConnectionService connectionService;
+
     @Pref
     protected Preferences_ preferences;
 
@@ -69,12 +74,20 @@ public class LoginActivity extends AbstractActivity {
 
     @Click(R.id.sign_in_button)
     public void attemptLogin() {
+        if (!connectionService.isConnected()) {
+            connectionService.showDialog();
+            return;
+        }
+
         login.setError(null);
         password.setError(null);
         String login = this.login.getText().toString();
         String password = this.password.getText().toString();
 
-        if (!isEditTextFilled(this.password, password) && !isEditTextFilled(this.login, login)) {
+        boolean loginIsFilled = !isEditTextFilled(this.login, login);
+        boolean passwordIsFilled = !isEditTextFilled(this.password, password);
+
+        if (loginIsFilled && passwordIsFilled) {
             progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.progress_waiting),
                     getString(R.string.login_progress_message), true);
             try {
@@ -100,6 +113,11 @@ public class LoginActivity extends AbstractActivity {
     protected void showPasswordClick() {
         password.setTransformationMethod(showPassword.isChecked() ?
                 HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+    }
+
+    @Click(R.id.icon)
+    protected void iconClick() {
+        AboutActivity_.intent(this).start();
     }
 
     @UiThread

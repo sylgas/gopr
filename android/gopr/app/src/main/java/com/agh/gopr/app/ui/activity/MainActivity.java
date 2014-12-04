@@ -17,6 +17,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 import roboguice.event.Observes;
 
 @EActivity(R.layout.main_activity)
+@OptionsMenu(R.menu.menu)
 public class MainActivity extends AbstractActivity {
 
     private final SectionsPagerAdapter adapter;
@@ -53,11 +55,6 @@ public class MainActivity extends AbstractActivity {
         pager.setOnPageChangeListener(new ScrollPageListener());
     }
 
-    @OptionsItem(R.id.settings)
-    protected void settings() {
-        startActivity(new Intent(this, PreferencesActivity.class));
-    }
-
     @OptionsItem(R.id.notes)
     protected void notes() {
         if (noteFragment.isVisible()) {
@@ -65,6 +62,16 @@ public class MainActivity extends AbstractActivity {
         } else {
             noteFragment.show();
         }
+    }
+
+    @OptionsItem(R.id.settings)
+    protected void settings() {
+        startActivity(new Intent(this, PreferencesActivity.class));
+    }
+
+    @OptionsItem(R.id.about)
+    protected void about() {
+        AboutActivity_.intent(this).start();
     }
 
     protected void disablePager(@Observes MapFragment.StartMessengerEvent startMessengerEvent) {
