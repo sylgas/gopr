@@ -23,12 +23,9 @@
 
         function init() {
             var App = angular.module('app', ['ui.bootstrap', 'ngTable', 'ui.router']);
-            App.config(function($httpProvider) {
+            App.config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
                 $httpProvider.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
-            })
-            App.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
                 $urlRouterProvider.otherwise('/');
-
                 $stateProvider
                     .state('home', {
                         url: '/'

@@ -6,7 +6,6 @@ import com.springapp.mvc.entity.Group;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ActionDto {
@@ -15,7 +14,7 @@ public class ActionDto {
     private Timestamp startDate;
     private Timestamp endDate;
     private String description;
-    private String comments;
+    private String comment;
     private String staticDatabaseId;
     private String isridDatabaseId;
     private List<Group> groups;
@@ -27,10 +26,15 @@ public class ActionDto {
         this.description = action.getDescription();
         this.startDate = action.getStartDate();
         areas = new ArrayList<AreaDto>();
-        for(Area area: action.getAreas()) {
+        for (Area area : action.getAreas()) {
             areas.add(new AreaDto(area));
         }
+        groups = new ArrayList<Group>();
+        for (Group group : action.getGroups()) {
+            groups.add(group);
+        }
     }
+
     public Long getId() {
         return id;
     }
@@ -72,11 +76,11 @@ public class ActionDto {
     }
 
     public String getComments() {
-        return comments;
+        return comment;
     }
 
-    public void setComments(String comments) {
-        this.comments = comments;
+    public void setComments(String comment) {
+        this.comment = comment;
     }
 
     public String getStaticDatabaseId() {
@@ -95,14 +99,14 @@ public class ActionDto {
         this.isridDatabaseId = isridDatabaseId;
     }
 
-    /* public Collection<Group> getGroups() {
-         return groups;
-     }
+    public List<Group> getGroups() {
+        return groups;
+    }
 
-     public void setGroups(Collection<Group> groups) {
-         this.groups = groups;
-     }
- */
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
     public List<AreaDto> getAreas() {
         return areas;
     }

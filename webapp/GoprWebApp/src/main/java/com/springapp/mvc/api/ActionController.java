@@ -52,6 +52,7 @@ public class ActionController {
         //TODO: Zwrocić id dodanej akcji, lub -1 na fail
         Action action = new Action();
         action.setName(name);
+        action.setDescription(description);
         action.setStartDate(new Timestamp(new Date().getTime()));
 
         return actionRepository.save(action).getId();
