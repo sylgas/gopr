@@ -65,4 +65,7 @@
     <string name="author_sylgas">Sylwia Gąsior</string>
     <string name="icon_description">Icon</string>
 
+    <!-- Action List -->
+    <string name="action_list">Action list</string>
+
 </resources>

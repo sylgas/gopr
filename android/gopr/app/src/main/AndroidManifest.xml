@@ -39,13 +39,11 @@
         </activity>
         <activity
             android:name=".ui.activity.ActionListActivity_"
-            android:label="@string/app_name" />
+            android:label="@string/action_list" />
         <activity
             android:name=".ui.activity.AboutActivity_"
             android:label="@string/about" />
-        <activity
-            android:name=".ui.activity.MainActivity_"
-            android:label="@string/app_name" />
+        <activity android:name=".ui.activity.MainActivity_" />
         <activity
             android:name=".ui.activity.PreferencesActivity"
             android:configChanges="keyboardHidden|orientation"
