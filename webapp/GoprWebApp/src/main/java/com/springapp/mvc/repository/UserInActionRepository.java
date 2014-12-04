@@ -7,7 +7,6 @@ import com.springapp.mvc.repository.dao.UserInActionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.*;
 
@@ -17,17 +16,19 @@ public class UserInActionRepository {
     @Autowired
     UserInActionDao userInActionDao;
 
-    public UserInAction get(Long userInActionId){
-        return userInActionDao.findOne(userInActionId);
-    }
-
     public UserInAction save(UserInAction userInAction) {
         return userInActionDao.saveAndFlush(userInAction);
     }
-    public Collection<UserInAction> getUserInActionsByGroup(Group group) {
-        return userInActionDao.findAllByGroup(group); }
+
+    public UserInAction get(Long userInActionId) {
+        return userInActionDao.findOne(userInActionId);
+    }
 
     public List<UserInAction> getByUser(User user) {
         return new ArrayList<UserInAction>(userInActionDao.findByUser(user));
+    }
+
+    public List<UserInAction> getByGroup(Group group) {
+        return new ArrayList<UserInAction>(userInActionDao.findAllByGroup(group));
     }
 }

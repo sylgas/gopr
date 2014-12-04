@@ -8,7 +8,7 @@
     <div class="col-md-2">
         <button class="btn btn-primary" ng-click="addUser()">Nowy użytkownik</button>
     </div>
-    <table class="table table-striped table-bordered table-hover table-condensed">
+    <table class="table table-striped table-hover table-condensed">
         <tr>
             <th>Id</th>
             <th>Nick</th>

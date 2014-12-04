@@ -4,17 +4,16 @@ import com.springapp.mvc.entity.Group;
 import com.springapp.mvc.entity.GroupArea;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class GroupDto {
-    private Long id;
+    private long id;
     private String name;
     private String color;
     private String pictogram;
-    private Collection<AreaDto> areas;
+    private List<AreaDto> areas;
     private ActionDto action;
-
-    public GroupDto() {}
+    private List<UserInActionDto> actionUsers;
 
     public GroupDto(Group group) {
         this.id = group.getId();
@@ -26,11 +25,11 @@ public class GroupDto {
         this.action = new ActionDto(group.getAction());
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -58,11 +57,11 @@ public class GroupDto {
         this.pictogram = pictogram;
     }
 
-    public Collection<AreaDto> getAreas() {
+    public List<AreaDto> getAreas() {
         return areas;
     }
 
-    public void setAreas(Collection<AreaDto> areas) {
+    public void setAreas(List<AreaDto> areas) {
         this.areas = areas;
     }
 
@@ -72,5 +71,13 @@ public class GroupDto {
 
     public void setAction(ActionDto action) {
         this.action = action;
+    }
+
+    public List<UserInActionDto> getActionUsers() {
+        return actionUsers;
+    }
+
+    public void setActionUsers(List<UserInActionDto> actionUsers) {
+        this.actionUsers = actionUsers;
     }
 }

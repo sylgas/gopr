@@ -2,6 +2,7 @@ package com.springapp.mvc.api;
 
 import com.springapp.mvc.dto.LoginResponseDto;
 import com.springapp.mvc.dto.LoginResponseListItem;
+import com.springapp.mvc.dto.UserDto;
 import com.springapp.mvc.entity.User;
 import com.springapp.mvc.entity.UserInAction;
 import com.springapp.mvc.repository.UserInActionRepository;
@@ -84,7 +85,11 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    List<User> getAllUsers() {
-        return userRepository.getAll();
+    List<UserDto> getAllUsers() {
+        List<UserDto> users = new ArrayList<UserDto>();
+        for(User user: userRepository.getAll()) {
+            users.add(new UserDto(user));
+        }
+        return users;
     }
 }

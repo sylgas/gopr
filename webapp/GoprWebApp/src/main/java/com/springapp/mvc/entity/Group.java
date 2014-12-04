@@ -28,6 +28,10 @@ public class Group {
     @Column(name = "pictogram", nullable = true)
     private String pictogram;
 
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Set<UserInAction> userInActions;
+
     @OneToMany(mappedBy = "pk.group", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference
     private Set<GroupArea> groupAreas;
@@ -92,5 +96,13 @@ public class Group {
 
     public void setAction(Action action) {
         this.action = action;
+    }
+
+    public Set<UserInAction> getUserInActions() {
+        return userInActions;
+    }
+
+    public void setUserInActions(Set<UserInAction> userInActions) {
+        this.userInActions = userInActions;
     }
 }

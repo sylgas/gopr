@@ -9,11 +9,11 @@ function userService(angular) {
     };
 
     userService.createForAction = function (userData, successCallback, errorCallback) {
-        http.post("/api/action/user", $.param(userData)).success(successCallback).error(errorCallback)
+        http.post("/api/action/user", $.param(userData)).success(successCallback).error(errorCallback);
     };
 
     userService.getAll = function (successCallback, errorCallback) {
-        http.get(baseUrl).success(successCallback).error(errorCallback)
+        http.get(baseUrl).success(successCallback).error(errorCallback);
     };
 
     function UserService($http) {

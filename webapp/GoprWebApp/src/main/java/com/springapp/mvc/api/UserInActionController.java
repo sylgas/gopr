@@ -1,5 +1,6 @@
 package com.springapp.mvc.api;
 
+import com.springapp.mvc.entity.Group;
 import com.springapp.mvc.entity.UserInAction;
 import com.springapp.mvc.repository.GroupRepository;
 import com.springapp.mvc.repository.UserInActionRepository;
@@ -36,7 +37,8 @@ public class UserInActionController {
         if(phone != null) {
             userInAction.setPhone(phone);
         }
-        userInAction.setGroup(groupRepository.get(groupId));
+        Group group = groupRepository.get(groupId);
+        userInAction.setGroup(group);
         userInAction.setUser(userRepository.get(userId));
         return userInActionRepository.save(userInAction);
     }

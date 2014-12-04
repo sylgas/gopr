@@ -1,19 +1,32 @@
 function actionGroupsController(angular) {
-    var scope, state, stateParams;
+    var scope, state;
     var actionId;
     var MapManager, ActionService, GroupService, UserService;
     var modal;
 
     function gotUsers(users) {
         scope.users = users;
+        scope.usersTableParams.reload();
     }
 
     function displayUsers() {
         UserService.getAll(gotUsers);
     }
 
+    function getById(array, id) {
+        return $.grep(array, function (e) {
+            return e.id == id;
+        })[0]
+    }
+
     function gotActionGroups(groups) {
         scope.groups = groups;
+        angular.forEach(groups, function (group) {
+            scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);
+            angular.forEach(group.actionUsers, function (actionUser) {
+                scope.users.splice(scope.users.indexOf(getById(scope.users, actionUser.user.id)), 1);
+            })
+        })
     }
 
     function displayActionGroups() {
@@ -28,31 +41,26 @@ function actionGroupsController(angular) {
     }
 
     function initMap() {
-
-        geometriesOnMap = {};    //Dictionary[geometryNumberInAction] = graphic with area index on map
-        groupAreas = {};         //Dictionary[groupId] = List<Graphics of areas index on map>
-        userPaths = {};          //Dictionary[userInActionId] = graphic with path index on map
-        userLocalizations = {};   //Dictionary[userInActionId] = graphic with localization index on map
-
-
         ActionService.get(actionId, gotAction);
     }
 
     function addUserToGroup(user) {
         scope.users.splice(scope.users.indexOf(user), 1);
+        scope.usersTableParams.reload();
         scope.group.users.push(user);
     }
 
     function removeUserFromGroup(user) {
         scope.group.users.splice(scope.group.users.indexOf(user), 1);
         scope.users.push(user);
+        scope.usersTableParams.reload();
     }
 
     function userInActionCreated(user) {
         scope.group.users.splice(scope.group.users.indexOf(user), 1)
     }
 
-    function saveGroupParticipants(group) {
+    function saveGroupUsers(group) {
         scope.group.users.forEach(function (user, index) {
             var userData = {
                 userId: user.id,
@@ -66,18 +74,13 @@ function actionGroupsController(angular) {
     function clearCreateGroupPanel() {
         scope.group = {};
         scope.group.users = [];
-        scope.$apply()
-    }
-
-    function displayGroup(group) {
-        scope.groups.push(group);
+        displayUsers();
     }
 
     function groupCreated(group) {
         scope.action.areas.splice(scope.action.areas.indexOf(scope.group.area), 1);
-        group.users = scope.group.users;
-        saveGroupParticipants(group);
-        displayGroup(group);
+        saveGroupUsers(group);
+        displayActionGroups();
         clearCreateGroupPanel();
     }
 
@@ -114,7 +117,7 @@ function actionGroupsController(angular) {
         state.go("action", {id: actionId, reload: true});
     }
 
-    function ActionGroupsController($scope, $state, $stateParams, $modal, mapFactory, actionService, groupService, userService) {
+    function ActionGroupsController($scope, $state, $stateParams, $modal, ngTableParams, $filter, mapFactory, actionService, groupService, userService) {
         MapManager = mapFactory;
         ActionService = actionService;
         GroupService = groupService;
@@ -130,16 +133,30 @@ function actionGroupsController(angular) {
         scope.createGroup = createGroup;
         scope.group = {};
         scope.group.users = [];
-        scope.groups = [];
         scope.editUser = editUser;
         scope.startAction = startAction;
-        displayUsers();
+        scope.users = [];
         displayActionGroups();
+        displayUsers();
+        scope.usersTableParams = new ngTableParams({
+            page: 1,
+            count: 5
+        }, {
+            counts: [],
+            total: scope.users.length,
+            getData: function ($defer, params) {
+                var filteredData = params.filter() ?
+                    $filter('filter')(scope.users, params.filter()) :
+                    scope.users;
+                params.total(filteredData.length);
+                $defer.resolve(filteredData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            }
+        })
     }
 
     return {
         start: function (App) {
-            App.controller('ActionGroupsController', ['$scope', '$state', '$stateParams', '$modal',
+            App.controller('ActionGroupsController', ['$scope', '$state', '$stateParams', '$modal', 'ngTableParams', '$filter',
                 'MapFactory', 'ActionService', 'GroupService', 'UserService', ActionGroupsController]);
             return ActionGroupsController;
         }

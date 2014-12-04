@@ -2,64 +2,41 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <div data-ng-init="initMap()" class="col-md-12">
-    <div class="col-md-12">
+    <div class="col-md-7">
         <h1>{{action.name}}</h1>
+        <div id="mapDiv"></div>
     </div>
-    <div class="col-md-6">
-        Użytkownicy:
-        <table class="table table-striped table-bordered table-hover table-condensed">
-            <tr>
-                <th>Id</th>
-                <th>Nick</th>
-                <th>Imię</th>
-                <th>Nazwisko</th>
-                <th>Login</th>
-                <th>Telefon</th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="user in users">
-                <td>{{user.id}}</td>
-                <td>{{user.nick}}</td>
-                <td>{{user.name}}</td>
-                <td>{{user.surname}}</td>
-                <td>{{user.login}}</td>
-                <td>{{user.phone}}</td>
+    <div class="col-md-5">
+        <h4>Nowa grupa</h4>
+        <table ng-table="usersTableParams" show-filter="true" class="table table-striped table-hover table-condensed">
+            <tr ng-repeat="user in ($data)">
+                <td data-title="'Nick'" filter="{'nick': 'text'}">{{user.nick}}</td>
+                <td data-title="'Imię'" filter="{'name': 'text'}">{{user.name}}</td>
+                <td data-title="'Nazwisko'" filter="{'surname': 'text'}">{{user.surname}}</td>
                 <td>
                     <a ng-click="addUserToGroup(user)">
-                        <span class="glyphicon glyphicon-arrow-right"></span>
+                        <span class="glyphicon glyphicon-plus"></span>
                     </a>
                 </td>
             </tr>
         </table>
-    </div>
-    <div class="col-md-6">
         <form class="form-horizontal" role="form">
-            Nowa grupa:
-            <table class="table table-striped table-bordered table-hover table-condensed">
+            <table class="table table-striped table-hover table-condensed">
                 <tr>
-                    <th></th>
-                    <th>Id</th>
                     <th>Nick</th>
                     <th>Imię</th>
                     <th>Nazwisko</th>
-                    <th>Login</th>
                     <th>Telefon</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="groupUser in group.users">
-                    <td>
-                        <a ng-click="removeUserFromGroup(groupUser)">
-                            <span class="glyphicon glyphicon-arrow-left"></span>
-                        </a>
-                    </td>
-                    <td>{{groupUser.id}}</td>
+                <tr ng-repeat="groupUser in group.users" ng-show="group.users">
                     <td>{{groupUser.nick}}</td>
                     <td>{{groupUser.name}}</td>
                     <td>{{groupUser.surname}}</td>
-                    <td>{{groupUser.login}}</td>
                     <td>{{groupUser.phone}}</td>
                     <td class="col-md-1">
                         <a ng-click="editUser($index)"><span class="glyphicon glyphicon-edit"></span></a>
+                        <a ng-click="removeUserFromGroup(groupUser)"><span class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
             </table>
@@ -91,30 +68,31 @@
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-10 col-sm-2 btn-group">
-                    <button type="submit" class="btn btn-default" ng-click=createGroup()>Dodaj</button>
+                    <button type="submit" class="btn btn-default" ng-click=createGroup()>Zapisz</button>
                 </div>
             </div>
         </form>
-        Dodane grupy
-        <table class="table table-striped table-bordered table-hover table-condensed">
+        <h4>Dodane grupy</h4>
+        <table class="table table-striped table-hover table-condensed">
             <tr>
-                <th>Id</th>
                 <th>Nazwa</th>
                 <th>Obszar</th>
                 <th>Uczestnicy</th>
             </tr>
             <tr ng-repeat="group in groups">
-                <td>{{group.id}}</td>
                 <td>{{group.name}}</td>
-                <td>{{group.area}}</td>
                 <td>
-                    <div ng-repeat="user in group.users">
-                        {{user.nick}}
+                    <div ng-repeat="area in group.areas">
+                    {{area.name}}
+                </div>
+                </td>
+                <td>
+                    <div ng-repeat="actionUser in group.actionUsers">
+                        {{actionUser.user.nick}}
                     </div>
                 </td>
             </tr>
         </table>
-        <div id="mapDiv"></div>
     </div>
     <div class="col-sm-offset-10 col-sm-2 btn-group pull-right">
         <button class="btn btn-primary" ng-click="startAction()">Rozpocznij akcję</button>

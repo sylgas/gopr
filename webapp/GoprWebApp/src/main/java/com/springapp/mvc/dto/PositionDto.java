@@ -3,23 +3,23 @@ package com.springapp.mvc.dto;
 import java.sql.Timestamp;
 
 public class PositionDto {
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
     private Timestamp dateTime;
 
     public PositionDto(){}
 
-    public PositionDto(Double latitude, Double longitude, Timestamp dateTime) {
+    public PositionDto(double latitude, double longitude, Timestamp dateTime) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.dateTime = dateTime;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
@@ -27,11 +27,11 @@ public class PositionDto {
         this.dateTime = dateTime;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
