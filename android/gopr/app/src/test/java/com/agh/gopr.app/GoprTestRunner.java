@@ -1,6 +1,6 @@
 package com.agh.gopr.app;
 
-import com.agh.gopr.app.ioc.GOPRMobileModule;
+import com.agh.gopr.app.ioc.GeoSUPModule;
 import com.google.inject.Injector;
 
 import org.junit.runners.model.InitializationError;
@@ -31,9 +31,9 @@ public class GoprTestRunner extends RobolectricTestRunner {
         }
 
         private void injectDependencies(Object test) {
-            GOPRMobile application = (GOPRMobile) Robolectric.application;
+            GeoSUP application = (GeoSUP) Robolectric.application;
             RoboGuice.setBaseApplicationInjector(application, RoboGuice.DEFAULT_STAGE,
-                    RoboGuice.newDefaultRoboModule(application), new GOPRMobileModule());
+                    RoboGuice.newDefaultRoboModule(application), new GeoSUPModule());
 
 
             Injector injector = RoboGuice.getInjector(application);

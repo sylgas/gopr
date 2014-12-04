@@ -18,13 +18,14 @@ import com.agh.gopr.app.ioc.provider.dao.UserDaoProvider;
 import com.agh.gopr.app.ioc.provider.dao.UserGroupDaoProvider;
 import com.agh.gopr.app.service.rest.RequestService;
 import com.agh.gopr.app.service.rest.service.GpsGetPositionsService;
+import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
 import com.agh.gopr.app.service.rest.service.IMethodService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.multibindings.Multibinder;
 
-public class GOPRMobileModule implements Module {
+public class GeoSUPModule implements Module {
     @Override
     public void configure(Binder binder) {
         binder.bind(RequestService.class).toProvider(RequestServiceProvider.class);
@@ -44,7 +45,8 @@ public class GOPRMobileModule implements Module {
     }
 
     private void bindMethodServices(Binder binder) {
-        Multibinder<IMethodService> positionParsers = Multibinder.newSetBinder(binder, IMethodService.class);
-        positionParsers.addBinding().to(GpsGetPositionsService.class);
+        Multibinder<IMethodService> methodServices = Multibinder.newSetBinder(binder, IMethodService.class);
+        methodServices.addBinding().to(GpsGetPositionsService.class);
+        methodServices.addBinding().to(GpsPostPositionsService.class);
     }
 }

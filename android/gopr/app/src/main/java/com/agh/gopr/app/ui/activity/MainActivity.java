@@ -1,13 +1,15 @@
 package com.agh.gopr.app.ui.activity;
 
 import android.content.Intent;
+import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.agh.gopr.app.R;
-import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
+import com.agh.gopr.app.common.SettingsAlertDialog;
+import com.agh.gopr.app.service.gps.GpsService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.agh.gopr.app.ui.fragment.MessengerFragment_;
 import com.agh.gopr.app.ui.fragment.NoteFragment;
@@ -33,11 +35,11 @@ public class MainActivity extends AbstractActivity {
     @Inject
     private MapFragment mapFragment;
 
-    /**
-     * It needed to start posting position (service starts in constructor)
-     */
     @Inject
-    private GpsPostPositionsService postPositionsService;
+    private LocationManager locationManager;
+
+    @Inject
+    private SettingsAlertDialog settingsAlertDialog;
 
     @FragmentById
     protected NoteFragment noteFragment;
@@ -53,6 +55,19 @@ public class MainActivity extends AbstractActivity {
     protected void init() {
         pager.setAdapter(adapter);
         pager.setOnPageChangeListener(new ScrollPageListener());
+        if (!gpsEnabled()) {
+            settingsAlertDialog.showSettingsAlert(SettingsAlertDialog.Setting.GPS);
+        }
+        startGpsService();
+    }
+
+    private void startGpsService() {
+        Intent intent = new Intent(GpsService.ACTION_ID);
+        startService(intent);
+    }
+
+    private boolean gpsEnabled() {
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     @OptionsItem(R.id.notes)

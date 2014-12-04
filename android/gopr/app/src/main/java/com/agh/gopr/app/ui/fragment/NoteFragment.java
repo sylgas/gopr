@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.agh.gopr.app.GOPRMobile;
+import com.agh.gopr.app.GeoSUP;
 import com.agh.gopr.app.R;
 import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.database.entity.Note;
@@ -163,7 +163,7 @@ public class NoteFragment extends RoboFragment {
     }
 
     private File createFile(String photoName) throws IOException {
-        String dirName = String.format("%s%s", GOPRMobile.getAppDirectory(), PHOTO_FOLDER_NAME);
+        String dirName = String.format("%s%s", GeoSUP.getAppDirectory(), PHOTO_FOLDER_NAME);
         File dir = new File(dirName);
         dir.mkdirs();
         String fileName = String.format("%s%s.jpg", dirName, photoName);
