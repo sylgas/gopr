@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import roboguice.RoboGuice;
 import roboguice.util.Ln;
 
-public class GpsGetPositionsService implements IMethodService {
+public class GetPositionsService implements IMethodService {
 
     @Inject
     private Preferences_ preferences;
@@ -29,7 +29,7 @@ public class GpsGetPositionsService implements IMethodService {
     private final UserPositionProcessListener listener = new UserPositionProcessListener();
 
     @Inject
-    public GpsGetPositionsService(Context context) {
+    public GetPositionsService(Context context) {
         RoboGuice.injectMembers(context, this);
         this.context = context;
     }

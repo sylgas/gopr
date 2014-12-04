@@ -17,9 +17,9 @@ import com.agh.gopr.app.ioc.provider.dao.PositionDaoProvider;
 import com.agh.gopr.app.ioc.provider.dao.UserDaoProvider;
 import com.agh.gopr.app.ioc.provider.dao.UserGroupDaoProvider;
 import com.agh.gopr.app.service.rest.RequestService;
-import com.agh.gopr.app.service.rest.service.GpsGetPositionsService;
-import com.agh.gopr.app.service.rest.service.GpsPostPositionsService;
+import com.agh.gopr.app.service.rest.service.GetPositionsService;
 import com.agh.gopr.app.service.rest.service.IMethodService;
+import com.agh.gopr.app.service.rest.service.PostPositionsService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.google.inject.Binder;
 import com.google.inject.Module;
@@ -46,7 +46,7 @@ public class GeoSUPModule implements Module {
 
     private void bindMethodServices(Binder binder) {
         Multibinder<IMethodService> methodServices = Multibinder.newSetBinder(binder, IMethodService.class);
-        methodServices.addBinding().to(GpsGetPositionsService.class);
-        methodServices.addBinding().to(GpsPostPositionsService.class);
+        methodServices.addBinding().to(GetPositionsService.class);
+        methodServices.addBinding().to(PostPositionsService.class);
     }
 }

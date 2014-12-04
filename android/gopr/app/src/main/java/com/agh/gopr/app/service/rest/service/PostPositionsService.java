@@ -19,7 +19,7 @@ import java.util.List;
 import roboguice.RoboGuice;
 import roboguice.util.Ln;
 
-public class GpsPostPositionsService implements IMethodService {
+public class PostPositionsService implements IMethodService {
 
     @Inject
     private PositionService positionService;
@@ -33,7 +33,7 @@ public class GpsPostPositionsService implements IMethodService {
     private final RequestService.HttpCallback callback = new PostCallback();
 
     @Inject
-    public GpsPostPositionsService(Context context) {
+    public PostPositionsService(Context context) {
         RoboGuice.injectMembers(context.getApplicationContext(), this);
     }
 
