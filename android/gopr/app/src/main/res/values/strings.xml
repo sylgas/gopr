@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">GOPRMobile</string>
+    <string name="app_name">GeoSUP</string>
 
     <!-- Map -->
     <string name="map_title">Map</string>
@@ -63,5 +63,6 @@
     <string name="author_ucash">Łukasz Cieśla</string>
     <string name="author_pkarp">Paulina Karp</string>
     <string name="author_sylgas">Sylwia Gąsior</string>
+    <string name="icon_description">Icon</string>
 
 </resources>
