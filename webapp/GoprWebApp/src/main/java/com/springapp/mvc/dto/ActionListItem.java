@@ -1,15 +1,22 @@
 package com.springapp.mvc.dto;
 
-public class LoginResponseListItem {
+public class ActionListItem {
+
     private long actionId;
+
     private long userInActionId;
+
+    private long groupId;
+
     private String actionName;
 
-    public LoginResponseListItem(){}
+    public ActionListItem() {
+    }
 
-    public LoginResponseListItem(long actionId, long userInActionId, String actionName) {
+    public ActionListItem(long actionId, long userInActionId, long groupId, String actionName) {
         this.actionId = actionId;
         this.userInActionId = userInActionId;
+        this.groupId = groupId;
         this.actionName = actionName;
     }
 
@@ -27,6 +34,14 @@ public class LoginResponseListItem {
 
     public long getActionId() {
         return actionId;
+    }
+
+    public long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(long groupId) {
+        this.groupId = groupId;
     }
 
     public long getUserInActionId() {

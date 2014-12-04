@@ -6,20 +6,14 @@ import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
 import com.springapp.mvc.repository.ActionRepository;
 import com.springapp.mvc.repository.AreaRepository;
-import com.springapp.mvc.repository.dao.AreaDao;
 import org.apache.log4j.Logger;
-import org.hibernate.exception.SQLGrammarException;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import sun.swing.BakedArrayList;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +43,7 @@ public class AreaController {
         logger.info("GET LAYER: " + actionId);
 
         Action action = actionRepository.get(actionId);
-        if (action != null){
+        if (action != null) {
             List<Area> areas = new ArrayList<Area>(areaRepository.getByAction(action));
             List<LayerDto> geometries = new ArrayList<LayerDto>();
             for (Area a : areas)
@@ -70,7 +64,9 @@ public class AreaController {
      *        area (this is geometry.toJson() stringify)
      */
     @RequestMapping(value = SEND_LAYER, method = RequestMethod.POST)
-    public @ResponseBody boolean saveArea(
+    public
+    @ResponseBody
+    boolean saveArea(
             @RequestParam("actionId") long actionId,
             @RequestParam("numberInAction") int numberInAction,
             @RequestParam("name") String name,

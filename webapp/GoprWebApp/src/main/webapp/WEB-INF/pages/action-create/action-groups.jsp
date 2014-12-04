@@ -21,7 +21,8 @@
             </tr>
         </table>
         <form class="form-horizontal" role="form">
-            <table class="table table-striped table-hover table-condensed">
+            <h4>Wybrani użytkownicy</h4>
+            <table class="table table-striped table-hover table-condensed" ng-show="group.users.length > 0">
                 <tr>
                     <th>Nick</th>
                     <th>Imię</th>
@@ -40,6 +41,7 @@
                     </td>
                 </tr>
             </table>
+            <p class="col-md-12 pull-left" ng-hide="group.users.length > 0">Brak</p>
             <div class="form-group">
                 <label for="groupName" class="col-sm-4 control-label">Nazwa:</label>
 
@@ -73,7 +75,7 @@
             </div>
         </form>
         <h4>Dodane grupy</h4>
-        <table class="table table-striped table-hover table-condensed">
+        <table class="table table-striped table-hover table-condensed" ng-show="groups.length > 0">
             <tr>
                 <th>Nazwa</th>
                 <th>Obszar</th>
@@ -93,10 +95,10 @@
                 </td>
             </tr>
         </table>
+        <p class="col-md-12 pull-left" ng-hide="groups.length > 0">Brak</p>
+        <div class="btn-group-vertical col-md-4 col-md-offset-8">
+            <button class="btn btn-primary" ng-click="startAction()">Rozpocznij akcję</button>
+            <button class="btn btn-default" ui-sref='home'>Wróć</button>
+        </div>
     </div>
-    <div class="col-sm-offset-10 col-sm-2 btn-group pull-right">
-        <button class="btn btn-primary" ng-click="startAction()">Rozpocznij akcję</button>
-        <button class="btn btn-default" ui-sref='home'>Wróć</button>
-    </div>
-
 </div>

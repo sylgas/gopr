@@ -47,14 +47,15 @@ public class GroupController {
     }
 
     @RequestMapping(value = "/api/group/action/{id}", method = RequestMethod.GET)
-    public @ResponseBody
+    public
+    @ResponseBody
     List<GroupDto> getByActionId(
             @PathVariable("id") long id) {
         List<GroupDto> groups = new ArrayList<GroupDto>();
-        for(Group group: groupRepository.getByAction(actionRepository.get(id))) {
+        for (Group group : groupRepository.getByAction(actionRepository.get(id))) {
             GroupDto groupDto = new GroupDto(group);
             List<UserInActionDto> actionUsers = new ArrayList<UserInActionDto>();
-            for(UserInAction user: userInActionRepository.getByGroup(group)) {
+            for (UserInAction user : userInActionRepository.getByGroup(group)) {
                 System.out.println("stgggg");
                 actionUsers.add(new UserInActionDto(user));
             }
@@ -69,7 +70,7 @@ public class GroupController {
     @ResponseBody
     List<GroupDto> getAll() {
         List<GroupDto> groups = new ArrayList<GroupDto>();
-        for(Group group: groupRepository.getAll()) {
+        for (Group group : groupRepository.getAll()) {
             groups.add(new GroupDto(group));
         }
         return groups;

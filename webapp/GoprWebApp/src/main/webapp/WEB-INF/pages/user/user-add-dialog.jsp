@@ -43,11 +43,11 @@
       </div>
     </div>
     <div class="modal-footer">
+      <button class="btn btn-warning" ng-click="cancel()">Anuluj</button>
       <button class="btn btn-primary" ng-click="save()"
-              ng-disabled="user.name == null || user.surname == null || user.login == null || user.password == null || user.nick == null">
+              ng-disabled="user.name == null || user.surname == null || user.login == null || user.password == null || user.nick == null || user.phone == null">
         Zapisz
       </button>
-      <button class="btn btn-warning" ng-click="cancel()">Anuluj</button>
     </div>
   </div>
 </div>

@@ -26,7 +26,8 @@ function actionGroupsController(angular) {
             angular.forEach(group.actionUsers, function (actionUser) {
                 scope.users.splice(scope.users.indexOf(getById(scope.users, actionUser.user.id)), 1);
             })
-        })
+        });
+        scope.usersTableParams.reload();
     }
 
     function displayActionGroups() {
@@ -74,7 +75,7 @@ function actionGroupsController(angular) {
     function clearCreateGroupPanel() {
         scope.group = {};
         scope.group.users = [];
-        displayUsers();
+        scope.usersTableParams.reload();
     }
 
     function groupCreated(group) {

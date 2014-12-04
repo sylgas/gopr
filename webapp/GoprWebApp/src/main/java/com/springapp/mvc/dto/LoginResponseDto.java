@@ -3,12 +3,14 @@ package com.springapp.mvc.dto;
 import java.util.*;
 
 public class LoginResponseDto {
-    private boolean status;
-    private List<LoginResponseListItem> loginResponseListItems;
 
-    public LoginResponseDto(boolean status, List<LoginResponseListItem> loginResponseListItems) {
+    private boolean status;
+
+    private List<ActionListItem> actionListItems;
+
+    public LoginResponseDto(boolean status, List<ActionListItem> actionListItems) {
         this.status = status;
-        this.loginResponseListItems = loginResponseListItems;
+        this.actionListItems = actionListItems;
     }
 
     public boolean isStatus() {
@@ -19,11 +21,11 @@ public class LoginResponseDto {
         this.status = status;
     }
 
-    public List<LoginResponseListItem> getLoginResponseListItems() {
-        return loginResponseListItems;
+    public List<ActionListItem> getActionListItems() {
+        return actionListItems;
     }
 
-    public void setLoginResponseListItems(List<LoginResponseListItem> loginResponseListItems) {
-        this.loginResponseListItems = loginResponseListItems;
+    public void setActionListItems(List<ActionListItem> actionListItems) {
+        this.actionListItems = actionListItems;
     }
 }

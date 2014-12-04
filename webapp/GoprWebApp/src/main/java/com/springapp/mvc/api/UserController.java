@@ -1,7 +1,7 @@
 package com.springapp.mvc.api;
 
 import com.springapp.mvc.dto.LoginResponseDto;
-import com.springapp.mvc.dto.LoginResponseListItem;
+import com.springapp.mvc.dto.ActionListItem;
 import com.springapp.mvc.dto.UserDto;
 import com.springapp.mvc.entity.User;
 import com.springapp.mvc.entity.UserInAction;
@@ -30,8 +30,9 @@ public class UserController {
     @Autowired
     private UserInActionRepository userInActionRepository;
 
-    @RequestMapping(method=RequestMethod.POST)
-    public @ResponseBody
+    @RequestMapping(method = RequestMethod.POST)
+    public
+    @ResponseBody
     User create(
             @RequestParam("name") String name,
             @RequestParam("surname") String surname,
@@ -60,14 +61,15 @@ public class UserController {
 
         User user = userRepository.getByLoginAndPassword(login, password);
 
-        if (user != null){
-            List<LoginResponseListItem> items = new ArrayList<LoginResponseListItem>();
+        if (user != null) {
+            List<ActionListItem> items = new ArrayList<ActionListItem>();
             List<UserInAction> userInActions = userInActionRepository.getByUser(user);
 
-            for (UserInAction uia : userInActions){
-                LoginResponseListItem item = new LoginResponseListItem();
+            for (UserInAction uia : userInActions) {
+                ActionListItem item = new ActionListItem();
                 item.setUserInActionId(uia.getId());
                 item.setActionId(uia.getGroup().getAction().getId());
+                item.setGroupId(uia.getGroup().getId());
                 item.setActionName(uia.getGroup().getAction().getName());
                 items.add(item);
             }
@@ -75,7 +77,7 @@ public class UserController {
             return new LoginResponseDto(true, items);
         }
 
-        LoginResponseDto result = new LoginResponseDto(false, new ArrayList<LoginResponseListItem>());
+        LoginResponseDto result = new LoginResponseDto(false, new ArrayList<ActionListItem>());
         return result;
     }
 
@@ -87,8 +89,12 @@ public class UserController {
     @ResponseBody
     List<UserDto> getAllUsers() {
         List<UserDto> users = new ArrayList<UserDto>();
-        for(User user: userRepository.getAll()) {
-            users.add(new UserDto(user));
+        for (User user : userRepository.getAll()) {
+            UserDto userDto = new UserDto(user);
+            userDto.setId(user.getId());
+            userDto.setLogin(user.getLogin());
+            userDto.setPhone(user.getPhone());
+            users.add(userDto);
         }
         return users;
     }

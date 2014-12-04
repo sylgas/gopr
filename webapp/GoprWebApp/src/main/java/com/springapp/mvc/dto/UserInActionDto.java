@@ -2,9 +2,11 @@ package com.springapp.mvc.dto;
 
 import com.springapp.mvc.entity.Role;
 import com.springapp.mvc.entity.UserInAction;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.util.Collection;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
 public class UserInActionDto {
 
     private Long id;
@@ -22,6 +24,8 @@ public class UserInActionDto {
     /*private Collection<Message> message;
 
     private Collection<MessageToUser> messageToUsers;*/
+
+    public UserInActionDto() {}
 
     public UserInActionDto(UserInAction user) {
         this.id = user.getId();

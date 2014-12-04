@@ -1,7 +1,9 @@
 package com.springapp.mvc.dto;
 
 import com.springapp.mvc.entity.User;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
 public class UserDto {
 
     private long id;
@@ -12,20 +14,17 @@ public class UserDto {
 
     private String login;
 
-    private String password;
-
     private String phone;
 
     private String nick;
 
     /*private Role role;*/
 
+    public UserDto() {}
+
     public UserDto(User user) {
-        this.id = user.getId();
         this.name = user.getName();
         this.surname = user.getSurname();
-        this.login = user.getLogin();
-        this.phone = user.getPhone();
         this.nick = user.getNick();
     }
 
@@ -75,14 +74,6 @@ public class UserDto {
 
     public void setLogin(String login) {
         this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNick() {
