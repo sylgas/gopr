@@ -10,50 +10,83 @@
 
     tools:context="com.agh.gopr.app.ui.activity.LoginActivity">
 
-    <ScrollView
-        android:id="@+id/login_scroll_view"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="wrap_content"
+        android:id="@+id/icon"
+        android:src="@drawable/location"
+        android:paddingTop="@dimen/login_icon_padding_up"
+        android:paddingBottom="@dimen/login_icon_padding_down"
+        android:contentDescription="@string/icon_description" />
 
-            <LinearLayout
-                android:id="@+id/login_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/login_title"
+        android:id="@+id/textView" />
 
-                <EditText
-                    android:id="@+id/login"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_login"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
+    <EditText
+        android:gravity="center"
+        android:id="@+id/serverAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_server"
+        android:inputType="text"
+        android:text="@string/default_server_address" />
 
-                <EditText
-                    android:id="@+id/password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login_action"
-                    android:imeActionLabel="@string/action_sign_in_short"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:singleLine="true"/>
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/login_padding_right"
+        android:paddingLeft="@dimen/login_padding_left"
+        android:paddingEnd="@dimen/login_padding_right"
+        android:paddingRight="@dimen/login_padding_right"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/sign_in_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in"
-                    android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_login"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true">
 
-            </LinearLayout>
-    </ScrollView>
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_password"
+            android:imeActionId="@+id/login_action"
+            android:imeActionLabel="@string/action_sign_in_short"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+        <CheckBox
+            android:id="@+id/show_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            android:text="@string/show_password" />
+
+        <Button
+            android:id="@+id/sign_in_button"
+            style="?android:textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/login_button_padding"
+            android:text="@string/action_sign_in"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>
 

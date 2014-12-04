@@ -13,7 +13,7 @@ import roboguice.RoboGuice;
 
 @EApplication
 public class GOPRMobile extends Application {
-    private static final String APP_FOLDER_NAME = "GOPRMobile";
+    private static final String APP_FOLDER_NAME = "GeoSUP";
     private static final File APP_DIRECTORY = initializeApplicationDirectory();
 
     @Override

@@ -2,14 +2,17 @@
     <!-- Strings related to menu -->
     <string name="prompt_login">Login</string>
     <string name="prompt_password">Password</string>
+    <string name="prompt_server">Server</string>
+    <string name="login_title">Login to <b>GeoSUP</b> server</string>
     <string name="action_sign_in">Login</string>
     <string name="action_sign_in_short">Login</string>
 
-    <string name="error_invalid_login_or_password">Incorrect login or password.</string>
-    <string name="error_field_required">This field is required.</string>
+    <string name="error_invalid_login_or_password">Incorrect login or password</string>
+    <string name="error_field_required">This field is required</string>
 
-    <string name="progress_waiting">"Please wait ..."</string>
-    <string name="login_progress_message">"Login to system ..."</string>
+    <string name="progress_waiting">"Please wait…"</string>
+    <string name="login_progress_message">"Login to system…"</string>
     <string name="login_error">Error during login occurred</string>
-    <string name="not_assign_to_action_message">You are not assign to any action.</string>
+    <string name="not_assign_to_action_message">You are not assign to any action</string>
+    <string name="show_password">show password</string>
 </resources>

@@ -2,9 +2,12 @@ package com.agh.gopr.app.ui.activity;
 
 import android.app.ProgressDialog;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,9 +17,11 @@ import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.exception.MethodException;
 import com.agh.gopr.app.response.BasicActionInfo;
 import com.agh.gopr.app.response.LoginResponse;
+import com.agh.gopr.app.service.connection.ConnectionService;
 import com.agh.gopr.app.service.rest.RequestService;
 import com.agh.gopr.app.service.rest.service.method.RestMethod;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -32,17 +37,23 @@ import roboguice.util.Ln;
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends AbstractActivity {
 
-    @ViewById(R.id.login)
-    protected EditText loginView;
+    @ViewById
+    protected EditText login;
 
-    @ViewById(R.id.password)
-    protected EditText passwordView;
+    @ViewById
+    protected EditText password;
 
-    @ViewById(R.id.login_form)
-    protected View loginFormView;
+    @ViewById
+    protected View loginForm;
 
-    @ViewById(R.id.sign_in_button)
-    protected Button singInButton;
+    @ViewById
+    protected Button signInButton;
+
+    @ViewById
+    protected CheckBox showPassword;
+
+    @Inject
+    private ConnectionService connectionService;
 
     @Pref
     protected Preferences_ preferences;
@@ -52,7 +63,12 @@ public class LoginActivity extends AbstractActivity {
 
     @AfterViews
     protected void init() {
-        passwordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        if (isAssignedToAction()) {
+            MainActivity_.intent(this).start();
+            finish();
+            return;
+        }
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 attemptLogin();
@@ -61,14 +77,26 @@ public class LoginActivity extends AbstractActivity {
         });
     }
 
+    private boolean isAssignedToAction() {
+        return preferences.actionId().get() != null && preferences.userId().get() != null;
+    }
+
     @Click(R.id.sign_in_button)
     public void attemptLogin() {
-        loginView.setError(null);
-        passwordView.setError(null);
-        String login = loginView.getText().toString();
-        String password = passwordView.getText().toString();
+        if (!connectionService.isConnected()) {
+            connectionService.showDialog();
+            return;
+        }
 
-        if (!isEditTextFilled(passwordView, password) && !isEditTextFilled(loginView, login)) {
+        login.setError(null);
+        password.setError(null);
+        String login = this.login.getText().toString();
+        String password = this.password.getText().toString();
+
+        boolean loginIsFilled = !isEditTextFilled(this.login, login);
+        boolean passwordIsFilled = !isEditTextFilled(this.password, password);
+
+        if (loginIsFilled && passwordIsFilled) {
             progressDialog = ProgressDialog.show(LoginActivity.this, getString(R.string.progress_waiting),
                     getString(R.string.login_progress_message), true);
             try {
@@ -88,6 +116,17 @@ public class LoginActivity extends AbstractActivity {
             return true;
         }
         return false;
+    }
+
+    @Click(R.id.show_password)
+    protected void showPasswordClick() {
+        password.setTransformationMethod(showPassword.isChecked() ?
+                HideReturnsTransformationMethod.getInstance() : PasswordTransformationMethod.getInstance());
+    }
+
+    @Click(R.id.icon)
+    protected void iconClick() {
+        AboutActivity_.intent(this).start();
     }
 
     @UiThread

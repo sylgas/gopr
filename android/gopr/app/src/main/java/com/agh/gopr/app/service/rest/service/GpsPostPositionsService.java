@@ -27,9 +27,9 @@ import roboguice.util.Ln;
 
 public class GpsPostPositionsService {
 
-    private static final long MIN_TIME_BT_UPDATES_IN_MILLIS = 60000;
+    private static final long MIN_TIME_BT_UPDATES_IN_MILLIS = 7000;
 
-    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 5;
+    private static final float MIN_DISTANCE_BT_UPDATES_IN_METERS = 0;
 
     @Inject
     private LocationManager locationManager;
@@ -122,6 +122,6 @@ public class GpsPostPositionsService {
 
         @Override
         public void onProviderDisabled(String provider) {
-    }
+        }
     }
 }
