@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 
 import com.agh.gopr.app.service.rest.service.IMethodService;
 import com.google.inject.Inject;
@@ -32,9 +33,17 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
     @Inject
     private EventManager eventManager;
 
+    @Inject
+    private PowerManager powerManager;
+
     @Override
     protected void handleReceive(Context context, Intent intent) {
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "");
+        wakeLock.acquire();
+
         handle();
+
+        wakeLock.release();
     }
 
     public void start() {
@@ -49,6 +58,10 @@ public class IntervalSynchronizationService extends RoboBroadcastReceiver {
             service.handle();
         }
         handleFinished();
+    }
+
+    public void stop() {
+        alarmManager.cancel(pendingIntent(context));
     }
 
     private void startServices() {

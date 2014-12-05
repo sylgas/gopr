@@ -64,9 +64,6 @@ public class MapFragment extends RoboFragment {
     @Inject
     private PositionService positionService;
 
-    @Inject
-    private IntervalSynchronizationService intervalSynchronizationService;
-
     private final LayerJSONHandler layerJSONHandler = new LayerJSONHandler();
     private final Map<String, Integer> markers = new HashMap<String, Integer>();
     private final Map<String, GpsPolyline> polylines = new HashMap<String, GpsPolyline>();
@@ -345,7 +342,6 @@ public class MapFragment extends RoboFragment {
         @Override
         public void onStatusChanged(Object source, STATUS status) {
             if (source == map && status == STATUS.INITIALIZED) {
-                intervalSynchronizationService.start();
                 center();
             }
         }

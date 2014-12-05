@@ -4,11 +4,11 @@ import java.util.List;
 
 public class LoginResponse {
     private boolean status;
-    List<BasicActionInfo> loginResponseListItems;
+    List<BasicActionInfo> actionListItems;
 
     public LoginResponse(boolean status, List<BasicActionInfo> basicActionInfos) {
         this.status = status;
-        this.loginResponseListItems = basicActionInfos;
+        this.actionListItems = basicActionInfos;
     }
 
     public boolean getStatus() {
@@ -16,6 +16,6 @@ public class LoginResponse {
     }
 
     public List<BasicActionInfo> getBasicActionInfos() {
-        return loginResponseListItems;
+        return actionListItems;
     }
 }

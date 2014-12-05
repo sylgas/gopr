@@ -78,7 +78,7 @@ public class LoginActivity extends AbstractActivity {
     }
 
     private boolean isAssignedToAction() {
-        return preferences.actionId().get() != null && preferences.userId().get() != null;
+        return !preferences.actionId().get().isEmpty() && !preferences.userId().get().isEmpty();
     }
 
     @Click(R.id.sign_in_button)

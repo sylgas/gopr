@@ -8,7 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.agh.gopr.app.R;
+import com.agh.gopr.app.common.Preferences_;
 import com.agh.gopr.app.common.SettingsAlertDialog;
+import com.agh.gopr.app.service.IntervalSynchronizationService;
 import com.agh.gopr.app.service.gps.GpsService;
 import com.agh.gopr.app.ui.fragment.MapFragment;
 import com.agh.gopr.app.ui.fragment.MessengerFragment_;
@@ -21,6 +23,7 @@ import org.androidannotations.annotations.FragmentById;
 import org.androidannotations.annotations.OptionsItem;
 import org.androidannotations.annotations.OptionsMenu;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import javax.inject.Inject;
 
@@ -41,6 +44,9 @@ public class MainActivity extends AbstractActivity {
     @Inject
     private SettingsAlertDialog settingsAlertDialog;
 
+    @Inject
+    private IntervalSynchronizationService intervalSynchronizationService;
+
     @FragmentById
     protected NoteFragment noteFragment;
 
@@ -59,6 +65,7 @@ public class MainActivity extends AbstractActivity {
             settingsAlertDialog.showSettingsAlert(SettingsAlertDialog.Setting.GPS);
         }
         startGpsService();
+        intervalSynchronizationService.start();
     }
 
     private void startGpsService() {
@@ -77,6 +84,20 @@ public class MainActivity extends AbstractActivity {
         } else {
             noteFragment.show();
         }
+    }
+
+    @Pref
+    protected Preferences_ preferences;
+
+    @OptionsItem(R.id.logout)
+    protected void logout() {
+        Intent intent = new Intent(GpsService.ACTION_ID);
+        stopService(intent);
+        intervalSynchronizationService.stop();
+        preferences.userId().put(null);
+        preferences.actionId().put(null);
+        LoginActivity_.intent(this).start();
+        finish();
     }
 
     @OptionsItem(R.id.settings)
