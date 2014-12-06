@@ -1,12 +1,24 @@
 function actionListController(angular) {
     var scope, state;
+    var ActionService;
 
     function gotActions(actions) {
         scope.actions = actions;
     }
-    function ActionListController($scope, $state, ActionService) {
+
+    function actionStarted() {
+        state.go("action", {id: actionId, reload: true});
+    }
+
+    function startAction(actionId) {
+        ActionService.start(actionId, actionStarted);
+    }
+
+    function ActionListController($scope, $state, actionService) {
         scope = $scope;
         state = $state;
+        ActionService = actionService;
+        scope.startAction = startAction;
         ActionService.getAll(gotActions)
     }
 

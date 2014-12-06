@@ -9,17 +9,22 @@ import java.util.Collection;
 public class Message {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "message_seq", sequenceName = "t_message_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "message_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
-    @Column(name = "date_time", nullable = false, insertable = true, updatable = true)
+    @Column(name = "date_time", nullable = false)
     private Timestamp dateTime;
 
     @Basic
-    @Column(name = "text", nullable = true, insertable = true, updatable = true, length = 250)
+    @Column(name = "text")
     private String text;
+
+    @Basic
+    @Column(name = "received")
+    private Boolean received;
 
     @ManyToOne
     @JoinColumn(name = "from_user_id", referencedColumnName = "id")
@@ -78,6 +83,14 @@ public class Message {
 
     public void setMessageToUsers(Collection<MessageToUser> messageToUsers) {
         this.messageToUsers = messageToUsers;
+    }
+
+    public Boolean getReceived() {
+        return received;
+    }
+
+    public void setReceived(Boolean received) {
+        this.received = received;
     }
 
     @Override

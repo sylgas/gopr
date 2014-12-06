@@ -7,21 +7,23 @@ import java.util.Collection;
 @Entity
 @Table(name = "t_position", schema = "public", catalog = "gopr")
 public class Position {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "position_seq", sequenceName = "t_position_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "position_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
-    @Column(name = "latitude", nullable = false, insertable = true, updatable = true, precision = 5)
+    @Column(name = "latitude", nullable = false, precision = 5)
     private Double latitude;
 
     @Basic
-    @Column(name = "longitude", nullable = false, insertable = true, updatable = true, precision = 5)
+    @Column(name = "longitude", nullable = false, precision = 5)
     private Double longitude;
 
     @Basic
-    @Column(name = "date_time", nullable = false, insertable = true, updatable = true)
+    @Column(name = "date_time", nullable = false)
     private Timestamp dateTime;
 
     @ManyToOne

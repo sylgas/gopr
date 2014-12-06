@@ -22,7 +22,6 @@ function createActionController(angular) {
     function createAction() {
         var actionData = {
             name: scope.action.name,
-            startDateTime: new Date().getTime(),
             description: scope.action.description
         };
         ActionService.create(actionData, actionCreated)

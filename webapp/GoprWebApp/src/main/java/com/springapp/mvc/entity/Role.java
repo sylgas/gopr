@@ -1,7 +1,6 @@
 package com.springapp.mvc.entity;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "t_role", schema = "public", catalog = "gopr")
@@ -14,15 +13,15 @@ public class Role {
     private Long id;
 
     @Basic
-    @Column(name = "name", nullable = true, insertable = true, updatable = true, length = 25)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Basic
-    @Column(name = "color", nullable = true)
+    @Column(name = "color")
     private String color;
 
     @Basic
-    @Column(name = "pictogram", nullable = true)
+    @Column(name = "pictogram")
     private String pictogram;
 
    /* @OneToMany(mappedBy = "role")

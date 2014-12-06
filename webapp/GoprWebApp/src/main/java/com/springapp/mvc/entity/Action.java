@@ -20,33 +20,32 @@ public class Action implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "name", nullable = false, insertable = true, updatable = true, length = 50)
+    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
     @Basic
-    @Column(name = "start_date", nullable = false, insertable = true, updatable = true)
+    @Column(name = "start_date")
     private Timestamp startDate;
 
     @Basic
-    @Column(name = "end_date", nullable = true, insertable = true, updatable = true)
+    @Column(name = "end_date")
     private Timestamp endDate;
 
     @Basic
-    @Column(name = "description", nullable = true)
+    @Column(name = "description")
     private String description;
 
     @Basic
-    @Column(name = "comments", nullable = true)
+    @Column(name = "comments")
     private String comments;
 
     @Basic
-    @Column(name = "static_database_id", nullable = true)
+    @Column(name = "static_database_id")
     private Long staticDatabaseId;
 
     @Basic
-    @Column(name = "isrid_database_id", nullable = true)
+    @Column(name = "isrid_database_id")
     private Long isridDatabaseId;
-
 
     @OneToMany(mappedBy = "action", fetch = FetchType.EAGER)
     @JsonBackReference

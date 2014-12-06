@@ -14,8 +14,16 @@ public class UserInAction {
     private Long id;
 
     @Basic
-    @Column(name = "phone", nullable = false, length = 12)
+    @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Basic
+    @Column(name = "color")
+    private String color;
+
+    @Basic
+    @Column(name = "pictogram")
+    private String pictogram;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -101,6 +109,22 @@ public class UserInAction {
 
     public void setMessageToUsers(Collection<MessageToUser> messageToUsers) {
         this.messageToUsers = messageToUsers;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getPictogram() {
+        return pictogram;
+    }
+
+    public void setPictogram(String pictogram) {
+        this.pictogram = pictogram;
     }
 
     @Override

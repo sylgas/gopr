@@ -114,8 +114,12 @@ function actionGroupsController(angular) {
         });
     }
 
-    function startAction() {
+    function actionStarted() {
         state.go("action", {id: actionId, reload: true});
+    }
+
+    function startAction() {
+        ActionService.start(actionId, actionStarted);
     }
 
     function ActionGroupsController($scope, $state, $stateParams, $modal, ngTableParams, $filter, mapFactory, actionService, groupService, userService) {

@@ -17,15 +17,15 @@ public class Group {
     private Long id;
 
     @Basic
-    @Column(name = "name", nullable = true, insertable = true, updatable = true, length = 25)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Basic
-    @Column(name = "color", nullable = true)
+    @Column(name = "color")
     private String color;
 
     @Basic
-    @Column(name = "pictogram", nullable = true)
+    @Column(name = "pictogram")
     private String pictogram;
 
     @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
@@ -37,7 +37,7 @@ public class Group {
     private Set<GroupArea> groupAreas;
 
     @ManyToOne
-    @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "action_id", referencedColumnName = "id")
     private Action action;
 
     public Group(String name, Action action) {

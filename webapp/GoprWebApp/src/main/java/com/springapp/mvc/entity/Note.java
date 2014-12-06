@@ -7,12 +7,13 @@ import javax.persistence.*;
 public class Note {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "note_seq", sequenceName = "t_note_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "note_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
-    @Column(name = "text", nullable = true, insertable = true, updatable = true, length = 100)
+    @Column(name = "text")
     private String text;
 
     @ManyToOne

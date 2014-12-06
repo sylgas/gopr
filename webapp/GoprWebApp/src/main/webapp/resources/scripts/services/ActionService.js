@@ -8,6 +8,10 @@ function actionService(angular) {
         http.post(baseUrl, $.param(actionData)).success(successCallback).error(errorCallback);
     };
 
+    actionService.start = function (id, successCallback, errorCallback) {
+        http.post(baseUrl + "start/" + id).success(successCallback).error(errorCallback);
+    };
+
     actionService.get = function (id, successCallback, errorCallback) {
         http.get(baseUrl + id).success(successCallback).error(errorCallback);
     };

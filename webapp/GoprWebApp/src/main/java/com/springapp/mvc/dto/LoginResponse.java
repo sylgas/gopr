@@ -2,13 +2,13 @@ package com.springapp.mvc.dto;
 
 import java.util.*;
 
-public class LoginResponseDto {
+public class LoginResponse {
 
     private boolean status;
 
     private List<ActionListItem> actionListItems;
 
-    public LoginResponseDto(boolean status, List<ActionListItem> actionListItems) {
+    public LoginResponse(boolean status, List<ActionListItem> actionListItems) {
         this.status = status;
         this.actionListItems = actionListItems;
     }

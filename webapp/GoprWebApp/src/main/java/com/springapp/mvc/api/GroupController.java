@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping(value = "/api/group/")
 public class GroupController {
     @Autowired
     private GroupRepository groupRepository;
@@ -31,7 +32,7 @@ public class GroupController {
     /*
      * Saves group of given action.
      */
-    @RequestMapping(value = "/api/group", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public
     @ResponseBody
     GroupDto create(@RequestParam("actionId") long actionId,
@@ -46,7 +47,7 @@ public class GroupController {
         return new GroupDto(group);
     }
 
-    @RequestMapping(value = "/api/group/action/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "action/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     List<GroupDto> getByActionId(
@@ -65,7 +66,7 @@ public class GroupController {
         return groups;
     }
 
-    @RequestMapping(value = "/api/group", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
     List<GroupDto> getAll() {

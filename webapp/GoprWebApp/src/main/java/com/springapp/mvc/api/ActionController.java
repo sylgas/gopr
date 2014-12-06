@@ -28,33 +28,29 @@ public class ActionController {
     @Autowired
     private AreaRepository areaRepository;
 
-
-    /*
-    * Create new action and save its searching areas.
-    *
-    * Areas (geometries param) given as structure with fields:
-    *  - (int) numberInAction
-    *  - (string) name
-    *  - (string) geometry
-    */
     @RequestMapping(method = RequestMethod.POST)
     public @ResponseBody
     Long create(
             @RequestParam("name") String name,
-            @RequestParam("startDateTime") long startDateTime,
             @RequestParam("description") String description) {
 
         logger.info("create " +
                 "\nname: " + name +
-                "\nstartDateTime: " + startDateTime +
                 "\nopis: " + description);
-        //TODO: Zapisać akcję do bazy, dla akcji zapisać wszystkie obszary.
-        //TODO: Zwrocić id dodanej akcji, lub -1 na fail
         Action action = new Action();
         action.setName(name);
         action.setDescription(description);
-        action.setStartDate(new Timestamp(new Date().getTime()));
+        return actionRepository.save(action).getId();
+    }
 
+    @RequestMapping(value = "start/{id}", method = RequestMethod.POST)
+    public @ResponseBody
+    Long start(
+            @PathVariable("id") long id) {
+
+        logger.info("getting action " + id);
+        Action action = actionRepository.get(id);
+        action.setStartDate(new Timestamp(new Date().getTime()));
         return actionRepository.save(action).getId();
     }
 
@@ -67,7 +63,9 @@ public class ActionController {
         Action action = actionRepository.get(id);
         Set<Area> areas = areaRepository.getByAction(action);
         action.setAreas(areas);
-        return new ActionDto(action);
+        ActionDto actionDto = new ActionDto(action);
+        actionDto.setStartDate(action.getStartDate());
+        return actionDto;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -76,7 +74,9 @@ public class ActionController {
     List<ActionDto> getAll() {
         List<ActionDto> actions = new ArrayList<ActionDto>();
         for(Action action: actionRepository.getAll()) {
-            actions.add(new ActionDto(action));
+            ActionDto actionDto = new ActionDto(action);
+            actionDto.setStartDate(action.getStartDate());
+            actions.add(actionDto);
         }
         return actions;
     }

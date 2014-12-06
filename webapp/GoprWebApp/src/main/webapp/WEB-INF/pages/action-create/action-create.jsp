@@ -46,11 +46,11 @@
         </div>
 
         <div class="btn-group-vertical col-md-7 col-md-offset-5">
-            <button class="btn btn-default" ui-sref='home'>Wróć</button>
             <button class="btn btn-primary" ng-click="createAction()"
                     ng-disabled="action.name == null || action.description == null || areas == null">
                 Dalej
             </button>
+            <button class="btn btn-default" ui-sref='home'>Wróć</button>
         </div>
     </div>
 </div>

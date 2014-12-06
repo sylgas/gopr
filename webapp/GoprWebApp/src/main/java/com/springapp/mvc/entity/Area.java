@@ -20,7 +20,7 @@ public class Area implements Serializable {
     private Long id;
 
     @Basic
-    @Column(name = "name", length = 25)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Basic
@@ -28,19 +28,19 @@ public class Area implements Serializable {
     private Timestamp dateTime;
 
     @Basic
-    @Column(columnDefinition="TEXT", name = "data")
+    @Column(columnDefinition="TEXT", name = "data", nullable = false)
     private String data;
 
     @Basic
-    @Column(name = "number")
+    @Column(name = "number", nullable = false)
     private Integer number;
 
     @Basic
-    @Column(name = "is_active", nullable = true)
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @ManyToOne
-    @JoinColumn(name = "action_id", referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "action_id", referencedColumnName = "id")
     private Action action;
 
     @OneToMany(mappedBy = "pk.area", fetch = FetchType.EAGER)

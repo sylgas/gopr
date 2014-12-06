@@ -8,16 +8,17 @@ import java.util.Collection;
 public class Resource {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, insertable = true, updatable = true)
+    @Column(name = "id")
+    @SequenceGenerator(name = "resource_seq", sequenceName = "t_resource_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "resource_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
-    @Column(name = "data", nullable = true, insertable = true, updatable = true)
+    @Column(name = "data", nullable = false)
     private byte[] data;
 
     @Basic
-    @Column(name = "type", nullable = true, insertable = true, updatable = true, length = 10)
+    @Column(name = "type", nullable = false)
     private String type;
 
     @OneToMany(mappedBy = "resource")

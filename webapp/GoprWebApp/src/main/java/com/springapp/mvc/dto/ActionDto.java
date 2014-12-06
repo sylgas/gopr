@@ -3,11 +3,13 @@ package com.springapp.mvc.dto;
 import com.springapp.mvc.entity.Action;
 import com.springapp.mvc.entity.Area;
 import com.springapp.mvc.entity.Group;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
 public class ActionDto {
     private Long id;
     private String name;
@@ -20,6 +22,8 @@ public class ActionDto {
     private List<Group> groups;
     private List<AreaDto> areas;
 
+    public ActionDto() {}
+
     public ActionDto(Action action) {
         this.id = action.getId();
         this.name = action.getName();
@@ -29,9 +33,11 @@ public class ActionDto {
         for (Area area : action.getAreas()) {
             areas.add(new AreaDto(area));
         }
-        groups = new ArrayList<Group>();
-        for (Group group : action.getGroups()) {
-            groups.add(group);
+        if(action.getGroups() != null && action.getGroups().size() > 0) {
+            groups = new ArrayList<Group>();
+            for (Group group : action.getGroups()) {
+                groups.add(group);
+            }
         }
     }
 
@@ -75,11 +81,11 @@ public class ActionDto {
         this.description = description;
     }
 
-    public String getComments() {
+    public String getComment() {
         return comment;
     }
 
-    public void setComments(String comment) {
+    public void setComment(String comment) {
         this.comment = comment;
     }
 

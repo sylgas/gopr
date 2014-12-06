@@ -1,6 +1,6 @@
 package com.springapp.mvc.api;
 
-import com.springapp.mvc.dto.LoginResponseDto;
+import com.springapp.mvc.dto.LoginResponse;
 import com.springapp.mvc.dto.ActionListItem;
 import com.springapp.mvc.dto.UserDto;
 import com.springapp.mvc.entity.User;
@@ -53,7 +53,7 @@ public class UserController {
     @RequestMapping(value = LOGIN, method = RequestMethod.GET)
     public
     @ResponseBody
-    LoginResponseDto loginUser(
+    LoginResponse login(
             @RequestParam("login") String login,
             @RequestParam("password") String password) {
 
@@ -74,10 +74,10 @@ public class UserController {
                 items.add(item);
             }
 
-            return new LoginResponseDto(true, items);
+            return new LoginResponse(true, items);
         }
 
-        LoginResponseDto result = new LoginResponseDto(false, new ArrayList<ActionListItem>());
+        LoginResponse result = new LoginResponse(false, new ArrayList<ActionListItem>());
         return result;
     }
 

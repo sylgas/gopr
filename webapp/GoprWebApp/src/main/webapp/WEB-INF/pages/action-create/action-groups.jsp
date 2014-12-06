@@ -97,8 +97,8 @@
         </table>
         <p class="col-md-12 pull-left" ng-hide="groups.length > 0">Brak</p>
         <div class="btn-group-vertical col-md-4 col-md-offset-8">
+            <button class="btn btn-default" ui-sref='action-list'>Zapisz</button>
             <button class="btn btn-primary" ng-click="startAction()">Rozpocznij akcję</button>
-            <button class="btn btn-default" ui-sref='home'>Wróć</button>
         </div>
     </div>
 </div>

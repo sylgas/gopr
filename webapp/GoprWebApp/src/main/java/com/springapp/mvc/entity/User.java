@@ -17,27 +17,27 @@ public class User implements Serializable {
 
 
     @Basic
-    @Column(name = "name", nullable = false, insertable = true, updatable = true)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Basic
-    @Column(name = "surname", nullable = true, insertable = true, updatable = true)
+    @Column(name = "surname", nullable = false)
     private String surname;
 
     @Basic
-    @Column(name = "login", nullable = true, insertable = true, updatable = true)
+    @Column(name = "login", nullable = false)
     private String login;
 
     @Basic
-    @Column(name = "password", nullable = true, insertable = true, updatable = true)
+    @Column(name = "password", nullable = false)
     private String password;
 
     @Basic
-    @Column(name = "phone", nullable = true, insertable = true, updatable = true)
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @Basic
-    @Column(name = "nick", nullable = true, insertable = true, updatable = true)
+    @Column(name = "nick", nullable = false)
     private String nick;
 
     /*@ManyToOne
