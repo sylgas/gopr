@@ -40,13 +40,8 @@ public class UserController {
             @RequestParam("password") String password,
             @RequestParam("nick") String nick,
             @RequestParam("phone") String phone) {
-        User user = new User();
-        user.setName(name);
-        user.setSurname(surname);
-        user.setLogin(login);
-        user.setPassword(password);
-        user.setNick(nick);
-        user.setPhone(phone);
+
+        User user = new User(name, surname, login, password, nick, phone);
         return userRepository.save(user);
     }
 
@@ -81,13 +76,10 @@ public class UserController {
         return result;
     }
 
-    /*
-     * Returns all system users.
-     */
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    List<UserDto> getAllUsers() {
+    List<UserDto> getAll() {
         List<UserDto> users = new ArrayList<UserDto>();
         for (User user : userRepository.getAll()) {
             UserDto userDto = new UserDto(user);

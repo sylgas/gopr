@@ -4,6 +4,8 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
     var map, geometries, editToolbar, ctxMenuForGraphics, toolbar,
         addOrDeleteAreaFunction, areaPropertiesFunction, selectGraphicFunction, GeometryEx;
 
+    var mapFactory = {};
+
     var fillSymbol = new SimpleFillSymbol(
         SimpleLineSymbol.STYLE_SOLID,
         new SimpleLineSymbol(
@@ -24,24 +26,25 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
         new Color([0, 255, 0, 0.1])
     );
 
-    function createMap(elem) {
+    mapFactory.generateDrawableMap = function(elem) {
         geometries = {}; //Dictionary[geometry id] = GeometryEx
         map = new Map(elem, {
             basemap: "streets",
-            zoom: 5,
+            zoom: 11,
             center: [19.91, 50.06]  //Krk);
         });
         return map;
-    }
+    };
 
-    function createToolbar() {
+    mapFactory.getToolbar = function() {
         editToolbar = new Edit(map);
         map.on("click", function (evt) {
+            deselectAllGraphics();
             editToolbar.deactivate();
         });
         toolbar = initToolbar();
         return toolbar;
-    }
+    };
 
     function initToolbar() {
         toolbar = new Draw(map);
@@ -58,7 +61,7 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
         return toolbar
     }
 
-    function createGraphicsMenu() {
+    mapFactory.getContextMenu = function() {
         ctxMenuForGraphics = new Menu({});
         ctxMenuForGraphics.addChild(new MenuItem({
             label: "Ustaw nazwę i numer",
@@ -112,7 +115,7 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
         });
 
         return ctxMenuForGraphics
-    }
+    };
 
     function addGraphic(evt) {
         toolbar.deactivate();
@@ -146,66 +149,50 @@ function mapFactory(angular, Map, Draw, Edit, Polygon, SimpleLineSymbol, SimpleF
             map.graphics.graphics[i].setSymbol(fillSymbol);
     }
 
-    function selectGraphic(tableRow){
+    mapFactory.selectArea = function(tableRow){
         deselectAllGraphics();
         var graphic = map.graphics.graphics[tableRow +1];
         graphic.setSymbol(selectedFillSymbol);
         selectGraphicFunction(tableRow)
-    }
+    };
 
-    function displayAreas(geometries){
+    mapFactory.displayAreas = function(geometries){
         geometriesOnMap = {};
         for (var i = 0; i < geometries.length; i++) {
             var polygon = new Polygon(JSON.parse(geometries[i].data));
             var newGraphic = new Graphic(polygon, fillSymbol);
             map.graphics.add(newGraphic);
-
-            /*if (geometriesOnMap[geometries[i].numberInAction]){
-             console.log("displayAreas: duplicated numberInAction");
-             alert("Cos nie tak");
-             }*/
             geometriesOnMap[i] =
                 map.graphics.graphics.indexOf(newGraphic);
         }
-    }
+    };
 
-    function onAddOrDeleteArea(addOrDeleteAreaFun) {
+    mapFactory.onAddOrDeleteArea = function(addOrDeleteAreaFun) {
         addOrDeleteAreaFunction = addOrDeleteAreaFun
-    }
+    };
 
-    function onChangeAreaProperties(propertiesFun) {
+    mapFactory.onChangeAreaProperties = function(propertiesFun) {
         areaPropertiesFunction = propertiesFun
-    }
+    };
 
-    function onSelectGraphic(selectGraphicFun) {
+    mapFactory.onAreaSelect = function(selectGraphicFun) {
         selectGraphicFunction = selectGraphicFun
-    }
+    };
 
     function getGraphicId(graphic){
         return map.graphics.graphics.indexOf(graphic);
     }
 
-    function addGeometryEx(geometryEx) {
+    mapFactory.addGeometryEx = function(geometryEx) {
         GeometryEx = geometryEx
-    }
+    };
 
-    function getGeometries() {
+    mapFactory.getGeometries = function() {
         return geometries
-    }
+    };
 
     function MapFactory() {
-        return {
-            generateDrawableMap: createMap,
-            getToolbar: createToolbar,
-            getContextMenu: createGraphicsMenu,
-            onAddOrDeleteArea: onAddOrDeleteArea,
-            onChangeAreaProperties: onChangeAreaProperties,
-            onAreaSelect: onSelectGraphic,
-            selectArea: selectGraphic,
-            addGeometryEx: addGeometryEx,
-            getGeometries: getGeometries,
-            displayAreas: displayAreas
-        }
+        return mapFactory;
     }
 
     return {

@@ -35,12 +35,13 @@ public class Position {
 
     public Position() {}
 
-    public Position(Double latitude, Double longitude, Timestamp dateTime, Action action, User user) {
-        this();
+    public Position(UserInAction userInAction, Double latitude, Double longitude, Timestamp dateTime) {
+        this.userInAction = userInAction;
         this.latitude = latitude;
         this.longitude = longitude;
         this.dateTime = dateTime;
     }
+
     public Long getId() {
         return id;
     }

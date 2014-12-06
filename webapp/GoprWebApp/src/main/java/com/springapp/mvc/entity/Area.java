@@ -3,8 +3,6 @@ package com.springapp.mvc.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -48,17 +46,13 @@ public class Area implements Serializable {
 
     public Area() {}
 
-    public Area(String name, String data) {
-        this();
-        this.groupAreas = new HashSet<GroupArea>();
+    public Area(Action action, Integer number, String name, String data, Timestamp dateTime, Boolean isActive) {
+        this.action = action;
+        this.number = number;
         this.name = name;
         this.data = data;
-        this.dateTime = new Timestamp(new Date().getTime());
-    }
-
-    public Area(String name, String layerData, Action action) {
-        this(name, layerData);
-        //this.action = action;
+        this.dateTime = dateTime;
+        this.isActive = isActive;
     }
 
     public Long getId() {

@@ -37,9 +37,7 @@ public class ActionController {
         logger.info("create " +
                 "\nname: " + name +
                 "\nopis: " + description);
-        Action action = new Action();
-        action.setName(name);
-        action.setDescription(description);
+        Action action = new Action(name, description);
         return actionRepository.save(action).getId();
     }
 
@@ -63,9 +61,7 @@ public class ActionController {
         Action action = actionRepository.get(id);
         Set<Area> areas = areaRepository.getByAction(action);
         action.setAreas(areas);
-        ActionDto actionDto = new ActionDto(action);
-        actionDto.setStartDate(action.getStartDate());
-        return actionDto;
+        return new ActionDto(action);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -74,9 +70,7 @@ public class ActionController {
     List<ActionDto> getAll() {
         List<ActionDto> actions = new ArrayList<ActionDto>();
         for(Action action: actionRepository.getAll()) {
-            ActionDto actionDto = new ActionDto(action);
-            actionDto.setStartDate(action.getStartDate());
-            actions.add(actionDto);
+            actions.add(new ActionDto(action));
         }
         return actions;
     }

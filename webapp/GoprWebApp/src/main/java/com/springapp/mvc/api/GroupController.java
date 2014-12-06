@@ -57,7 +57,6 @@ public class GroupController {
             GroupDto groupDto = new GroupDto(group);
             List<UserInActionDto> actionUsers = new ArrayList<UserInActionDto>();
             for (UserInAction user : userInActionRepository.getByGroup(group)) {
-                System.out.println("stgggg");
                 actionUsers.add(new UserInActionDto(user));
             }
             groupDto.setActionUsers(actionUsers);

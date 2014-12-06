@@ -41,7 +41,7 @@ public class PositionController {
     @RequestMapping(value = ALL_ACTION_POSITIONS, method = RequestMethod.GET)
     public
     @ResponseBody
-    List<UserPositionsDto> getAllActionPositions(
+    List<UserPositionsDto> getByAction(
             @RequestParam("actionId") int actionId) {
 
         logger.info(ALL_ACTION_POSITIONS +
@@ -55,7 +55,7 @@ public class PositionController {
                 if (!userToPositions.containsKey(p.getUserInAction().getId()))
                     userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
 
-                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p));
             } catch (Exception e) {
                 //continue...
             }
@@ -75,7 +75,7 @@ public class PositionController {
     @RequestMapping(value = ACTION_POSITIONS, method = RequestMethod.GET)
     public
     @ResponseBody
-    List<UserPositionsDto> getAllActionPositions(
+    List<UserPositionsDto> getByActionAndDatetime(
             @RequestParam("actionId") int actionId,
             @RequestParam("dateTime") long dateTime) {
 
@@ -91,7 +91,7 @@ public class PositionController {
                 if (!userToPositions.containsKey(p.getUserInAction().getId()))
                     userToPositions.put(p.getUserInAction().getId(), new ArrayList<PositionDto>());
 
-                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p.getLatitude(), p.getLongitude(), p.getDateTime()));
+                userToPositions.get(p.getUserInAction().getId()).add(new PositionDto(p));
             } catch (Exception e) {
                 //continue...
             }
@@ -108,7 +108,7 @@ public class PositionController {
     @RequestMapping(value = ALL_USER_POSITIONS, method = RequestMethod.GET)
     public
     @ResponseBody
-    List<PositionDto> getAllUserPositions(
+    List<PositionDto> getByUserInActionId(
             @RequestParam("userInActionId") long userInActionId) {
 
         logger.info(ALL_USER_POSITIONS +
@@ -131,7 +131,7 @@ public class PositionController {
     @RequestMapping(value = USER_POSITIONS, method = RequestMethod.GET)
     public
     @ResponseBody
-    List<PositionDto> getUserPositionsAfterDateTime(
+    List<PositionDto> getByUserInActionIdAndDatetime(
             @RequestParam("userInActionId") long userInActionId,
             @RequestParam("dateTime") Timestamp dateTime) {
 
@@ -157,7 +157,7 @@ public class PositionController {
     @RequestMapping(value = SEND_POINTS, method = RequestMethod.POST)
     public
     @ResponseBody
-    boolean receivePoints(@RequestParam("actionId") long actionId, @RequestParam("positions") JSONObject positions) {
+    boolean create(@RequestParam("actionId") long actionId, @RequestParam("positions") JSONObject positions) {
 
         logger.info(SEND_POINTS +
                 "\nactionId: " + actionId +
@@ -170,13 +170,7 @@ public class PositionController {
             double longitude = p.getDouble("longitude");
             double latitude = p.getDouble("latitude");
             Timestamp dateTime = new Timestamp(p.getLong("date"));
-
-            Position position = new Position();
-            position.setUserInAction(userInActionRepository.get(userInActionId));
-            position.setLatitude(latitude);
-            position.setLongitude(longitude);
-            position.setDateTime(dateTime);
-
+            Position position = new Position(userInActionRepository.get(userInActionId), latitude, longitude, dateTime);
             positionRepository.savePosition(position);
         }
         return true;

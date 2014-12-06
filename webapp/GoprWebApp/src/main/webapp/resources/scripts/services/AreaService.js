@@ -2,6 +2,7 @@ function areaService(angular) {
 
     var http;
     var areaService = {};
+    var baseUrl = "/api/area";
 
     areaService.createAll = function (data, successCallback, errorCallback) {
         var areaNumber;
@@ -12,7 +13,7 @@ function areaService(angular) {
                 name: data.geometries[areaNumber].geometryName,
                 geometry: JSON.stringify(data.graphics[areaNumber].geometry)
             };
-            $.post("/api/area/send", $.param(areaData))
+            $.post(baseUrl, $.param(areaData))
                 .success(function (response) {
                     if (areaNumber == data.graphics.length) {
                         successCallback(response);

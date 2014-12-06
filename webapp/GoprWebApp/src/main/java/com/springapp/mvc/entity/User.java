@@ -44,6 +44,17 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = true)
     private Role role;*/
 
+    public User() {}
+
+    public User(String name, String surname, String login, String password, String nick, String phone) {
+        this.name = name;
+        this.surname = surname;
+        this.login = login;
+        this.password = password;
+        this.nick = nick;
+        this.phone = phone;
+    }
+
     public Long getId() {
         return id;
     }

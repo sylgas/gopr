@@ -2,10 +2,12 @@ package com.springapp.mvc.dto;
 
 import com.springapp.mvc.entity.Area;
 import com.springapp.mvc.entity.GroupArea;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.sql.Timestamp;
 import java.util.Collection;
 
+@JsonSerialize(include = JsonSerialize.Inclusion.NON_DEFAULT)
 public class AreaDto {
     private Long id;
     private String name;

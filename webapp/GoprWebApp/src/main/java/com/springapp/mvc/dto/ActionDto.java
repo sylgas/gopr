@@ -22,7 +22,8 @@ public class ActionDto {
     private List<Group> groups;
     private List<AreaDto> areas;
 
-    public ActionDto() {}
+    public ActionDto() {
+    }
 
     public ActionDto(Action action) {
         this.id = action.getId();
@@ -33,7 +34,7 @@ public class ActionDto {
         for (Area area : action.getAreas()) {
             areas.add(new AreaDto(area));
         }
-        if(action.getGroups() != null && action.getGroups().size() > 0) {
+        if(action.getGroups().size() > 0) {
             groups = new ArrayList<Group>();
             for (Group group : action.getGroups()) {
                 groups.add(group);

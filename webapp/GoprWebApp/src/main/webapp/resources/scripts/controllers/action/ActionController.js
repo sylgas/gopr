@@ -8,7 +8,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
     var lastAskTime;
 
     function gotAction(action) {
-        setTimeout(function () { //TODO: display map on init instead of timeout
+        setTimeout(function () {
             MapManager.displayAreas(action.areas);
         }, 3000);
     }
@@ -31,7 +31,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
 
             window.setInterval(function () {
                 var positionsData = {
-                    actionId: stateParams.id,
+                    actionId: window.actionId,
                     dateTime: lastAskTime
                 };
                 PositionService.getAllByActionFromDate(positionsData, gotPositions);
@@ -220,6 +220,7 @@ function actionController(angular, SimpleLineSymbol, Polyline, Point, Graphic, C
         PositionService = positionService;
         scope = $scope;
         stateParams = $stateParams;
+        window.actionId = stateParams.id;
         scope.initAction = initAction
     }
 

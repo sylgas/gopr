@@ -6,7 +6,7 @@ function actionListController(angular) {
         scope.actions = actions;
     }
 
-    function actionStarted() {
+    function actionStarted(actionId) {
         state.go("action", {id: actionId, reload: true});
     }
 

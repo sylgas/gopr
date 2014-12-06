@@ -15,8 +15,8 @@ public class Action implements Serializable {
 
     @Id
     @Column(name = "id")
-    @SequenceGenerator(name = "user_seq", sequenceName = "t_user_id_seq", allocationSize = 1)
-    @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "action_seq", sequenceName = "t_action_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "action_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Basic
@@ -54,6 +54,13 @@ public class Action implements Serializable {
     @OneToMany(mappedBy = "action", fetch = FetchType.EAGER)
     @JsonBackReference
     private Set<Area> areas;
+
+    public Action() {}
+
+    public Action(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;
